@@ -8,13 +8,13 @@ class Admin extends Controller
 {
    public function _initialize()
    {
-       $this->loginDetection();
+       $this->isLogin();
    }
 
     /**
-     *登录状态检测
+     *判断是否登录
      */
-    public function loginDetection(){
+    public function isLogin(){
 
         session_start();
 
