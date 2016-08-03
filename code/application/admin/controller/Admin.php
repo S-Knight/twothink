@@ -1,13 +1,12 @@
 <?php
 namespace app\admin\controller;
 
-use think\response\View;
-use think\controller;
+use think\Controller;
 use think\Session;
 
-class Admin
+class Admin extends Controller
 {
-   public function __construct()
+   public function _initialize()
    {
        $this->loginDetection();
    }
@@ -26,7 +25,4 @@ class Admin
             echo 'Hellp';exit();
         }
     }
-
-
-
 }
