@@ -1,9 +1,13 @@
 <?php
 namespace app\admin\controller;
 
-class Index
+use think\response\View;
+
+class Index extends Admin
 {
     public function index()
     {
+      $view = new \think\View();
+      return $view->fetch();
     }
 }
