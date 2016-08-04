@@ -10,5 +10,7 @@ class Index extends Controller
         if(!is_file(DATA_PATH . 'install.lock')){
             $this->redirect('install/Index/index');
         }
+
+        return '欢迎使用twothink';
     }
 }

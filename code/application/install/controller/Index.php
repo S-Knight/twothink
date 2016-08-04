@@ -21,6 +21,8 @@ class Index extends Controller{
         // 写入安装锁定文件
         file_put_contents(DATA_PATH . 'install.lock', date('Y-m-d H:i:s'));
 
+        $this->assign('info',session('config_file'));
+
         session('step', NULL);
         session('error', NULL);
         session('update', NULL);
