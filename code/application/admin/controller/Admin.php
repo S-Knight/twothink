@@ -15,14 +15,10 @@ class Admin extends Controller
      *判断是否登录
      */
     public function isLogin(){
-
         session_start();
-
         $user = Session::get('user');
         if(!$user){
            $this->redirect('Login/login');
-        }else{
-            echo 'Hellp';exit();
         }
     }
 }
