@@ -27,8 +27,7 @@ class Menu extends Admin
 
         if (!empty($id)) {
             $mainMenus = $menuModel->where(['pid' => $id])->order('id')->select();
-            $pid = $id;
-            $pidval = $menuModel ->where(['id'=>$pid])->find();
+            $pidval = $menuModel ->where(['id'=>$id])->find();
         } else {
             $mainMenus = $menuModel->where(['pid' => 0])->order('id')->select();
             $pidval['id'] = $pid;
