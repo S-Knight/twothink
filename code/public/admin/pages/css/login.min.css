@@ -1,5 +1,9 @@
+html{
+    height: 100%;
+}
 .login {
-    background-image: url("/admin/images/bg01.jpg")
+    background-image: url("/admin/images/bg01.jpg");
+    background-size: 100% 100%;
 }
 
 .login .logo {
