@@ -7,9 +7,14 @@ use think\Session;
 
 class Admin extends Controller
 {
+	protected  $view = 	null;
+	
    public function _initialize()
    {
        $this->isLogin();
+       
+       $this->view = new \think\View();
+       $this->view->assign("username",session("user")); 
    }
 
     /**

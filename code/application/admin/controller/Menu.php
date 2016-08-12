@@ -7,16 +7,6 @@ use think\Request;
 
 class Menu extends Admin
 {
-
-    /**
-     * 用户权限判断
-     */
-    public function _initialize()
-    {
-
-
-    }
-
     public function index()
     {
         $menuModel = new \app\admin\model\Menu();
@@ -41,10 +31,10 @@ class Menu extends Admin
             $val['parentTitle'] = $menuModel -> where(['id'=>$val['pid']])->value('title');
         }
 
-        $view = new \think\View();
-        $view->assign('pidval',$pidval);
-        $view->assign('data', $data);
-        return $view->fetch();
+
+        $this->view->assign('pidval',$pidval);
+        $this->view->assign('data', $data);
+        return $this->view->fetch();
     }
 
     public function add()
@@ -66,10 +56,9 @@ class Menu extends Admin
             $arr = Db::table('geek_menu')->field('id,title')->select();
             $list = array_merge($list,$arr);
 
-            $view = new \think\View();
-            $view->assign('list', $list);
-            $view->assign('pid',$pid);
-            return $view->fetch();
+            $this->view->assign('list', $list);
+            $this->view->assign('pid',$pid);
+            return $this->view->fetch();
         }
     }
 
@@ -99,11 +88,10 @@ class Menu extends Admin
             $arr = Db::table('geek_menu')->field('id,title')->select();
             $list = array_merge($list,$arr);
 
-            $view = new \think\View();
-            $view->assign('list', $list);
-            $view->assign('data', $data);
-            $view->assign('menupid',$parentMenu);
-            return $view->fetch();
+            $this->view->assign('list', $list);
+            $this->view->assign('data', $data);
+            $this->view->assign('menupid',$parentMenu);
+            return $this->view->fetch();
         }
     }
 
