@@ -78,10 +78,6 @@ class App
     {
         is_null($request) && $request = Request::instance();
 
-        if ('ico' == $request->ext()) {
-            throw new HttpException(404, 'ico file not exists');
-        }
-
         $config = self::initCommon();
         $request->filter($config['default_filter']);
         try {
@@ -483,11 +479,23 @@ class App
             // 开启路由
             if (is_file(RUNTIME_PATH . 'route.php')) {
                 // 读取路由缓存
-                Route::rules(include RUNTIME_PATH . 'route.php' ?: []);
-            } elseif (is_file(CONF_PATH . 'route' . CONF_EXT)) {
-                // 导入路由配置
-                Route::import(include CONF_PATH . 'route' . CONF_EXT ?: []);
+                $rules = include RUNTIME_PATH . 'route.php';
+                if (is_array($rules)) {
+                    Route::rules($rules);
+                }
+            } else {
+                $files = $config['route_config_file'];
+                foreach ($files as $file) {
+                    if (is_file(CONF_PATH . $file . CONF_EXT)) {
+                        // 导入路由配置
+                        $rules = include CONF_PATH . $file . CONF_EXT;
+                        if (is_array($rules)) {
+                            Route::import($rules);
+                        }
+                    }
+                }
             }
+
             // 路由检测（根据路由定义返回不同的URL调度）
             $result = Route::check($request, $path, $depr, $config['url_domain_deploy']);
             $must   = !is_null(self::$routeMust) ? self::$routeMust : $config['url_route_must'];

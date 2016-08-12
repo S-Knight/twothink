@@ -5,7 +5,7 @@
     <title>跳转提示</title>
     <style type="text/css">
         *{ padding: 0; margin: 0; }
-        body{ background-image: url('/admin/images/bg.jpg');    background-position: -7px 651px; font-family: '微软雅黑'; color: white; font-size: 16px;text-align: center;margin-top: 140px }
+        body{ background: #fff; font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif; color: #333; font-size: 16px; }
         .system-message{ padding: 24px 48px; }
         .system-message h1{ font-size: 100px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
         .system-message .jump{ padding-top: 10px; }
@@ -18,7 +18,7 @@
     <div class="system-message">
         <?php switch ($code) {?>
             <?php case 1:?>
-            <h1><img src='/admin/images/top-logo.png'></h1>
+            <h1>:)</h1>
             <p class="success"><?php echo(strip_tags($msg));?></p>
             <?php break;?>
             <?php case 0:?>
@@ -41,7 +41,7 @@
                     location.href = href;
                     clearInterval(interval);
                 };
-            }, 2000);
+            }, 1000);
         })();
     </script>
 </body>
