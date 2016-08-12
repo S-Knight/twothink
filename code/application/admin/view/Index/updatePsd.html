@@ -1,0 +1,94 @@
+{extend name="Public/base" /}
+
+{block name="body"}
+<form action="/admin/Index/updatePsd" method="post">
+<div>用户名<input type="text" value="{$row.username}" name="username" readonly/></div>
+<div>原密码<input type="password" value="" name="old_password" id="psd"/><span></span></div>
+<div>新密码<input type="password" value="" name="password" id="new_psd"/><span></span></div>
+<div>重复新密码<input type="password" value="" name="repeat_password" id="repeat_new_psd"/><span></span></div>
+<input type="submit" value="修改" id="submit"/>
+</form>
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+$("#psd").blur(function(){
+	var password=$("#psd").val();
+	if(password==""){
+		$('#psd').next().html('请输入原密码');
+		return false;
+	}else{
+		$('#psd').next().html('');
+	}
+	$.ajax({
+        type: "POST",
+        url: "/admin/Index/password",
+        data: {
+            password: password,
+        },
+        success: function (data) {
+			if(data===false){
+				$('#psd').next().html('密码错误');
+			}else{
+				$('#psd').next().html('');
+			}
+		},
+	});
+})
+
+$("#new_psd").blur(function(){
+	var new_password=$("#new_psd").val();
+	if(new_password==""){
+		$('#new_psd').next().html('请输入新密码');
+	}else{
+		$('#new_psd').next().html('');
+	}
+})
+
+$("#repeat_new_psd").blur(function(){
+	var new_password=$("#new_psd").val();
+	var repeat_new_psd=$("#repeat_new_psd").val();
+	
+	if(repeat_new_psd==""){
+		$('#repeat_new_psd').next().html('请重新输入新密码');
+	}else{
+		$('#repeat_new_psd').next().html('');
+	}
+	if(new_password!=repeat_new_psd){
+		$('#repeat_new_psd').next().html('两次输入密码不一致');
+	}else{
+		$('#repeat_new_psd').next().html('');
+	}
+})
+
+$("#submit").click(function(){
+	var password=$("#psd").val();
+	var new_password=$("#new_psd").val();
+	var repeat_new_psd=$("#repeat_new_psd").val();
+	if(password==""){
+		$('#psd').next().html('请输入原密码');
+	}else{
+		$('#psd').next().html('');
+	}
+	
+	if(new_password==""){
+		$('#new_psd').next().html('请输入新密码');
+		
+	}else{
+		$('#new_psd').next().html('');
+	}
+	
+	if(repeat_new_psd==""){
+		$('#repeat_new_psd').next().html('请重新输入新密码');
+	}else{
+		$('#repeat_new_psd').next().html('');
+	}
+	
+	if(password=="" || new_password=="" || repeat_new_psd==""){
+		return false;
+	}
+})
+</script>
+{/block}
