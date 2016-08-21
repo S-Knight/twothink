@@ -42,6 +42,16 @@
                                             {/volist}
                                         </select>
                                     </div>
+                                    
+                                    <div class="form-group">
+										 <label>是否顶部显示<span class="check-tips"></span></label>
+										 <div>
+                                           <label class="mt-checkbox">
+                                                            <input type="checkbox" name='is_top_show' value='1' {if condition="$list['is_top_show'] eq 1"}checked{/if}>
+                                                            <span></span>
+                                           </label>
+                                           </div>
+                                        </div>
                            
                                     <div class="form-group">
                                         <label>是否隐藏<span class="check-tips"></span></label>

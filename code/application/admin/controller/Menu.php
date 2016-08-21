@@ -22,7 +22,10 @@ class Menu extends Admin
         $menuModel = new \app\admin\model\Menu();
         if (Request::instance()->isPost()) {
             $data = Request::instance()->post(); // 获取经过过滤的全部post变量
-			//dump($data);die;
+            if(empty($data['is_top_show'])){
+            	$data['is_top_show']=2;
+            }
+			
             $add = Db::table('geek_menu')->insert($data);
             if ($add) {
                 $this->success('数据提交成功','/Admin/Menu/index');
@@ -44,6 +47,9 @@ class Menu extends Admin
         if (Request::instance()->isPost())
         {
             $postid = $_POST['id'];
+            if(empty($_POST['is_top_show'])){
+            	$_POST['is_top_show']=2;
+            }
             $save = $menuModel->allowField(true)->save($_POST,['id' => $postid]);
             if ($save)
             {
@@ -87,7 +93,7 @@ class Menu extends Admin
     }
     
     public function hide(){
-    	$b = Db::table('geek_menu')->where('id',$_POST['id'])->setField('is_show',$_POST['state']);
+    	$b = Db::table($_POST['table'])->where('id',$_POST['id'])->setField($_POST['field'],$_POST['state']);
     	if($b){
     		return true;
     	}else{

@@ -27,7 +27,7 @@ class Admin extends Controller
        	$menu['id'] = $parentMenu->id;
        	 
        	$menu['childMenus'] = [];
-       	$childMenus =$menuModel->where('is_show',1)->where('pid', $parentMenu->id)->order('sort')->select();
+       	$childMenus =$menuModel->where(['is_show'=>1,'is_top_show'=>2])->where('pid', $parentMenu->id)->order('sort')->select();
        	 
        	foreach ($childMenus as $childMenu){
        		$menu['childMenus'][] = $childMenu->toArray();
@@ -37,16 +37,17 @@ class Admin extends Controller
        
        	$menus[] = $menu;
        }
- 
-       //网站主页
-       $home_index=Db::table('geek_menu')->where(['is_show'=>1,'title'=>'网站主页'])->find();
+ 		
+       //顶部菜单
+       $menu_top=Db::table('geek_menu')->where(['is_show'=>1,'is_top_show'=>1])->order('sort')->select();
         
        //基本信息
        $row['copyright']=Db::table('geek_config')->where('name','Copyright_information')->value('value');
        $row['alias']=Db::table('geek_config')->where('name','alias')->value('value');
        $this->view = new \think\View();
        $this->view->assign("row", $row);
-       $this->view->assign("home_index", $home_index);
+       $this->view->assign("menu_top", $menu_top);
+     
        $this->view->assign("menus", $menus);
        $this->view->assign("username",session("user"));
 

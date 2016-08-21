@@ -37,6 +37,7 @@
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="上级菜单: activate to sort column ascending" style="width: 159px;">上级菜单</th>
 
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="URL: activate to sort column ascending" style="width: 317px;">URL</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="是否顶部显示: activate to sort column ascending" style="width: 96px;">是否顶部显示</th>
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="排序: activate to sort column ascending" style="width: 95px;">排序</th>
                                
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="隐藏: activate to sort column ascending" style="width: 96px;">是否显示</th>
@@ -54,9 +55,10 @@
                                 <td class=" ">{:superior($vo['pid'])}</td>
                               
                                 <td class=" ">{$vo.url}</td>
+                                 <td class=" " ><a href='javascript:;' onclick="hide({$vo['id']},{$vo['is_top_show']},'is_top_show')">{if condition="$vo['is_top_show'] eq 1"}显示{else/}隐藏{/if}</a></td>
                                 <td class=" ">{$vo.sort}</td>
-                               
-                                <td class=" " id='hide'><a href='javascript:;' onclick='hide({$vo['id']},{$vo['is_show']})'>{if condition="$vo['is_show'] eq 1"}显示{else/}隐藏{/if}</a></td>
+                               	
+                                <td class=" " ><a href='javascript:;' onclick="hide({$vo['id']},{$vo['is_show']},'is_show')">{if condition="$vo['is_show'] eq 1"}显示{else/}隐藏{/if}</a></td>
                                 <td class=" ">
                                     <a title="编辑" href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
                                     <a class="confirm ajax-get" onclick="return confirm('确定删除？')" title="删除" href="{:url('delete',['id'=>$vo['id'],'pid'=>$vo['pid']])}">删除</a>
@@ -93,15 +95,17 @@
 {/block}
 {block name="script"}
 <script type="text/javascript">
-function hide(id,state){
+function hide(id,state,field){
 	var new_state=state==1?2:1;
-
+	var table='geek_menu';
 	$.ajax({
         type: "POST",
         url: "{:url('hide')}",
         data: {
+        	table:table,
         	id:id,
-        	state:new_state
+        	state:new_state,
+        	field:field
         },
         success: function (data) {
         	if(data===true){

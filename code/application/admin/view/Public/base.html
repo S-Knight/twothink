@@ -68,18 +68,15 @@
         <div class="page-top">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-            {if condition="!empty($home_index)"}
+           	{volist name="menu_top" id="vo"}
            	<div class="page-actions">
                     <div class="btn-group">
-                        <button aria-expanded="false" id="home" type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
-                            
-                            <span class="hidden-sm hidden-xs">&nbsp;{$home_index.title}&nbsp;</span>&nbsp;
-                            
-                        </button>
-                        
+	                    <a href="{:url($vo['url'])}">
+	                       <button type="button" class="btn green btn-outline">{$vo.title}</button>
+	                    </a>    
                     </div>
                 </div>
-             {/if}
+          {/volist}
             <!-- END HEADER SEARCH BOX -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
@@ -275,9 +272,7 @@
     	window.location.href="{:url('Message/message')}";
     })
     
-    $("#home").click(function(){
-    	window.open("{:url($home_index['url'])}");
-    })
+
     </script>
 </div>
 </body>

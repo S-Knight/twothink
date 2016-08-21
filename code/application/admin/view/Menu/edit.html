@@ -42,17 +42,27 @@
                                             {/volist}
                                         </select>
                                     </div>
-                           
+                           			
+                           			<div class="form-group">
+										 <label>是否顶部显示<span class="check-tips"></span></label>
+										 <div>
+                                           <label class="mt-checkbox">
+                                                            <input type="checkbox" name='is_top_show' value='1' {if condition="$data['is_top_show'] eq 1"}checked{/if}>
+                                                            <span></span>
+                                           </label>
+                                           </div>
+                                        </div>
+                           			
                                     <div class="form-group">
                                         <label>是否隐藏<span class="check-tips"></span></label>
                                         <div class="radio-list">
                                         	<label class="mt-radio mt-radio-outline"> 是
-                                                        <input type="radio" name="is_show" {eq name="data.is_show" value="2"}checked{/eq} value="2">
+                                                        <input type="radio" name="is_show" {eq name="data['is_show']" value="2"}checked{/eq} value="2">
                                                         <span></span>
                                        		</label>
                                        		
                                        		<label class="mt-radio mt-radio-outline" style=""> 否
-                                                        <input type="radio" name="is_show" {eq name="data.is_show" value="1"}checked{/eq} value="0">
+                                                        <input type="radio" name="is_show" {eq name="data['is_show']" value="1"}checked{/eq} value="1">
                                                         <span></span>
                                        		</label>
    
