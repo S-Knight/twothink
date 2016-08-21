@@ -19,7 +19,7 @@ return [
     // 用户名
     'username'       => 'twothink',
     // 密码
-    'password'       => '112.74.81.72',
+    'password'       => 'twothink123456',
     // 端口
     'hostport'       => '3306',
     // 连接dsn
