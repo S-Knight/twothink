@@ -194,25 +194,24 @@ class Query
      * @access public
      * @param string  $sql          sql指令
      * @param array   $bind         参数绑定
-     * @param boolean $getLastInsID 是否获取自增ID
-     * @param boolean $sequence     自增序列名
      * @return int
      * @throws BindParamException
      * @throws PDOException
      */
-    public function execute($sql, $bind = [], $getLastInsID = false, $sequence = null)
+    public function execute($sql, $bind = [])
     {
-        return $this->connection->execute($sql, $bind, $getLastInsID, $sequence);
+        return $this->connection->execute($sql, $bind);
     }
 
     /**
      * 获取最近插入的ID
      * @access public
+     * @param string  $sequence     自增序列名
      * @return string
      */
-    public function getLastInsID()
+    public function getLastInsID($sequence = null)
     {
-        return $this->connection->getLastInsID();
+        return $this->connection->getLastInsID($sequence);
     }
 
     /**
@@ -749,7 +748,7 @@ class Query
         if (isset($this->options['field'])) {
             $field = array_merge($this->options['field'], $field);
         }
-        $this->options['field'] = $field;
+        $this->options['field'] = array_unique($field);
         return $this;
     }
 
@@ -1415,8 +1414,10 @@ class Query
     {
         $types = $this->getFieldsType($options);
         $bind  = [];
-        foreach ($types as $key => $type) {
-            $bind[$key] = $this->getFieldBindType($type);
+        if ($types) {
+            foreach ($types as $key => $type) {
+                $bind[$key] = $this->getFieldBindType($type);
+            }
         }
         return $bind;
     }
@@ -1665,7 +1666,7 @@ class Query
      * @access public
      * @param mixed   $data         数据
      * @param boolean $replace      是否replace
-     * @param boolean $getLastInsID 是否获取自增ID
+     * @param boolean $getLastInsID 返回自增主键
      * @param string  $sequence     自增序列名
      * @return integer|string
      */
@@ -1681,9 +1682,14 @@ class Query
             // 获取实际执行的SQL语句
             return $this->connection->getRealSql($sql, $bind);
         }
-        $sequence = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
+
         // 执行操作
-        return $this->execute($sql, $bind, $getLastInsID, $sequence);
+        $result = $this->execute($sql, $bind);
+        if ($getLastInsID) {
+            $sequence = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
+            return $this->getLastInsID($sequence);
+        }
+        return $result;
     }
 
     /**
@@ -1762,12 +1768,18 @@ class Query
     public function update(array $data)
     {
         $options = $this->parseExpress();
+        $pk      = $this->getPk($options);
+        if (isset($options['cache']) && is_string($options['cache'])) {
+            $key = $options['cache'];
+        }
+
         if (empty($options['where'])) {
-            $pk = $this->getPk($options);
             // 如果存在主键数据 则自动作为更新条件
             if (is_string($pk) && isset($data[$pk])) {
                 $where[$pk] = $data[$pk];
-                $key        = 'think:' . $options['table'] . '|' . $data[$pk];
+                if (!isset($key)) {
+                    $key = 'think:' . $options['table'] . '|' . $data[$pk];
+                }
                 unset($data[$pk]);
             } elseif (is_array($pk)) {
                 // 增加复合主键支持
@@ -1787,6 +1799,8 @@ class Query
             } else {
                 $options['where']['AND'] = $where;
             }
+        } elseif (is_string($pk) && isset($options['where']['AND'][$pk]) && is_scalar($options['where']['AND'][$pk])) {
+            $key = 'think:' . $options['table'] . '|' . $options['where']['AND'][$pk];
         }
         // 生成UPDATE SQL语句
         $sql = $this->builder()->update($data, $options);
@@ -2031,7 +2045,7 @@ class Query
     public function chunk($count, $callback, $column = null)
     {
         $options   = $this->getOptions();
-        $column    = $column ?: $this->getPk();
+        $column    = $column ?: $this->getPk(isset($options['table']) ? $options['table'] : '');
         $bind      = $this->bind;
         $resultSet = $this->limit($count)->order($column, 'asc')->select();
 
@@ -2087,9 +2101,12 @@ class Query
     {
         // 分析查询表达式
         $options = $this->parseExpress();
+        if (isset($options['cache']) && is_string($options['cache'])) {
+            $key = $options['cache'];
+        }
 
         if (!is_null($data) && true !== $data) {
-            if (!is_array($data)) {
+            if (!isset($key) && !is_array($data)) {
                 // 缓存标识
                 $key = 'think:' . $options['table'] . '|' . $data;
             }

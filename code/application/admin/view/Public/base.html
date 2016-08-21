@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>后台管理系统</title>
+    <title>{$row.alias}后台管理系统</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
@@ -51,8 +51,8 @@
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
         <div class="page-logo">
-            <a href="index.html">
-                <img src="/admin/layouts/layout2/img/logo-default.png" alt="logo" class="logo-default" /> </a>
+            <!--<a href="index.html"><img src="{$row.LOGO}" alt="logo" class="logo-default" /> </a>  -->
+            <a href="" style="margin:20px 0 0 10px;color: #fff;">{$row.alias}</a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
             </div>
@@ -68,16 +68,18 @@
         <div class="page-top">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-            <form class="search-form search-form-expanded" action="page_general_search_3.html" method="GET">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." name="query">
-                            <span class="input-group-btn">
-                                <a href="javascript:;" class="btn submit">
-                                    <i class="icon-magnifier"></i>
-                                </a>
-                            </span>
+            {if condition="!empty($home_index)"}
+           	<div class="page-actions">
+                    <div class="btn-group">
+                        <button aria-expanded="false" id="home" type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
+                            
+                            <span class="hidden-sm hidden-xs">&nbsp;{$home_index.title}&nbsp;</span>&nbsp;
+                            
+                        </button>
+                        
+                    </div>
                 </div>
-            </form>
+             {/if}
             <!-- END HEADER SEARCH BOX -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
@@ -94,6 +96,14 @@
                     <!-- END TODO DROPDOWN -->
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                                <a aria-expanded="false" href="{:url('Message/message')}" id="message" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-bell"></i>
+                                    <span class="badge badge-default"> {$message_row} </span>
+                                </a>
+                               
+                            </li>
+                    
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img alt="" class="img-circle" src="/admin/layouts/layout2/img/avatar3_small.jpg" />
@@ -114,10 +124,7 @@
                     <!-- END USER LOGIN DROPDOWN -->
                     <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended quick-sidebar-toggler">
-                        <span class="sr-only">Toggle Quick Sidebar</span>
-                        <i class="icon-logout"></i>
-                    </li>
+                
                     <!-- END QUICK SIDEBAR TOGGLER -->
                 </ul>
             </div>
@@ -147,20 +154,34 @@
             <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
             <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
             <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                <li class="nav-item  ">
-                    <a href="javascript:;" class="nav-link nav-toggle">
+            	<li class="nav-item  ">
+                    <a href="{:url('menu/index')}"  class="nav-link nav-toggle">
                         <i class="icon-diamond"></i>
-                        <span class="title">菜单管理</span>
+                        
+                        <span class="title">首页</span>
+                        <span class="arrow"></span>
+                    </a>
+                </li>
+                {volist name='menus' id='vo'}
+                <li class="nav-item  " id='menus{$vo.id}'>
+                    <a href="javascript:;" {if condition="$vo['title']"}{/if} class="nav-link nav-toggle">
+                        <i class="icon-diamond"></i>
+                        
+                        <span class="title">{$vo.title}</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
+                     {volist name='vo.childMenus' id='v2'}
                         <li class="nav-item  ">
-                            <a href="/admin/Menu/index" class="nav-link ">
-                                <span class="title">所有菜单</span>
+                            <a href="{:url($v2['url'])}" {if condition="$v2['url'] eq 'Home/index/index'"}target="_blank"{/if} class="nav-link ">
+                           
+                                <span class="title">{$v2.title}</span>
                             </a>
                         </li>
+                      {/volist}
                     </ul>
                 </li>
+                {/volist}
             </ul>
             <!-- END SIDEBAR MENU -->
         </div>
@@ -185,8 +206,8 @@
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
-    <div class="page-footer-inner"> 2016 &copy; Metronic Theme By
-        <a target="_blank" href="http://www.igeekspace.com/">尖塔科技</a>
+    <div class="page-footer-inner"> {$row.copyright}
+        <a target="_blank" href="http://www.igeekspace.com/"></a>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
         </div>
@@ -246,8 +267,18 @@
     <script src="/admin/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>
     <script src="/admin/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
     <script src="/admin/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+    
     <!-- END THEME LAYOUT SCRIPTS -->
     {block name="script"}{/block} 
+    <script type="text/javascript">
+    $("#message").click(function(){
+    	window.location.href="{:url('Message/message')}";
+    })
+    
+    $("#home").click(function(){
+    	window.open("{:url($home_index['url'])}");
+    })
+    </script>
 </div>
 </body>
 

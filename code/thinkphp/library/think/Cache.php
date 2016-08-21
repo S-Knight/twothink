@@ -31,7 +31,7 @@ class Cache
      * @access public
      * @param array         $options  配置数组
      * @param bool|string   $name 缓存连接标识 true 强制重新连接
-     * @return object
+     * @return \think\cache\Driver
      */
     public static function connect(array $options = [], $name = false)
     {
@@ -65,8 +65,28 @@ class Cache
     {
         if (is_null(self::$handler)) {
             // 自动初始化缓存
-            self::connect($options ?: Config::get('cache'));
+            if (!empty($options)) {
+                self::connect($options);
+            } elseif ('complex' == Config::get('cache.type')) {
+                self::connect(Config::get('cache.default'));
+            } else {
+                self::connect(Config::get('cache'));
+            }
         }
+    }
+
+    /**
+     * 切换缓存类型 需要配置 cache.type 为 complex
+     * @access public
+     * @param string $name 缓存标识
+     * @return \think\cache\Driver
+     */
+    public static function store($name)
+    {
+        if ('complex' == Config::get('cache.type')) {
+            self::connect(Config::get('cache.' . $name), strtolower($name));
+        }
+        return self::$handler;
     }
 
     /**
@@ -155,13 +175,28 @@ class Cache
     /**
      * 清除缓存
      * @access public
+     * @param string $tag 标签名
      * @return boolean
      */
-    public static function clear()
+    public static function clear($tag = null)
     {
         self::init();
         self::$writeTimes++;
-        return self::$handler->clear();
+        return self::$handler->clear($tag);
+    }
+
+    /**
+     * 缓存标签
+     * @access public
+     * @param string        $name 标签名
+     * @param string|array  $keys 缓存标识
+     * @param bool          $overlay 是否覆盖
+     * @return \think\cache\Driver
+     */
+    public static function tag($name, $keys = null, $overlay = false)
+    {
+        self::init();
+        return self::$handler->tag($name, $keys, $overlay);
     }
 
 }

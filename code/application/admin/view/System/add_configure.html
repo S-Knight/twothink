@@ -1,0 +1,85 @@
+{extend name="Public/base" /}
+{block name="body"}
+<div style="min-height:317px" class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+            <!-- BEGIN THEME PANEL -->
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:url(add_configure)}" method="post" class="form-1">
+                    <div class="tab-content">
+
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="fa fa-reorder"></i>编辑配置</div>
+                                <div class="tools">
+                                    <a title="" data-original-title="" href="javascript:;" class="collapse"></a>
+                                  
+                                    <a title="" data-original-title="" href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <!-- BEGIN FORM-->
+
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label>配置标识<span class="check-tips">（用于C函数调用，只能使用英文且不能重复）</span></label>
+                                        <input class="form-control input-xlarge" name="name" value="{$list.name}" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>配置标题<span class="check-tips">（用于后台显示的配置标题）</span></label>
+                                        <input class="form-control input-xlarge" name="title" value="{$list.title}" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>排序<span class="check-tips">（用于分组显示的顺序）</span></label>
+                                        <input class="form-control input-xlarge" name="sort" value="{$list.sort}" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>配置类型<span class="check-tips">（系统会根据不同类型解析配置值）</span></label>
+                                        <select class="form-control  input-medium" name="type">
+                                                                                    	<option value="1" {if condition="$list['type'] eq 1"}selected{/if}>文本</option>
+                                                                                    	<option value="2" {if condition="$list['type'] eq 2"}selected{/if}>上传</option>
+                                                                                    	<option value="3" {if condition="$list['type'] eq 3"}selected{/if}>多行文本</option>
+
+                                                                                    </select>
+                                    </div>
+                             
+                                    <div class="form-group">
+                                        <label>配置分组<span class="check-tips">（配置分组 用于批量设置 不分组则不会显示在系统设置中）</span></label>
+                                        <select class="form-control  input-medium" name="group">
+                                                                                       <option value="0" {if condition="$list['group'] eq 0"}selected{/if}>不分组</option>
+																                        <option value="1" {if condition="$list['group'] eq 1"}selected{/if}>基本</option>
+																                        <option value="2" {if condition="$list['group'] eq 2"}selected{/if}>内容</option>
+																                        <option value="3" {if condition="$list['group'] eq 3"}selected{/if}>用户</option>
+																                        <option value="4" {if condition="$list['group'] eq 4"}selected{/if}>系统</option>
+																                        <option value="5" {if condition="$list['group'] eq 5"}selected{/if}>邮件</option> 
+                                                                                    
+                                                                                    </select>
+                                    </div>
+                 
+                                    <div class="form-group">
+                                                <label>配置值（配置值）</label>
+                                                <textarea class="form-control" rows="3" name='value'>{$list.value}</textarea>
+                                            </div>
+                                   
+                                    
+                                  
+                                </div>
+
+								<input class="form-control input-xlarge" name="id" value="{$list.id}" type="hidden">
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+                    
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+                                    </div>
+                                </div>
+
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+{/block} 

@@ -233,7 +233,7 @@ class Route
     public static function rule($rule, $route = '', $type = '*', $option = [], $pattern = [])
     {
         $group = self::getGroup('name');
-        if (!empty($group)) {
+        if (!is_null($group)) {
             // 路由分组
             $option  = array_merge(self::getGroup('option'), $option);
             $pattern = array_merge(self::getGroup('pattern'), $pattern);
@@ -281,6 +281,8 @@ class Route
         if (is_array($rule)) {
             $name = $rule[0];
             $rule = $rule[1];
+        } elseif (is_string($route)) {
+            $name = $route;
         }
         if ('$' == substr($rule, -1, 1)) {
             // 是否完整匹配

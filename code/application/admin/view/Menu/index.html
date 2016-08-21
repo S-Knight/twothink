@@ -5,18 +5,18 @@
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet box green">
             <div class="portlet-title">
-                <div class="caption"><i class="fa fa-globe"></i>[ {$pidval.title} ] 子菜单管理</div>
+                <div class="caption"><i class="fa fa-globe"></i>菜单管理</div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse"></a>
-                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+ 
                     <a href="javascript:;" class="reload"></a>
                 </div>
             </div>
             <div class="portlet-body">
                 <div class="table-toolbar">
                     <div class="btn-group">
-                        <a class="btn green" href="/Admin/Menu/add/pid/{$pidval.id}">新 增</a>
-                        <button class="btn green btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        <a class="btn green" href="{:url('add')}">新 增</a>
+                     	<button class="btn default btn-return green" onclick="javascript:history.back(-1);return false;">返 回</button>
                     </div>
                 </div>
                 <div id="sample_wrapper" class="dataTables_wrapper form-inline" role="grid">
@@ -35,11 +35,11 @@
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="ID: activate to sort column ascending" style="width: 64px;">ID</th>
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="名称: activate to sort column ascending" style="width: 95px;">名称</th>
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="上级菜单: activate to sort column ascending" style="width: 159px;">上级菜单</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="分组: activate to sort column ascending" style="width: 95px;">分组</th>
+
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="URL: activate to sort column ascending" style="width: 317px;">URL</th>
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="排序: activate to sort column ascending" style="width: 95px;">排序</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="仅开发者模式显示: activate to sort column ascending" style="width: 286px;">仅开发者模式显示</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="隐藏: activate to sort column ascending" style="width: 96px;">隐藏</th>
+                               
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="隐藏: activate to sort column ascending" style="width: 96px;">是否显示</th>
                                 <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample" rowspan="1" colspan="1" aria-label="操作: activate to sort column ascending" style="width: 136px;">操作</th>
                             </tr>
                             </thead>
@@ -51,26 +51,25 @@
                                 <td class=" ">
                                     <a href="/Admin/Menu/index/id/{$vo.id}">{$vo.title}</a>
                                 </td>
-                                <td class=" ">{$pidval.id}&nbsp;&nbsp;{$pidval.title}</td>
-                                <td class=" ">{$vo.group|default='无'}</td>
+                                <td class=" ">{:superior($vo['pid'])}</td>
+                              
                                 <td class=" ">{$vo.url}</td>
                                 <td class=" ">{$vo.sort}</td>
+                               
+                                <td class=" " id='hide'><a href='javascript:;' onclick='hide({$vo['id']},{$vo['is_show']})'>{if condition="$vo['is_show'] eq 1"}显示{else/}隐藏{/if}</a></td>
                                 <td class=" ">
-                                    {switch name="$vo.is_dev" }
-                                    {case value="0"}否{/case}
-                                    {case value="1"}是{/case}
-                                    {default /}设置有误，请更改
-                                    {/switch}
-                                </td>
-                                <td class=" ">{$vo.hide}</td>
-                                <td class=" ">
-                                    <a title="编辑" href="/Admin/Menu/edit/id/{$vo.id}/">编辑</a>
-                                    <a class="confirm ajax-get" onclick="return confirm('确定删除？')" title="删除" href="/Admin/Menu/delete/id/{$vo.id}">删除</a>
+                                    <a title="编辑" href="{:url('edit',['id'=>$vo['id']])}">编辑</a>
+                                    <a class="confirm ajax-get" onclick="return confirm('确定删除？')" title="删除" href="{:url('delete',['id'=>$vo['id'],'pid'=>$vo['pid']])}">删除</a>
                                 </td>
                             </tr>
                             {/volist}
                             </tbody>
+                            
                         </table>
+       
+                        <div class="col-md-12">
+							{$page}
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5 col-sm-12">
@@ -92,3 +91,26 @@
     </div>
 </div>
 {/block}
+{block name="script"}
+<script type="text/javascript">
+function hide(id,state){
+	var new_state=state==1?2:1;
+
+	$.ajax({
+        type: "POST",
+        url: "{:url('hide')}",
+        data: {
+        	id:id,
+        	state:new_state
+        },
+        success: function (data) {
+        	if(data===true){
+        		location.reload();
+        	}else{
+        		alert('操作失败');
+        	}
+		},
+	});
+}
+</script>
+{/block} 
