@@ -1,22 +1,24 @@
 <?php
 namespace app\admin\controller;
 
-use app\admin\model\Member;
-use app\admin\model\UcenterMember;
-use app\admin\model\UcMember;
 use think\Controller;
 use think\response\View;
 use think\Session;
-
+use think\Db;
 class Login extends Controller
 {
     public function login()
     {
+    	//基本信息
+    	//dump(md5(md5('123').'B,j,m,Y,G,9'));die;
+    	$row['alias']=Db::table('geek_config')->where('name','alias')->value('value');
+    	$row['copyright']=Db::table('geek_config')->where('name','Copyright_information')->value('value');
         $login_result = $this->is_login();
         if ($login_result) {
-            redirect('Index/index');
+            redirect('menu/index');
         }
         $view = new \think\View();
+        $view->assign("row", $row);
         return $view->fetch();
     }
 
@@ -39,16 +41,18 @@ class Login extends Controller
         $rJson = [];
         $username = $_POST['username'];
         $password = $_POST['password'];
-
-        $memberModel = new UcenterMember();
+   
         $condition = array(
             'username' => $username,
-            'password' => md5($password)
         );
-        $result = $memberModel->where($condition)->find();
-        if ($result) {
+        $result = Db::table('geek_ucenter_information')->where($condition)->find();
+        
+        if ($result && $result['password']==md5(md5($password).$result['salt'])) {
             session_start();
             Session::set('user', $username);
+            $login_number=$result['login_number']+1;
+            $login_time=time();
+            Db::table('geek_ucenter_information')->where($condition)->update(['login_number' => $login_number,'login_time'=>$login_time]);
             $rJson['success'] = true;
         } else {
             $rJson['success'] = false;

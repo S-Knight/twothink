@@ -575,6 +575,9 @@ class Validate
             case 'token':
                 $result = $this->token($value, '__token__', $data);
                 break;
+            case 'token':
+                $result = $this->token($value, '__token__', $data);
+                break;
             default:
                 if (isset(self::$type[$rule])) {
                     // 注册的验证规则
