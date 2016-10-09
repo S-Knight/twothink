@@ -21,7 +21,7 @@ class Sqlsrv extends Connection
 {
     // PDO连接参数
     protected $params = [
-        PDO::ATTR_CASE              => PDO::CASE_LOWER,
+        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
         PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_STRINGIFY_FETCHES => false,
     ];
@@ -99,6 +99,7 @@ class Sqlsrv extends Connection
      */
     public function getTables($dbName = '')
     {
+        $this->initConnect(true);
         $sql = "SELECT TABLE_NAME
             FROM INFORMATION_SCHEMA.TABLES
             WHERE TABLE_TYPE = 'BASE TABLE'

@@ -13,6 +13,7 @@ namespace think\view\driver;
 
 use think\App;
 use think\exception\TemplateNotFoundException;
+use think\Loader;
 use think\Log;
 use think\Request;
 
@@ -117,7 +118,7 @@ class Php
 
         // 分析模板文件规则
         $request    = Request::instance();
-        $controller = $request->controller();
+        $controller = Loader::parseName($request->controller());
         if ($controller && 0 !== strpos($template, '/')) {
             $depr     = $this->config['view_depr'];
             $template = str_replace(['/', ':'], $depr, $template);
@@ -129,6 +130,24 @@ class Php
             }
         }
         return $path . ltrim($template, '/') . '.' . ltrim($this->config['view_suffix'], '.');
+    }
+
+    /**
+     * 配置模板引擎
+     * @access private
+     * @param string|array  $name 参数名
+     * @param mixed         $value 参数值
+     * @return void
+     */
+    public function config($name, $value = null)
+    {
+        if (is_array($name)) {
+            $this->config = array_merge($this->config, $name);
+        } elseif (is_null($value)) {
+            return isset($this->config[$name]) ? $this->config[$name] : null;
+        } else {
+            $this->config[$name] = $value;
+        }
     }
 
 }

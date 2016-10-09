@@ -18,6 +18,8 @@ use think\Config;
 use think\Cookie;
 use think\Db;
 use think\Debug;
+use think\exception\HttpException;
+use think\exception\HttpResponseException;
 use think\Lang;
 use think\Loader;
 use think\Log;
@@ -100,7 +102,7 @@ if (!function_exists('config')) {
     function config($name = '', $value = null, $range = '')
     {
         if (is_null($value) && is_string($name)) {
-            return Config::get($name, $range);
+            return 0 === strpos($name, '?') ? Config::has(substr($name, 1), $range) : Config::get($name, $range);
         } else {
             return Config::set($name, $value, $range);
         }
@@ -145,7 +147,7 @@ if (!function_exists('widget')) {
     /**
      * 渲染输出Widget
      * @param string    $name Widget名称
-     * @param array     $data 传人的参数
+     * @param array     $data 传入的参数
      * @return mixed
      */
     function widget($name, $data = [])
@@ -270,8 +272,8 @@ if (!function_exists('url')) {
     /**
      * Url生成
      * @param string        $url 路由地址
-     * @param string|array  $value 变量
-     * @param bool|string   $suffix 前缀
+     * @param string|array  $vars 变量
+     * @param bool|string   $suffix 生成的URL后缀
      * @param bool|string   $domain 域名
      * @return string
      */
@@ -345,9 +347,10 @@ if (!function_exists('cache')) {
      * @param mixed     $name 缓存名称，如果为数组表示进行缓存设置
      * @param mixed     $value 缓存值
      * @param mixed     $options 缓存参数
+     * @param string    $tag 缓存标签
      * @return mixed
      */
-    function cache($name, $value = '', $options = null)
+    function cache($name, $value = '', $options = null, $tag = null)
     {
         if (is_array($options)) {
             // 缓存操作的同时初始化
@@ -358,7 +361,7 @@ if (!function_exists('cache')) {
         }
         if ('' === $value) {
             // 获取缓存
-            return Cache::get($name);
+            return 0 === strpos($name, '?') ? Cache::has(substr($name, 1)) : Cache::get($name);
         } elseif (is_null($value)) {
             // 删除缓存
             return Cache::rm($name);
@@ -369,7 +372,11 @@ if (!function_exists('cache')) {
             } else {
                 $expire = is_numeric($options) ? $options : null; //默认快捷缓存设置过期时间
             }
-            return Cache::set($name, $value, $expire);
+            if (is_null($tag)) {
+                return Cache::set($name, $value, $expire);
+            } else {
+                return Cache::tag($tag)->set($name, $value, $expire);
+            }
         }
     }
 }
@@ -505,9 +512,35 @@ if (!function_exists('abort')) {
     function abort($code, $message = null, $header = [])
     {
         if ($code instanceof Response) {
-            throw new \think\exception\HttpResponseException($code);
+            throw new HttpResponseException($code);
         } else {
-            throw new \think\exception\HttpException($code, $message, null, $header);
+            throw new HttpException($code, $message, null, $header);
         }
+    }
+}
+
+if (!function_exists('halt')) {
+    /**
+     * 调试变量并且中断输出
+     * @param mixed      $var 调试变量或者信息
+     */
+    function halt($var)
+    {
+        dump($var);
+        throw new HttpResponseException(new Response);
+    }
+}
+
+if (!function_exists('token')) {
+    /**
+     * 生成表单令牌
+     * @param string $name 令牌名称
+     * @param mixed  $type 令牌生成方法
+     * @return string
+     */
+    function token($name = '__token__', $type = 'md5')
+    {
+        $token = Request::instance()->token($name, $type);
+        return '<input type="hidden" name="' . $name . '" value="' . $token . '" />';
     }
 }

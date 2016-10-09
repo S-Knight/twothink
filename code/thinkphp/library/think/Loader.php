@@ -322,7 +322,7 @@ class Loader
                 //加载当前模块应用类库
                 $baseUrl = App::$modulePath;
             } elseif (is_dir(EXTEND_PATH . $name)) {
-                $baseUrl = EXTEND_PATH;
+                $baseUrl = EXTEND_PATH . $name . DS;
             } else {
                 // 加载其它模块的类库
                 $baseUrl = APP_PATH . $name . DS;
@@ -406,7 +406,7 @@ class Loader
         }
         $class = self::parseClass($module, $layer, $name, $appendSuffix);
         if (class_exists($class)) {
-            return new $class(Request::instance());
+            return App::invokeClass($class);
         } elseif ($empty && class_exists($emptyClass = self::parseClass($module, $layer, $empty, $appendSuffix))) {
             return new $emptyClass(Request::instance());
         }
@@ -452,13 +452,14 @@ class Loader
     }
 
     /**
-     * 实例化数据库
-     * @param mixed $config 数据库配置
-     * @return object
+     * 数据库初始化 并取得数据库类实例
+     * @param mixed         $config 数据库配置
+     * @param bool|string   $name 连接标识 true 强制重新连接
+     * @return \think\db\Connection
      */
-    public static function db($config = [])
+    public static function db($config = [], $name = false)
     {
-        return Db::connect($config);
+        return Db::connect($config, $name);
     }
 
     /**

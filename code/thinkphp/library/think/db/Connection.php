@@ -37,8 +37,6 @@ abstract class Connection
 
     /** @var string 当前SQL指令 */
     protected $queryStr = '';
-    // 最后插入ID
-    protected $lastInsID;
     // 返回或者影响记录数
     protected $numRows = 0;
     // 事务指令数
@@ -106,6 +104,8 @@ abstract class Connection
         'sql_explain'    => false,
         // Builder类
         'builder'        => '',
+        // Query类
+        'query'          => '\\think\\db\\Query',
     ];
 
     // PDO连接参数
@@ -133,12 +133,14 @@ abstract class Connection
      * 创建指定模型的查询对象
      * @access public
      * @param string $model 模型类名称
+     * @param string $queryClass 查询对象类名
      * @return Query
      */
-    public function model($model)
+    public function model($model, $queryClass = '')
     {
         if (!isset($this->query[$model])) {
-            $this->query[$model] = new Query($this, $model);
+            $class               = $queryClass ?: $this->config['query'];
+            $this->query[$model] = new $class($this, $model);
         }
         return $this->query[$model];
     }
@@ -153,7 +155,8 @@ abstract class Connection
     public function __call($method, $args)
     {
         if (!isset($this->query['database'])) {
-            $this->query['database'] = new Query($this);
+            $class                   = $this->config['query'];
+            $this->query['database'] = new $class($this);
         }
         return call_user_func_array([$this->query['database'], $method], $args);
     }
@@ -286,7 +289,7 @@ abstract class Connection
                     Log::record($e->getMessage(), 'error');
                     return $this->connect($autoConnection, $linkNum);
                 } else {
-                    throw new Exception($e->getMessage());
+                    throw $e;
                 }
             }
         }
@@ -353,7 +356,7 @@ abstract class Connection
             $result = $this->PDOStatement->execute();
             // 调试结束
             $this->debug(false);
-            $procedure = 0 === strpos(strtolower(substr(trim($sql), 0, 4)), 'call');
+            $procedure = in_array(strtolower(substr(trim($sql), 0, 4)), ['call', 'exec']);
             return $this->getResult($class, $procedure);
         } catch (\PDOException $e) {
             throw new PDOException($e, $this->config, $this->queryStr);
@@ -365,13 +368,11 @@ abstract class Connection
      * @access public
      * @param string        $sql sql指令
      * @param array         $bind 参数绑定
-     * @param boolean       $getLastInsID 是否获取自增ID
-     * @param string        $sequence 自增序列名
      * @return int
      * @throws BindParamException
      * @throws PDOException
      */
-    public function execute($sql, $bind = [], $getLastInsID = false, $sequence = null)
+    public function execute($sql, $bind = [])
     {
         $this->initConnect(true);
         if (!$this->linkID) {
@@ -399,12 +400,6 @@ abstract class Connection
             $this->debug(false);
 
             $this->numRows = $this->PDOStatement->rowCount();
-            if (preg_match("/^\s*(INSERT\s+INTO|REPLACE\s+INTO)\s+/i", $sql)) {
-                $this->lastInsID = $this->linkID->lastInsertId($sequence);
-                if ($getLastInsID) {
-                    return $this->lastInsID;
-                }
-            }
             return $this->numRows;
         } catch (\PDOException $e) {
             throw new PDOException($e, $this->config, $this->queryStr);
@@ -422,13 +417,17 @@ abstract class Connection
     {
         if ($bind) {
             foreach ($bind as $key => $val) {
-                $val = $this->quote(is_array($val) ? $val[0] : $val);
+                $value = is_array($val) ? $val[0] : $val;
+                $type  = is_array($val) ? $val[1] : PDO::PARAM_STR;
+                if (PDO::PARAM_STR == $type) {
+                    $value = $this->quote($value);
+                }
                 // 判断占位符
                 $sql = is_numeric($key) ?
-                substr_replace($sql, $val, strpos($sql, '?'), 1) :
+                substr_replace($sql, $value, strpos($sql, '?'), 1) :
                 str_replace(
                     [':' . $key . ')', ':' . $key . ',', ':' . $key . ' '],
-                    [$val . ')', $val . ',', $val . ' '],
+                    [$value . ')', $value . ',', $value . ' '],
                     $sql . ' ');
             }
         }
@@ -545,7 +544,7 @@ abstract class Connection
     /**
      * 启动事务
      * @access public
-     * @return bool|null
+     * @return void
      */
     public function startTrans()
     {
@@ -568,7 +567,7 @@ abstract class Connection
     /**
      * 用于非自动提交状态下面的查询提交
      * @access public
-     * @return boolean
+     * @return void
      * @throws PDOException
      */
     public function commit()
@@ -585,7 +584,7 @@ abstract class Connection
     /**
      * 事务回滚
      * @access public
-     * @return boolean
+     * @return void
      * @throws PDOException
      */
     public function rollback()
@@ -702,11 +701,22 @@ abstract class Connection
     /**
      * 获取最近插入的ID
      * @access public
+     * @param string  $sequence     自增序列名
      * @return string
      */
-    public function getLastInsID()
+    public function getLastInsID($sequence = null)
     {
-        return $this->lastInsID;
+        return $this->linkID->lastInsertId($sequence);
+    }
+
+    /**
+     * 获取返回或者影响的记录数
+     * @access public
+     * @return integer
+     */
+    public function getNumRows()
+    {
+        return $this->numRows;
     }
 
     /**
@@ -732,11 +742,12 @@ abstract class Connection
      * SQL指令安全过滤
      * @access public
      * @param string $str SQL字符串
+     * @param bool   $master 是否主库查询
      * @return string
      */
-    public function quote($str)
+    public function quote($str, $master = true)
     {
-        $this->initConnect();
+        $this->initConnect($master);
         return $this->linkID ? $this->linkID->quote($str) : $str;
     }
 

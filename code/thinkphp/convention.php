@@ -15,10 +15,10 @@ return [
     'app_status'             => '',
     // 是否支持多模块
     'app_multi_module'       => true,
+    // 入口自动绑定模块
+    'auto_bind_module'       => false,
     // 注册的根命名空间
     'root_namespace'         => [],
-    // 扩展配置文件
-    'extra_config_list'      => ['database', 'validate'],
     // 扩展函数文件
     'extra_file_list'        => [THINK_PATH . 'helper' . EXT],
     // 默认输出类型
@@ -87,7 +87,7 @@ return [
     'url_route_must'         => false,
     // 域名部署
     'url_domain_deploy'      => false,
-    // 域名根，如.thinkphp.cn
+    // 域名根，如thinkphp.cn
     'url_domain_root'        => '',
     // 是否自动转换URL中的控制器和操作名
     'url_convert'            => true,
@@ -95,6 +95,10 @@ return [
     'url_controller_layer'   => 'controller',
     // 表单请求类型伪装变量
     'var_method'             => '_method',
+    // 表单ajax伪装变量
+    'var_ajax'               => '_ajax',
+    // 表单pjax伪装变量
+    'var_pjax'               => '_pjax',
 
     // +----------------------------------------------------------------------
     // | 模板设置
