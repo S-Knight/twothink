@@ -10,7 +10,7 @@ define('INSTALL_APP_PATH', realpath('./') . '/');
 function check_env() {
     $items = array(
         'os' => array('操作系统', '不限制', '类Unix', PHP_OS, 'ok'),
-        'php' => array('PHP版本', '5.3', '5.3+', PHP_VERSION, 'ok'),
+        'php' => array('PHP版本', '5.4', '5.4+', PHP_VERSION, 'ok'),
         'upload' => array('附件上传', '不限制', '2M+', '未知', 'ok'),
         'gd' => array('GD库', '2.0', '2.0+', '未知', 'ok'),
         'curl' => array('Curl扩展', '开启', '不限制', '未知', 'ok'),
