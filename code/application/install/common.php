@@ -143,6 +143,7 @@ function show_msg($msg, $class = '') {
  * @param  resource $db 数据库连接资源
  */
 function create_tables($db, $prefix = '') {
+    ini_set("max_execution_time", "0");
     //读取SQL文件
     $sql = file_get_contents(APP_PATH . 'install/data/install.sql');
     $sql = str_replace("\r", "\n", $sql);
