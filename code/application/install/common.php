@@ -223,30 +223,6 @@ sql;
 
     $db->execute($sql);
 
-    /*初始化角色表*/
-    $sql = <<<sql
-REPLACE INTO `[PREFIX]role` (`id`, `group_id`, `name`, `title`, `description`, `user_groups`, `invite`, `audit`, `sort`, `status`, `create_time`, `update_time`) VALUES
-    (1, 0, 'default', '普通用户', '普通用户', '1', 0, 0, 0, 1, [TIME], [TIME]);
-sql;
-    $sql = str_replace(
-        array('[PREFIX]', '[TIME]', '[UID]'),
-        array($prefix, time(), $uid),
-        $sql);
-    $db->execute($sql);
-
-    /*插入角色和用户对应关系*/
-    $sql = <<<sql
-REPLACE INTO `[PREFIX]user_role` (`id`, `uid`, `role_id`, `status`, `step`, `init`) VALUES
-    (1, [UID], 1, 1, 'finish', 1);
-sql;
-    $sql = str_replace(
-        array('[PREFIX]', '[UID]'),
-        array($prefix, $uid),
-        $sql);
-    $db->execute($sql);
-
-    /*初始化用户角色end*/
-
     show_msg('创始人帐号注册完成！');
 }
 
