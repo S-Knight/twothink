@@ -14,11 +14,8 @@ class Admin extends Controller
    {
        $this->isLogin();
        
-       /* Report all errors except E_NOTICE */
-       error_reporting(E_ALL^E_NOTICE);
-       $this->isLogin();
        $menuModel = new \app\admin\model\Menu();
-       $parentMenus =$menuModel->where('is_show',1)->where('pid', 0)->order('sort')->select();
+       $parentMenus =$menuModel->where('hide',0)->where('pid', 0)->order('sort')->select();
         
        $menus = [];
        foreach ($parentMenus as $parentMenu) {
@@ -27,7 +24,7 @@ class Admin extends Controller
        	$menu['id'] = $parentMenu->id;
        	 
        	$menu['childMenus'] = [];
-       	$childMenus =$menuModel->where(['is_show'=>1,'is_top_show'=>2])->where('pid', $parentMenu->id)->order('sort')->select();
+       	$childMenus =$menuModel->where(['hide'=>0])->where('pid', $parentMenu->id)->order('sort')->select();
        	 
        	foreach ($childMenus as $childMenu){
        		$menu['childMenus'][] = $childMenu->toArray();
@@ -39,7 +36,7 @@ class Admin extends Controller
        }
  		
        //顶部菜单
-       $menu_top=Db::table('geek_menu')->where(['is_show'=>1,'is_top_show'=>1])->order('sort')->select();
+       $menu_top=Db::table('geek_menu')->where(['hide'=>0])->order('sort')->select();
         
        //基本信息
        $row['copyright']=Db::table('geek_config')->where('name','Copyright_information')->value('value');
@@ -57,10 +54,9 @@ class Admin extends Controller
      *判断是否登录
      */
     public function isLogin(){
-        session_start();
         $user = Session::get('user');
         if(!$user){
-           $this->redirect('Login/login');
+           $this->redirect('Account/login');
         }
     }
 

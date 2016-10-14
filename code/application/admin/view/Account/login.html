@@ -163,7 +163,7 @@
     $("#loginBtn").click(function () {
         $.ajax({
             type: "POST",
-            url: "/admin/login/check_verify",
+            url: "/admin/Account/checkVerify",
             dataType: "json",
             data: {
                 verify: $('#verify').val()
@@ -175,7 +175,7 @@
                 } else {
                     $.ajax({
                         type: "POST",
-                        url: "/admin/login/check_login",
+                        url: "/admin/Account/checkLogin",
                         dataType: "json",
                         data: {
                             username: $('#username').val(),
@@ -185,7 +185,7 @@
                             if (rJson.success === false) {
                                 $("#login-error").slideDown();
                             }else{
-                                location.href= "/admin/menu/index";
+                                location.href= "/admin/Index/index";
                             }
                         }
                     });

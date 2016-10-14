@@ -1,10 +1,9 @@
 <?php
 namespace app\admin\controller;
 
-use think\response\View;
 use think\Db;
 use think\Request;
-use think\Session;
+
 class Index extends Admin
 {
     public function index()
@@ -38,7 +37,6 @@ class Index extends Admin
     		return true;
     	}else{
     		return false;
-    	};
-     	
+    	}
     }
 }
