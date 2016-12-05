@@ -16,8 +16,7 @@
     <meta content="" name="description"/>
     <meta content="" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="/admin/template1/global/" rel="stylesheet"
-          type="text/css"/>
+    <link href="/admin/template1/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
     <link href="/admin/template1/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/admin/template1/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/admin/template1/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -60,7 +59,7 @@
     </div>
     <div class="alert alert-danger display-hide" id="login-error">
         <button class="close" data-close="alert"></button>
-        <span> 用户名或密码有误! </span>
+        <span id="errorTip"> </span>
     </div>
     <div class="alert alert-danger display-hide" id="verify-check">
         <button class="close" data-close="alert"></button>
@@ -93,7 +92,7 @@
 
     <div class="create-account">
         <p>
-            <a class="uppercase">欢迎使用TwoThink后台框架</a>
+            <a class="uppercase"> 2016 &copy; 版本所有</a>
         </p>
     </div>
     <!-- END LOGIN FORM -->
@@ -160,38 +159,42 @@
         }
     });
 
-    $("#loginBtn").click(function () {
-        $.ajax({
-            type: "POST",
-            url: "/admin/template1/Account/checkVerify",
-            dataType: "json",
-            data: {
-                verify: $('#verify').val()
-            },
-            success: function (rJson) {
-                if (rJson.success === false) {
-                    $("#verify-tips").slideDown();
-                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
-                } else {
-                    $.ajax({
-                        type: "POST",
-                        url: "/admin/template1/Account/checkLogin",
-                        dataType: "json",
-                        data: {
-                            username: $('#username').val(),
-                            password: $('#password').val()
-                        },
-                        success: function (rJson) {
-                            if (rJson.success === false) {
-                                $("#login-error").slideDown();
-                            }else{
-                                location.href= "/admin/template1/Index/index";
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    });
+     $("#loginBtn").click(function () {
+         $.ajax({
+             type: "POST",
+             url: "/admin/Account/checkVerify",
+             dataType: "json",
+             data: {
+                 verify: $('#verify').val()
+             },
+             success: function (rJson) {
+                 if (rJson.success === false) {
+                     $("#verify-tips").slideDown();
+                     $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                 } else {
+                     $.ajax({
+                         type: "POST",
+                         url: "/admin/Account/checkLogin",
+                         dataType: "json",
+                         data: {
+                             username: $('#username').val(),
+                             password: $('#password').val()
+                         },
+                         success: function (rJson) {
+
+                             if (rJson.success === false) {
+                                 $('#errorTip').text(rJson.data.error);
+                                 $("#login-error").slideDown();
+                             }else{
+
+                                 location.href= "/admin/Index/index";
+                             }
+
+                         }
+                     });
+                 }
+             }
+         });
+     });
 </script>
 </html>
