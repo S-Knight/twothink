@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 
-use app\admin\model\Menu;
+use app\admin\model\MenuModel;
 use think\Controller;
 use think\Session;
 use think\db;
@@ -12,39 +12,16 @@ class Admin extends Controller{
     public function _initialize() {
         $this->isLogin();
 
-        $menuModel = new \app\admin\model\Menu();
-        $parentMenus = $menuModel->where('hide', 0)
-            ->where('pid', 0)
-            ->order('sort')
-            ->select();
-
-        $menus = [];
-        foreach ($parentMenus as $parentMenu) {
-            $menu = [];
-            $menu['title'] = $parentMenu->title;
-            $menu['id'] = $parentMenu->id;
-
-            $menu['childMenus'] = [];
-            $childMenus = $menuModel->where(['hide' => 0])
-                ->where('pid', $parentMenu->id)
-                ->order('sort')
-                ->select();
-
-            foreach ($childMenus as $childMenu) {
-                $menu['childMenus'][] = $childMenu->toArray();
-            }
-
-            $menu['childMenus'] = $childMenus;
-
-            $menus[] = $menu;
+        $firstMenus = MenuModel::all([
+            'pid'=>0,
+            'hide' => 0
+        ]);
+        foreach ($firstMenus as $firstMenu){
+            $firstMenu['child'] = MenuModel::all([
+                'pid'=>$firstMenu['id'],
+                'hide' => 0
+            ]);
         }
-
-        //顶部菜单
-        $menu_top = Db::table('geek_menu')
-            ->where(['hide' => 0])
-            ->order('sort')
-            ->select();
-
         //基本信息
         $row['copyright'] = Db::table('geek_config')
             ->where('name', 'Copyright_information')
@@ -52,12 +29,9 @@ class Admin extends Controller{
         $row['alias'] = Db::table('geek_config')
             ->where('name', 'alias')
             ->value('value');
-        $this->view = new \think\View();
-        $this->view->assign("row", $row);
-        $this->view->assign("menu_top", $menu_top);
-
-        $this->view->assign("menus", $menus);
-        $this->view->assign("username", session("user"));
+        $this->assign("row", $row);
+        $this->assign("firstMenus", $firstMenus);
+        $this->assign("username", session("user"));
     }
 
     /**

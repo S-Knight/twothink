@@ -8,26 +8,7 @@ function getRandStr($len=6){
 	return implode(",", $subarr);
 }
 
-//无极分类  找儿子  传父类ID
-function mergeCate($arr,$parent_id=0,$level=0){
-	$res=array();
-	foreach($arr as $v){
-		if($v['parent_id']==$parent_id){
-			$v['disabled']=false;
-			foreach($arr as $v1){
-				if($v1['parent_id']==$v['cat_id']){
-					$v['disabled']=true;
-					break;
-				}
-			}
-				
-			$v['level']=$level;
-			$res[]=$v;
-			$res=array_merge($res,mergeCate($arr,$v['cat_id'],$level+1));
-		}
-	}
-	return $res;
-}
+
 
 //所属分类
 function superior($pid,$table='geek_menu'){

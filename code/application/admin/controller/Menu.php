@@ -1,103 +1,95 @@
 <?php
 namespace app\admin\controller;
-use think\Controller;
-use think\db;
+use app\admin\model\MenuModel;
+use app\common\logic\CommonLogic;
 use think\Request;
 
 class Menu extends Admin
 {
     public function index()
     {
-    	$id = Request::instance()->param('id',0);
-    	//dump($id);die;
-    	$data = Db::table('geek_menu')->where('pid',$id)->order('sort')->paginate(10);
-    	$this->view->assign('data',$data);
-    	$this->view->assign('page',$data->render());
-    	return $this->view->fetch();
+    	if(request()->isAjax()){
+            return $this->getRecords();
+        }else{
+            $this->assign('title','菜单列表');
+            return $this->fetch('Menu/index');
+        }
+    }
+
+    protected function getRecords()
+    {
+        $records = array();
+        $records["data"] = array();
+        $records['draw'] = input('post.draw', 1);
+        $start = input('post.start', 0);
+        $length = input('post.length', 20);
+        $columns = input('post.columns/a');
+        $orderColumns = input('post.order/a');
+        $orders = [];
+        foreach ($orderColumns as $orderColumn){
+            $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
+        }
+        $condition = [];
+        $menuModel = new MenuModel();
+        $records["data"] = $menuModel->where($condition)->order($orders)->limit($start,$length)->select();
+        $records["recordsFiltered"] = $records["recordsTotal"] = $menuModel->where($condition)->count();
+
+        foreach ($records["data"] as $row) {
+            $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
+            $row['hideText'] = $row['hide'] == 0 ? '显示' : '隐藏';
+            $row['isDevText'] = $row['is_dev'] == 0 ? '所有模式都可见' : '仅开发者模式可见';
+        }
+        return $records;
     }
 
     public function add()
     {
-        $pid = Request::instance()->param('pid');
-        $menuModel = new \app\admin\model\Menu();
-        if (Request::instance()->isPost()) {
-            $data = Request::instance()->post(); // 获取经过过滤的全部post变量
-            if(empty($data['is_top_show'])){
-            	$data['is_top_show']=2;
+        $menus = MenuModel::all();
+        $list = CommonLogic::mergeCate($menus,'pid');
+        $this->assign('list',$list);
+        return $this->fetch('Menu/add');
+    }
+
+    public function addPost()
+    {
+        if(request()->isPost()){
+            $res = MenuModel::create(input('post.'))->save();
+            if(!$res){
+                return ['status'=>'n','info'=>'菜单添加失败'];
             }
-			
-            $add = Db::table('geek_menu')->insert($data);
-            if ($add) {
-                $this->success('数据提交成功','/Admin/Menu/index');
-            } else {
-                $this->error('提交失败');
-            }
-        } else {
-      
-             $list = Db::table('geek_menu')->where('pid',0)->field('id,title')->select();
-            $this->view->assign('list', $list);
-            $this->view->assign('pid',$pid);
-            return $this->view->fetch();
+            return ['status'=>'y','info'=>'菜单添加成功'];
         }
     }
 
     public function edit($id)
     {
-        $menuModel = new \app\admin\model\Menu();
-        if (Request::instance()->isPost())
-        {
-            $postid = $_POST['id'];
-            if(empty($_POST['is_top_show'])){
-            	$_POST['is_top_show']=2;
-            }
-            $save = $menuModel->allowField(true)->save($_POST,['id' => $postid]);
-            if ($save)
-            {
-                $this -> success('数据更新成功','/Admin/Menu/index');
-            }
-            else
-            {
-                $this -> error('数据更新失败');
-            }
-        }
-        else
-        {
-            $update = $menuModel->where(['id' => $id])->find();
-            $data = $update->toArray();
-            $parentMenu = $menuModel -> where(['id'=>$id])->value('pid');
-            $list = Db::table('geek_menu')->where('pid',0)->field('id,title')->select();
+        $menus = MenuModel::all();
+        $list = CommonLogic::mergeCate($menus,'pid');
+        $this->assign('list',$list);
+        $this->assign('row',MenuModel::get($id));
+        return $this->fetch('Menu/edit');
+    }
 
-
-            
-            $this->view->assign('list', $list);
-            $this->view->assign('data', $data);
-            $this->view->assign('menupid',$parentMenu);
-            return $this->view->fetch();
+    public function editPost()
+    {
+        if(request()->isPost()){
+            $res = MenuModel::update(input('post.'));
+            if($res === false){
+                return ['status'=>'n','info'=>'菜单修改失败'];
+            }
+            return ['status'=>'y','info'=>'菜单修改成功'];
         }
     }
 
-    public function delete($id)
-    {
-		
-        $menuModel = new \app\admin\model\Menu();
-        $delete = $menuModel -> destroy($id);
-		$pid=$this->request->param('pid');
-        if ($delete)
-        {
-            $this->redirect('/Admin/Menu/index',['id'=>$pid]);
-        }
-        else
-        {
-            $this->error('删除失败');
+    public function delete($id){
+        if (Request::instance()->isAjax()){
+            $res = MenuModel::destroy($id);
+            if($res){
+                return array('status'=>'y',"info"=>"操作成功");
+            }else{
+                return array('status'=>'n',"info"=>"操作失败");
+            }
         }
     }
     
-    public function hide(){
-    	$b = Db::table($_POST['table'])->where('id',$_POST['id'])->setField($_POST['field'],$_POST['state']);
-    	if($b){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
 }

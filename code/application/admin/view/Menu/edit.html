@@ -1,114 +1,131 @@
 {extend name="Public/base" /}
 {block name="body"}
-<div class="tab-content">
-                    <div id="tab_1" class="tab-pane active">
-                        <div class="portlet box blue">
-                
-                            <div class="portlet-body form">
-                                <!-- BEGIN FORM-->
-                                <form id="form" action="{:url('edit')}" method="post" class="form-1">
-                    <div class="tab-content">
+<div class="row">
+    <div class="col-md-12">
+        <form id="dataform" action="{:url('Menu/editPost')}" method="post" class="form-horizontal form">
 
-                        <div class="portlet box green">
-                            <div class="portlet-title">
-                                <div class="caption"><i class="fa fa-reorder"></i>编辑后台菜单</div>
-                                <div class="tools">
-                                    <a href="javascript:;" class="collapse"></a>
-                                  
-                                    <a href="javascript:;" class="remove"></a>
-                                </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <!-- BEGIN FORM-->
-
-                                <div class="form-body">
-                                    <div class="form-group">
-                                        <label>标题<span class="check-tips">（用于后台显示的配置标题）</span></label>
-                                        <input type="text" class="form-control input-xlarge" name="title" value="{$data.title}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>排序<span class="check-tips">（用于分组显示的顺序）</span></label>
-                                        <input type="text" class="form-control input-xlarge" name="sort" value="{$data.sort}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>链接<span class="check-tips">（U函数解析的URL或者外链）</span></label>
-                                        <input type="text" class="form-control input-xlarge" name="url" value="{$data.url}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>上级菜单<span class="check-tips">（所属的上级菜单）</span></label>
-                                        <select class="form-control  input-medium" name="pid">
-                                            {volist name="list" id="vo"}
-                                            <option  value="{$vo.id}" {eq name="$vo.id" value="$menupid"}selected="selected"{/eq}>{$vo.title}</option>
-                                            {/volist}
-                                        </select>
-                                    </div>
-                           			
-                           			<div class="form-group">
-										 <label>是否顶部显示<span class="check-tips"></span></label>
-										 <div>
-                                           <label class="mt-checkbox">
-                                                            <input type="checkbox" name='is_top_show' value='1' {if condition="$data['is_top_show'] eq 1"}checked{/if}>
-                                                            <span></span>
-                                           </label>
-                                           </div>
-                                        </div>
-                           			
-                                    <div class="form-group">
-                                        <label>是否隐藏<span class="check-tips"></span></label>
-                                        <div class="radio-list">
-                                        	<label class="mt-radio mt-radio-outline"> 是
-                                                        <input type="radio" name="is_show" {eq name="data['is_show']" value="2"}checked{/eq} value="2">
-                                                        <span></span>
-                                       		</label>
-                                       		
-                                       		<label class="mt-radio mt-radio-outline" style=""> 否
-                                                        <input type="radio" name="is_show" {eq name="data['is_show']" value="1"}checked{/eq} value="1">
-                                                        <span></span>
-                                       		</label>
-   
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-actions fluid ">
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <input type="hidden" name="id" value="{$data.id}">
-                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
-                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
-                                    </div>
-                                </div>
-
-                                <!-- END FORM-->
-                            </div>
-                        </div>
-
-                    </div>
-
-                </form>
-                                <!-- END FORM-->
-                            </div>
-                        </div>
-                    </div>
-                    
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    编辑菜单
                 </div>
-               <link href="/admin/global/plugins/upload-pictures/upload-pictures.css" rel="stylesheet" type="text/css" />
-			
-				<script src="/admin/global/plugins/upload-pictures/upload-pictures.js" type="text/javascript"></script>
-				
-				<script type="text/javascript">
-					var editor;
-					KindEditor.ready(function(K) {
-						editor = K.create('textarea[name="content"]', {
-							resizeType : 1,
-							allowPreviewEmoticons : false,
-							allowImageUpload : false,
-							/*items : [
-								'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-								'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-								'insertunorderedlist', '|', 'emoticons', 'image', 'link']*/
-						});
-					});
-			</script>
-{/block}
+                <div class='panel-body'>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            菜单名称</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text" id="name" name="title" class="form-control" value="{$row.title}"/>
+                        </div>
+                    </div>
 
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">上级菜单</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='pid' name="pid">
+                                <option value="0">一级菜单</option>
+                                {foreach $list as $v}
+                                <option value="{$v['id']}" {eq name="row.pid" value="v.id"}selected{/eq} >{:str_repeat("┝",$v['level'])}{$v['title']}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            关联权限代码</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text"  name="privilege_code" class="form-control" value="{$row.privilege_code}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            导航图标</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text"  name="icon" class="form-control" value="{$row.icon}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            排序</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text"  name="sort" class="form-control" value="{$row.sort}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            链接地址</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text"  name="url" class="form-control" value="{$row.url}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否隐藏</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label class='radio-inline'>
+                                <input type='radio' name='hide' value='0' {eq name="row.hide" value="0"}checked{/eq}/> 不隐藏
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' name='hide' value='1' {eq name="row.hide" value="1"}checked{/eq}/> 隐藏
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否仅开发者模式可见</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label class='radio-inline'>
+                                <input type='radio' name='is_dev' value='0' {eq name="row.is_dev" value="0"}checked{/eq}/> 所有模式都可见
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' name='is_dev' value='1' {eq name="row.is_dev" value="1"}checked{/eq}/> 仅开发者模式可见
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            菜单说明</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <textarea type="text"  name="remark" class="form-control" >{$row.remark}</textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                        <div class="col-sm-9 col-xs-12">
+                            <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                            <input type="hidden" value="{$row.id}" name="id">
+                            <input type="submit" id="subBtn" value="提交" class="btn btn-primary col-lg-1" style="height: auto;width: auto;"/>
+                            <input type="button" name="back" onclick='history.back()' value="返回列表"
+                                   class="btn btn-default" style="height: auto;width:auto;margin-left: 10px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    $("#dataform").Validform({
+        tiptype:function(msg){
+            layer.alert(msg, {
+                skin: 'layui-layer-lan'
+            });
+        },
+        ajaxPost:true,   //使用ajax方式提交
+        callback:function(data){    //data array('status'=>'y/n','info'=>'')
+            if(data.status=="y"){
+                location.href="{:url('index')}";
+            }
+        }
+    });
+
+</script>
+{/block}

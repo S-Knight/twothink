@@ -1,0 +1,23 @@
+<div class="hor-menu  ">
+    <ul class="nav navbar-nav">
+        {volist name="firstMenus" id="topMenus" }
+            <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
+                <a href="{$topMenus['url']}">
+                    <i class="icon-briefcase"></i> {$topMenus['title']}
+                    <span class="arrow"></span>
+                </a>
+                {if $topMenus['child']}	<!-- if做判断 -->
+                    <ul class="dropdown-menu pull-left">
+                        {volist name="$topMenus['child']" id="secondMenus" key='j'}
+                        <li aria-haspopup="true">
+                            <a href="{:url($secondMenus['url'])}" class="nav-link nav-toggle">
+                                <i class="icon-basket"></i> {$secondMenus['title']}
+                            </a>
+                        </li>
+                        {/volist}<!-- 循环输出变量 -->
+                    </ul>
+                {/if}
+            </li>
+        {/volist}
+    </ul>
+</div>
