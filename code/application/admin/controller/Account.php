@@ -6,11 +6,17 @@ use think\Session;
 use think\Db;
 
 class Account extends Controller{
+	 public function __construct()
+    {
+        parent::__construct();
+        $this->assign('template', '/admin/template1');
+    }
     /**
      * 显示登录页面
      * @return mixed
      */
     public function login() {
+		
         return $this->fetch('Account/login');
     }
 
