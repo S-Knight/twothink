@@ -24,7 +24,7 @@
                             <select class="form-control" id='pid' name="pid">
                                 <option value="0">一级菜单</option>
                                 {foreach $list as $v}
-                                <option value="{$v['id']}" {eq name="row.pid" value="v.id"}selected{/eq} >{:str_repeat("┝",$v['level'])}{$v['title']}</option>
+                                <option value="{$v['id']}" {if condition="$row['pid'] == $v['id']"}selected{/if} >{:str_repeat("┝",$v['level'])}{$v['title']}</option>
                                 {/foreach}
                             </select>
                         </div>

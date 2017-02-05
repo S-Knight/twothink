@@ -1,0 +1,168 @@
+{extend name="Public/base" /}
+{block name="body"}
+<div class="row">
+    <div class="col-md-12">
+        <form id="dataform" action="{:url('Privilege/editPost')}" method="post" class="form-horizontal form">
+
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    编辑权限
+                </div>
+                <div class='panel-body'>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            权限名称</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text" id="name" name="name" class="form-control" value="{$row.name}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">模块</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='moudle' name="moudle">
+                                <option value="">请选择：</option>
+                                <option value="admin" {eq name="row.moudle" value="admin"}selected{/eq}>admin</option>
+                                <option value="home" {eq name="row.moudle" value="home"}selected{/eq}>home</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">控制器</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='controller' name="controller">
+                                <option value="">请选择：</option>
+                                {foreach $controllers as $controller}
+                                <option value="{$controller}" {if condition="$row['controller'] == $controller"}selected{/if}>{$controller}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">方法</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='function' name="function">
+                                <option value="">请选择：</option>
+                                {foreach $functions as $function}
+                                <option value="{$function}" {if condition="$row['function'] == $function"}selected{/if}>{$function}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            代码</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text"  name="code" class="form-control" value="{$row.code}" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            权限说明</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <textarea type="text"  name="remark" class="form-control" >{$row.remark}</textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                        <div class="col-sm-9 col-xs-12">
+                            <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                            <input type="hidden" name="id" value="{$row.id}">
+                            <input type="submit" id="subBtn" value="提交" class="btn btn-primary col-lg-1" style="height: auto;width: auto;"/>
+                            <input type="button" name="back" onclick='history.back()' value="返回列表"
+                                   class="btn btn-default" style="height: auto;width:auto;margin-left: 10px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    $("#dataform").Validform({
+        tiptype:function(msg){
+            layer.alert(msg, {
+                skin: 'layui-layer-lan'
+            });
+        },
+        ajaxPost:true,   //使用ajax方式提交
+        callback:function(data){    //data array('status'=>'y/n','info'=>'')
+            if(data.status=="y"){
+                location.href="{:url('index')}";
+            }
+        }
+    });
+
+    $('#moudle').change(function(){
+        var moudle = $(this).val();
+        var str = '<option value="">请选择：</option>';
+       if(moudle != ''){
+           $.ajax({
+               async:false,
+               type: "POST",
+               url: "/index.php/admin/Privilege/getControllerAjax",
+               dataType: "json",
+               data: {
+                   moudle:moudle
+               },
+               success: function (data) {
+
+                   $('#controller').html(getstr(data));
+
+                   $('#function').html(str);
+                   $("input[name='code']").attr('disabled',true);
+               },
+
+           });
+       }else{
+           $('#controller').html(str);
+           $('#function').html(str);
+       }
+    })
+
+    $('#controller').change(function(){
+        var controller = $(this).val();
+        var moudle = $('#moudle').val();
+        var str = '<option value="">请选择：</option>';
+        if(controller != ''){
+            $.ajax({
+                async:false,
+                type: "POST",
+                url: "/index.php/admin/Privilege/getFunctionAjax",
+                dataType: "json",
+                data: {
+                    moudle:moudle,
+                    controller:controller
+                },
+                success: function (data) {
+
+                    $('#function').html(getstr(data));
+
+                },
+
+            });
+        }else{
+            $('#function').html(str);
+        }
+    })
+
+    function getstr(data){
+        var str = '<option value="">请选择：</option>';
+        for(var i=0;i<data.length;i++)
+        {
+            str +="<option value='"+data[i]+"'>"+data[i]+'</option>';
+        }
+        return str
+    }
+</script>
+{/block}
