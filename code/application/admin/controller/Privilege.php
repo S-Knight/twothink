@@ -74,7 +74,6 @@ class Privilege extends Admin
     {
         if(request()->isPost()){
             $data = input('post.');
-            $data['code'] = !empty($data['moudle']) ? $data['moudle'].".".$data['controller'].".".$data['function'] : $data['code'];
             $res = PrivilegeModel::create($data)->save();
             if(!$res){
                 return ['status'=>'n','info'=>'权限添加失败'];
@@ -97,7 +96,6 @@ class Privilege extends Admin
     {
         if(request()->isPost()){
             $data = input('post.');
-            $data['code'] = !empty($data['moudle']) ? $data['moudle'].".".$data['controller'].".".$data['function'] : $data['code'];
             $res = PrivilegeModel::update($data);
             if($res === false){
                 return ['status'=>'n','info'=>'权限编辑失败'];

@@ -1,12 +1,12 @@
 <?php
 namespace app\admin\controller;
-
+use app\admin\logic\AccountLogic;
 use think\Controller;
 use think\Session;
 use think\Db;
 
 class Account extends Controller{
-	 public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->assign('template', '/admin/template1');
@@ -16,7 +16,7 @@ class Account extends Controller{
      * @return mixed
      */
     public function login() {
-		
+
         return $this->fetch('Account/login');
     }
 
@@ -37,20 +37,18 @@ class Account extends Controller{
     }
 
     public function checkLogin() {
+
         $rJson = [];
         $username = input('post.username');
         $password = input('post.password');
 
-        $condition = array(
-            'username' => $username,
-        );
-        $result = Db::table('geek_ucenter_member')->where($condition)->find();
+        $accountLogic = new AccountLogic();
 
-        if ($result && $result['password'] == md5($password)) {
-            Session::set('user', $username);
+        if ($accountLogic->checkLogin($username, $password)) {
             $rJson['success'] = true;
         } else {
             $rJson['success'] = false;
+            $rJson['data']['error'] = $accountLogic->getError();
         }
 
         return $rJson;

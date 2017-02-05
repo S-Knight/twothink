@@ -106,28 +106,28 @@
     $('#moudle').change(function(){
         var moudle = $(this).val();
         var str = '<option value="">请选择：</option>';
-       if(moudle != ''){
-           $.ajax({
-               async:false,
-               type: "POST",
-               url: "/index.php/admin/Privilege/getControllerAjax",
-               dataType: "json",
-               data: {
-                   moudle:moudle
-               },
-               success: function (data) {
+        if(moudle != ''){
+            $.ajax({
+                async:false,
+                type: "POST",
+                url: "/index.php/admin/Privilege/getControllerAjax",
+                dataType: "json",
+                data: {
+                    moudle:moudle
+                },
+                success: function (data) {
 
-                   $('#controller').html(getstr(data));
+                    $('#controller').html(getstr(data));
 
-                   $('#function').html(str);
-                   $("input[name='code']").attr('disabled',true);
-               },
+                    $('#function').html(str);
+                    $("input[name='code']").attr('disabled',true);
+                },
 
-           });
-       }else{
-           $('#controller').html(str);
-           $('#function').html(str);
-       }
+            });
+        }else{
+            $('#controller').html(str);
+            $('#function').html(str);
+        }
     })
 
     $('#controller').change(function(){

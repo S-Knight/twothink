@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\MenuModel;
+use app\admin\model\UcenterAdminModel;
 use think\Controller;
 use think\Session;
 use think\db;
@@ -30,6 +31,7 @@ class Admin extends Controller{
             ->where('name', 'alias')
             ->value('value');
         $this->assign("row", $row);
+        $this->assign("admin", session('admin'));
         $this->assign("firstMenus", $firstMenus);
         $this->assign("username", session("user"));
     }
