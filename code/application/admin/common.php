@@ -63,3 +63,8 @@ function Grouping_type($number,$type){
 	}
 	return $value;
 }
+
+function checkRolePerm($perm,$id)
+{
+	return \app\admin\logic\PrivilegeLogic::checkRolePerm($perm, $id);
+}

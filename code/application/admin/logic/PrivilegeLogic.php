@@ -1,7 +1,7 @@
 <?php
 
 namespace app\admin\logic;
-
+use app\admin\model\AdminRoleModel;
 class PrivilegeLogic extends Logic{
     
     static public function getController($moudle)
@@ -24,5 +24,18 @@ class PrivilegeLogic extends Logic{
         $functions = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
         return $functions;
     }
-    
+
+    static public function checkRolePerm($perm, $roleId) {
+
+        $permModel = new AdminRoleModel();
+        $perms = $permModel->where('id', $roleId)->value('perms');
+
+        $permsArr = explode(',', $perms);
+
+        if (in_array($perm, $permsArr)) {
+            return true;
+        }
+
+        return false;
+    }
 }
