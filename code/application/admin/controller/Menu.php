@@ -56,7 +56,7 @@ class Menu extends Admin
     public function add()
     {
         if (request()->isPost()) {
-            $this->addPost();
+            return $this->addPost();
         } else {
             $menus = MenuModel::all();
             $list = CommonLogic::mergeCate($menus, 'pid');
@@ -79,7 +79,7 @@ class Menu extends Admin
     public function edit($id)
     {
         if (request()->isPost()) {
-            $this->editPost();
+            return $this->editPost();
         } else {
             $menus = MenuModel::all();
             $list = CommonLogic::mergeCate($menus, 'pid');
@@ -92,14 +92,12 @@ class Menu extends Admin
 
     private function editPost()
     {
-        if (request()->isPost()) {
-            $res = MenuModel::update(input('post.'));
-            if ($res === false) {
-                return ['success' => false, 'info' => '菜单修改失败'];
-            }
-
-            return ['success' => true, 'info' => '菜单修改成功'];
+        $res = MenuModel::update(input('post.'));
+        if ($res === false) {
+            return ['success' => false, 'info' => '菜单修改失败'];
         }
+
+        return ['success' => true, 'info' => '菜单修改成功'];
     }
 
     public function delete($id)

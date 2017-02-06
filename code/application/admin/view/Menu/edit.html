@@ -112,16 +112,16 @@
 </div>
 {/block}
 {block name="script"}
+<script src="/static/jquery.form.min.js"></script>
 <script>
-    $("#dataform").Validform({
-        tiptype:function(msg){
-            layer.alert(msg, {
+    $("#dataform").ajaxForm({
+        dataType:  'json',
+        success: function (rJson) {
+            layer.alert(rJson.info, {
                 skin: 'layui-layer-lan'
             });
-        },
-        ajaxPost:true,   //使用ajax方式提交
-        callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.success){
+
+            if(rJson.success){
                 location.href="{:url('index')}";
             }
         }
