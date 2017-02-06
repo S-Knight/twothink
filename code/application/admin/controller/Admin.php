@@ -40,7 +40,7 @@ class Admin extends Controller{
      *判断是否登录
      */
     public function isLogin() {
-        $user = Session::get('user');
+        $user = Session::get('admin');
         if (!$user) {
             $this->redirect('Account/login');
         }

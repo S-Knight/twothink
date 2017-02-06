@@ -1,21 +1,25 @@
 <?php
 namespace app\admin\controller;
+
 use app\admin\logic\AccountLogic;
 use think\Controller;
 use think\Session;
 use think\Db;
 
-class Account extends Controller{
+class Account extends Controller
+{
     public function __construct()
     {
         parent::__construct();
         $this->assign('template', '/admin/template1');
     }
+
     /**
      * 显示登录页面
      * @return mixed
      */
-    public function login() {
+    public function login()
+    {
 
         return $this->fetch('Account/login');
     }
@@ -24,7 +28,8 @@ class Account extends Controller{
      * 校验验证码
      * @return array
      */
-    public function checkVerify() {
+    public function checkVerify()
+    {
         $rJson = [];
         $verify = input('post.verify');
         if (!captcha_check($verify)) {
@@ -36,7 +41,8 @@ class Account extends Controller{
         return $rJson;
     }
 
-    public function checkLogin() {
+    public function checkLogin()
+    {
 
         $rJson = [];
         $username = input('post.username');
@@ -59,7 +65,8 @@ class Account extends Controller{
      * @return integer
      * @author yahao
      */
-    public function is_login() {
+    public function is_login()
+    {
         $user = Session::get('user');
         if (empty($user)) {
             return true;
@@ -71,8 +78,9 @@ class Account extends Controller{
     /**
      *退出
      */
-    public function logout() {
-        Session::destroy();
+    public function logout()
+    {
+        Session::clear();
         $this->success('退出系统成功', 'login');
     }
 }
