@@ -310,6 +310,10 @@ var Datatable = function () {
 
         getTable: function () {
             return table;
+        },
+
+        reload: function () {
+            dataTable.ajax.reload();
         }
 
     };
