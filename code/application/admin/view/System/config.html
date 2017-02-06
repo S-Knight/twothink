@@ -1,0 +1,86 @@
+{extend name="Public/base" /}
+{block name="style"}
+{/block}
+{block name="body"}
+<div class="row">
+    <div class="col-md-12">
+
+        <form action="{:url('config')}" method="post"  class="form-horizontal" role="form" enctype="multipart/form-data" id="dataform">
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    <i class="glyphicon glyphicon-edit"></i>
+                    站点设置
+                </div>
+                {php}$loadUploadify = true;{/php}
+                {foreach $list as $v}
+                <div class="form-group" style="overflow:hidden">
+                    <label class="col-xs-3 col-sm-2 control-label">{$v['title']}</label>
+                    <div class="col-xs-3 col-sm-3">
+                        {switch name="$v['type']"}
+                        {case value="1"}
+                        <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
+                        {/case}
+                        {case value="2"}
+                        {:upload($v['name'],$v['value'], $loadUploadify)}
+                        {php}$loadUploadify = false;{/php}
+                        {/case}
+                        {case value="3"}
+                        <textarea name="{$v['name']}" id="{$v.name}">{$v['value']}</textarea>
+                        {:newRichText($v['name'])}
+                        {/case}
+                        {case value="4"}
+                        <label class="radio-inline">
+                            <input type="radio" name="{$v['name']}"  value="1" {if condition="$v['value'] == 1"}checked{/if}/> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="{$v['name']}" value="0" {if condition="$v['value'] == 0"}checked{/if}/> 否
+                        </label>
+                        {/case}
+                        {case value="5"}
+                        <input type="checkbox" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}}"/>
+                        {/case}
+                        {/switch}
+
+
+                    </div>
+                </div>
+                {/foreach}
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                        <input type="submit" id="subBtn"  value="提交" class="btn btn-primary col-lg-1"/>
+                        <input type="button" name="back" onclick="javascript:history.go(-1)" value="返回列表"
+                               class="btn btn-default"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+{/block}
+{block name="script"}
+
+
+<script type="text/javascript">
+    $("#dataform").Validform({
+        tiptype:function(msg){
+            layer.alert(msg, {
+                skin: 'layui-layer-lan'
+            });
+        },
+        ajaxPost:true,   //使用ajax方式提交
+        callback:function(data){    //data array('status'=>'y/n','info'=>'')
+            if(data.status=="y"){
+                location.reload();
+            }
+        }
+    });
+
+
+</script>
+{/block}

@@ -1,0 +1,98 @@
+{extend name="Public/base" /}
+{block name="body"}
+<div class="row">
+    <div class="col-md-12">
+        <form id="dataform" action="/admin/System/editPost" method="post" class="form-horizontal form">
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    编辑系统配置
+                </div>
+                <div class='panel-body'>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 配置标识</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" name="name" class="form-control" value="{$row['name']}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>类型</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='type' name="type">
+                                <option value="">请选择：</option>
+                                <option value="1" {if condition="$row['type'] == 1"}selected{/if}>文本</option>
+                                <option value="2" {if condition="$row['type'] == 2"}selected{/if}>上传</option>
+                                <option value="3" {if condition="$row['type'] == 3"}selected{/if}>富文本</option>
+                                <option value="4" {if condition="$row['type'] == 4"}selected{/if}>单选</option>
+                                <option value="5" {if condition="$row['type'] == 5"}selected{/if}>多选</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>分组</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <select class="form-control" id='group' name="group">
+                                <option value="0" {if condition="$row['group'] == 0"}selected{/if}>不分组：</option>
+                                <option value="1" {if condition="$row['group'] == 1"}selected{/if}>基本</option>
+                                <option value="2" {if condition="$row['group'] == 2"}selected{/if}>系统</option>
+                                <option value="3" {if condition="$row['group'] == 3"}selected{/if}>邮件</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 配置名称</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" name="title" class="form-control" value="{$row['title']}"/>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 配置值</label>-->
+                    <!--<div class="col-sm-9 col-xs-12">-->
+                    <!--<input type="text" name="name" class="form-control" value=""/>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 排序</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" name="sort" class="form-control" value="{$row['sort']}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                        <div class="col-sm-9 col-xs-12">
+                            <h4> <p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                            <input type="hidden" name="id"  value="{$row['id']}"/>
+                            <input type="submit" id="subBtn"  value="提交" class="btn btn-primary col-lg-1"/>
+                            <input type="button" name="back" onclick='history.back()' value="返回列表"
+                                   class="btn btn-default"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+
+<script>
+
+    $("#dataform").Validform({
+        tiptype:function(msg){
+            layer.alert(msg, {
+                skin: 'layui-layer-lan'
+            });
+        },
+        ajaxPost:true,   //使用ajax方式提交
+        callback:function(data){    //data array('status'=>'y/n','info'=>'')
+            if(data.status=="y"){
+                location.href="{:url('index')}";
+            }
+        }
+    });
+</script>
+
+{/block}
