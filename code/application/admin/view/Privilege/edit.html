@@ -120,7 +120,7 @@
                     $('#controller').html(getstr(data));
 
                     $('#function').html(str);
-                    $("input[name='code']").attr('disabled',true);
+                    $("input[name='code']").val(moudle);
                 },
 
             });
@@ -147,13 +147,21 @@
                 success: function (data) {
 
                     $('#function').html(getstr(data));
-
+                    $("input[name='code']").val(moudle +'.'+ controller);
                 },
 
             });
         }else{
             $('#function').html(str);
         }
+    })
+
+    $('#function').change(function(){
+        moudle = $('#moudle').val();
+        controller = $('#controller').val();
+        functions = $(this).val();
+
+        $("input[name='code']").val(moudle +'.'+ controller +'.'+ functions);
     })
 
     function getstr(data){
