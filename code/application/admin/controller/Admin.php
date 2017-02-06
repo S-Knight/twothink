@@ -23,6 +23,7 @@ class Admin extends Controller{
                 'hide' => 0
             ]);
         }
+
         //基本信息
         $row['copyright'] = Db::table('geek_config')
             ->where('name', 'Copyright_information')
