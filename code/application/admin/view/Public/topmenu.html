@@ -1,6 +1,6 @@
 <div class="hor-menu  ">
     <ul class="nav navbar-nav">
-        {volist name="firstMenus" id="topMenus" }
+        {volist name="topMenus" id="topMenus" }
         {if checkRolePerm($topMenus['privilege_code'], $admin['role_id'])}
         <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
             <a href="{$topMenus['url']}">
