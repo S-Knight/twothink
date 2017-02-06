@@ -13,11 +13,10 @@
                 <div class="actions">
                     <a href="{:url('Menu/add')}" class="btn btn-primary"><i class="fa fa-plus"></i> 添加菜单</a>
                     <a href="#" class="btn btn-primary" id="edit"><i class="fa fa-edit"></i> 编辑菜单</a>
-                    <a href="#" class="btn btn-primary" id="" onclick="datadel()"><i class="fa fa-minus"></i> 删除</a>
+                    <a href="#" class="btn btn-primary" id="delete"><i class="fa fa-minus"></i> 删除</a>
                 </div>
             </div>
             <div class="portlet-body">
-
                 <div class="table-container">
                     <table class="table table-striped table-bordered table-hover table-checkable" id="datatable_admins">
                         <thead>
@@ -55,8 +54,8 @@
 <!-- END PAGE LEVEL PLUGINS -->
 <script>
 
-    var EcommerceOrders = function () {
-        var handleOrders = function () {
+    var DatatableData = function () {
+        var handleData = function () {
 
             var grid = new Datatable();
 
@@ -94,13 +93,13 @@
                         { "data": "isDevText", orderable: false },
                         { "data": "privilege_code", orderable: false},
                         { "data": "icon", orderable: false},
-                        { "data": "created_at", orderable: false},
+                        { "data": "created_at", orderable: false}
                     ],
                     "orderMulti": true,
                     "order": [
                         [1, "asc"]
                     ], // set first column as a default sort by asc
-                    "bSort": true,
+                    "bSort": true
                 }
             });
 
@@ -122,6 +121,28 @@
 
                 location.href = "/index.php/admin/Menu/edit/id/" + id;
             });
+            
+            $('#delete').click(function () {
+                var ids = grid.getSelectedRows();
+
+                if(ids==""){
+                    layer.msg('选择为空',{icon:5,time:2000});
+                    return false;
+                }
+
+                layer.confirm('确认要删除吗？',function(index){
+                    $.post("{:url('delete')}",{id:ids},function(data){
+                        if(data.status=="y"){
+
+                            grid.reload();
+                            layer.msg('删除成功',{icon:1,time:2000});
+                        }else{
+                            layer.msg('删除失败',{icon:2,time:2000});
+                        }
+                    },"json")
+
+                });
+            });
         };
 
         return {
@@ -129,55 +150,14 @@
             init: function () {
 
                 //initPickers();
-                handleOrders();
+                handleData();
             }
         };
 
     }();
 
     jQuery(document).ready(function() {
-        EcommerceOrders.init();
+        DatatableData.init();
     });
-
-    function datadel(){
-        var grid = new Datatable();
-        var ids = grid.getSelectedRows();
-        var selectCount = grid.getSelectedRowsCount();
-
-        if(ids==""){
-            layer.msg('选择为空',{icon:5,time:2000});
-            return false;
-        }
-
-        layer.confirm('确认要删除吗？',function(index){
-            $.post("{:url('delete')}",{id:ids,act:"all"},function(data){
-                if(data.status=="y"){
-
-                    $("input[name='id[]']:checked").each(function(){
-
-                        $(this).parents("tr").remove();
-                    });
-
-                    layer.msg('删除成功',{icon:1,time:2000});
-                }else{
-                    layer.msg('删除失败',{icon:2,time:2000});
-                };
-            },"json")
-
-        });
-
-    }
-
-    function add(){
-        layer.open({
-            type: 2,
-            title: '很多时候，我们想最大化看，比如像这个页面。',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: "/admin/Menu/add"
-        });
-    }
 </script>
 {/block}

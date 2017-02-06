@@ -16,7 +16,7 @@ class Menu extends Admin
         }
     }
 
-    protected function getRecords()
+    private function getRecords()
     {
         $records = array();
         $records["data"] = array();
@@ -31,13 +31,17 @@ class Menu extends Admin
         }
         $condition = [];
         $menuModel = new MenuModel();
+
+        $pid = input('param.pid', 0);
+        $condition['pid'] = $pid;
+
         $records["data"] = $menuModel->where($condition)->order($orders)->limit($start,$length)->select();
         $records["recordsFiltered"] = $records["recordsTotal"] = $menuModel->where($condition)->count();
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
             $row['hideText'] = $row['hide'] == 0 ? '显示' : '隐藏';
-            $row['isDevText'] = $row['is_dev'] == 0 ? '所有模式都可见' : '仅开发者模式可见';
+            $row['isDevText'] = $row['is_dev'] == 0 ? '否' : '是';
         }
         return $records;
     }
