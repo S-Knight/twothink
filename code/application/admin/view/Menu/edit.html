@@ -2,7 +2,7 @@
 {block name="body"}
 <div class="row">
     <div class="col-md-12">
-        <form id="dataform" action="{:url('Menu/editPost')}" method="post" class="form-horizontal form">
+        <form id="dataform" action="{:url('Menu/edit')}" method="post" class="form-horizontal form">
 
             <div class='panel panel-default'>
                 <div class='panel-heading'>
@@ -121,7 +121,7 @@
         },
         ajaxPost:true,   //使用ajax方式提交
         callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.status=="y"){
+            if(data.success){
                 location.href="{:url('index')}";
             }
         }

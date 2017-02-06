@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+
 use app\admin\model\MenuModel;
 use app\common\logic\CommonLogic;
 use think\Request;
@@ -8,10 +9,11 @@ class Menu extends Admin
 {
     public function index()
     {
-    	if(request()->isAjax()){
+        if (request()->isAjax()) {
             return $this->getRecords();
-        }else{
-            $this->assign('title','菜单列表');
+        } else {
+            $this->assign('title', '菜单列表');
+
             return $this->fetch('Menu/index');
         }
     }
@@ -26,7 +28,7 @@ class Menu extends Admin
         $columns = input('post.columns/a');
         $orderColumns = input('post.order/a');
         $orders = [];
-        foreach ($orderColumns as $orderColumn){
+        foreach ($orderColumns as $orderColumn) {
             $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
         }
         $condition = [];
@@ -35,65 +37,80 @@ class Menu extends Admin
         $pid = input('param.pid', 0);
         $condition['pid'] = $pid;
 
-        $records["data"] = $menuModel->where($condition)->order($orders)->limit($start,$length)->select();
-        $records["recordsFiltered"] = $records["recordsTotal"] = $menuModel->where($condition)->count();
+        $records["data"] = $menuModel->where($condition)
+                                     ->order($orders)
+                                     ->limit($start, $length)
+                                     ->select();
+        $records["recordsFiltered"] = $records["recordsTotal"] = $menuModel->where($condition)
+                                                                           ->count();
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
             $row['hideText'] = $row['hide'] == 0 ? '显示' : '隐藏';
             $row['isDevText'] = $row['is_dev'] == 0 ? '否' : '是';
         }
+
         return $records;
     }
 
     public function add()
     {
-        $menus = MenuModel::all();
-        $list = CommonLogic::mergeCate($menus,'pid');
-        $this->assign('list',$list);
-        return $this->fetch('Menu/add');
+        if (request()->isPost()) {
+            $this->addPost();
+        } else {
+            $menus = MenuModel::all();
+            $list = CommonLogic::mergeCate($menus, 'pid');
+            $this->assign('list', $list);
+
+            return $this->fetch('Menu/add');
+        }
     }
 
-    public function addPost()
+    private function addPost()
     {
-        if(request()->isPost()){
-            $res = MenuModel::create(input('post.'))->save();
-            if(!$res){
-                return ['status'=>'n','info'=>'菜单添加失败'];
-            }
-            return ['status'=>'y','info'=>'菜单添加成功'];
+        $res = MenuModel::create(input('post.'))->save();
+        if (!$res) {
+            return ['status' => 'n', 'info' => '菜单添加失败'];
         }
+
+        return ['status' => 'y', 'info' => '菜单添加成功'];
     }
 
     public function edit($id)
     {
-        $menus = MenuModel::all();
-        $list = CommonLogic::mergeCate($menus,'pid');
-        $this->assign('list',$list);
-        $this->assign('row',MenuModel::get($id));
-        return $this->fetch('Menu/edit');
+        if (request()->isPost()) {
+            $this->editPost();
+        } else {
+            $menus = MenuModel::all();
+            $list = CommonLogic::mergeCate($menus, 'pid');
+            $this->assign('list', $list);
+            $this->assign('row', MenuModel::get($id));
+
+            return $this->fetch('Menu/edit');
+        }
     }
 
-    public function editPost()
+    private function editPost()
     {
-        if(request()->isPost()){
+        if (request()->isPost()) {
             $res = MenuModel::update(input('post.'));
-            if($res === false){
-                return ['status'=>'n','info'=>'菜单修改失败'];
+            if ($res === false) {
+                return ['success' => false, 'info' => '菜单修改失败'];
             }
-            return ['status'=>'y','info'=>'菜单修改成功'];
+
+            return ['success' => true, 'info' => '菜单修改成功'];
         }
     }
 
-    public function delete($id){
-        if (Request::instance()->isAjax()){
+    public function delete($id)
+    {
+        if (Request::instance()->isAjax()) {
             $res = MenuModel::destroy($id);
-            if($res){
-                return array('status'=>'y',"info"=>"操作成功");
-            }else{
-                return array('status'=>'n',"info"=>"操作失败");
+            if ($res) {
+                return array('success' => true, "info" => "操作成功");
+            } else {
+                return array('success' => false, "info" => "操作失败");
             }
         }
     }
-    
 }

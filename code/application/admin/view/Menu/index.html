@@ -132,8 +132,7 @@
 
                 layer.confirm('确认要删除吗？',function(index){
                     $.post("{:url('delete')}",{id:ids},function(data){
-                        if(data.status=="y"){
-
+                        if(data.success){
                             grid.reload();
                             layer.msg('删除成功',{icon:1,time:2000});
                         }else{
