@@ -7,6 +7,17 @@ use think\Controller;
 abstract class Admin extends Controller
 {
     protected $view = null;
+    protected $beforeActionList = ['pervilegeVilidate', 'writeActionLog'];
+
+    protected function pervilegeVilidate()
+    {
+        //$this->error('您没有权限进行此操作');
+    }
+
+    protected function writeActionLog()
+    {
+        //写后台操作日志
+    }
 
     protected function _initialize()
     {
