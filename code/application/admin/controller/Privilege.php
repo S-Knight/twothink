@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\PrivilegeModel;
+use app\admin\model\ActionModel;
 use app\admin\logic\PrivilegeLogic;
 use think\Request;
 
@@ -30,9 +30,9 @@ class Privilege extends Admin
             $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
         }
         $condition = [];
-        $privilegeModel = new PrivilegeModel();
-        $records["data"] = $privilegeModel->where($condition)->order($orders)->limit($start,$length)->select();
-        $records["recordsFiltered"] = $records["recordsTotal"] = $privilegeModel->where($condition)->count();
+        $ActionModel = new ActionModel();
+        $records["data"] = $ActionModel->where($condition)->order($orders)->limit($start,$length)->select();
+        $records["recordsFiltered"] = $records["recordsTotal"] = $ActionModel->where($condition)->count();
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
@@ -74,7 +74,7 @@ class Privilege extends Admin
     {
         if(request()->isPost()){
             $data = input('post.');
-            $res = PrivilegeModel::create($data)->save();
+            $res = ActionModel::create($data)->save();
             if(!$res){
                 return ['status'=>'n','info'=>'权限添加失败'];
             }
@@ -84,7 +84,7 @@ class Privilege extends Admin
 
     public function edit($id)
     {
-        $row = PrivilegeModel::get($id);
+        $row = ActionModel::get($id);
         $functions = PrivilegeLogic::getFunction($row['moudle'],$row['controller']);
         $this->assign('row',$row);
         $this->assign('controllers',PrivilegeLogic::getController($row['moudle']));
@@ -96,7 +96,7 @@ class Privilege extends Admin
     {
         if(request()->isPost()){
             $data = input('post.');
-            $res = PrivilegeModel::update($data);
+            $res = ActionModel::update($data);
             if($res === false){
                 return ['status'=>'n','info'=>'权限编辑失败'];
             }
@@ -106,7 +106,7 @@ class Privilege extends Admin
 
     public function delete($id){
         if (Request::instance()->isAjax()){
-            $res = PrivilegeModel::destroy($id);
+            $res = ActionModel::destroy($id);
             if($res){
                 return array('status'=>'y',"info"=>"操作成功");
             }else{

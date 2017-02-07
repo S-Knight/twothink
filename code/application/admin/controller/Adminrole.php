@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 use app\admin\model\AdminRoleModel;
-use app\admin\model\PrivilegeModel;
+use app\admin\model\ActionModel;
 use app\admin\logic\AdminroleLogic;
 use think\Request;
 
