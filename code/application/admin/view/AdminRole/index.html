@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="actions">
-                    <a href="{:url('Adminrole/add')}" class="btn btn-primary"><i class="fa fa-plus"></i> 添加用户组</a>
+                    <a href="{:url('AdminRole/add')}" class="btn btn-primary"><i class="fa fa-plus"></i> 添加用户组</a>
                     <a href="#" class="btn btn-primary" id="edit"><i class="fa fa-edit"></i> 编辑用户组</a>
                     <a href="#" class="btn btn-primary" id="" onclick="datadel()"><i class="fa fa-minus"></i> 删除</a>
                 </div>
@@ -79,7 +79,7 @@
                     "ajax": {
                         "processing": true,
                         "serverSide": true,
-                        "url": "/admin/Adminrole/index"// ajax source
+                        "url": "/admin/AdminRole/index"// ajax source
                     },
                     "columns": [
                         { "data": "selectDOM", orderable: false },
@@ -112,7 +112,7 @@
                     return;
                 }
 
-                location.href = "/index.php/admin/Adminrole/edit/id/" + id;
+                location.href = "/index.php/admin/AdminRole/edit/id/" + id;
             });
         };
 
@@ -160,16 +160,5 @@
 
     }
 
-    function add(){
-        layer.open({
-            type: 2,
-            title: '很多时候，我们想最大化看，比如像这个页面。',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: "/admin/Adminrole/add"
-        });
-    }
 </script>
 {/block}

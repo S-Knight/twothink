@@ -6,28 +6,25 @@ class AdminroleLogic extends Logic{
     static public function getPrivilege()
     {
         $ActionModel = new ActionModel();
-        $moudles = $ActionModel->group('moudle')->select();
-
+        $controllers = $ActionModel->where('function', '*')->select();
         $moudleArr = [];
-        foreach ($moudles as $moudle){
 
-            $moudleArr[$moudle['moudle']]['text'] = $moudle['moudle'];
-            $controllers = $ActionModel->where('moudle',$moudle['moudle'])->group('controller')
-                ->select();
-            foreach ($controllers as $controller){
-                $functions = $ActionModel->where('controller',$controller['controller'])->select();
+        foreach ($controllers as $controller){
+            $moudleArr[$controller['controller']]['text'] = $controller['name'];
+            $functions = $ActionModel->where('controller',$controller['controller'])
+                ->where(['function'=>['neq','*']])->select();
 
-                //降维
-                $functionArr = [];
-                foreach ($functions as $function){
-                    $functionArr['text'] = $controller['controller'];
-                    $functionArr[$function['function']] = $function['name'];
-                }
-                $moudleArr[$moudle['moudle']]['child'][$controller['controller']] = $functionArr;
+            //降维
+            $functionArr = [];
+            foreach ($functions as $function){
+
+                $functionArr[$function['code']] = $function['name'];
             }
-
+            $moudleArr[$controller['controller']]['child'] = $functionArr;
         }
+
+
         return $moudleArr;
     }
-    
+
 }

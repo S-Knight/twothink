@@ -2,7 +2,7 @@
 {block name="body"}
 <div class="row">
     <div class="col-md-12">
-        <form id="dataform" action="{:url('Adminrole/editPost')}" method="post" class="form-horizontal form">
+        <form id="dataform" action="{:url('AdminRole/edit')}" method="post" class="form-horizontal form">
 
             <div class='panel panel-default'>
                 <div class='panel-heading'>
@@ -43,25 +43,18 @@
                                 </div>
 
                                 <div class='panel-body perm-group'>
-                                    {foreach name="privilegesVo.child" item="privilegesChildVo" key="j"}
+
                                     <div>
-                                        {foreach name="privilegesChildVo" item="privilegesNodeVo" key="k"}
-                                        {if $k!='text' && $k!='isplugin'}
+                                        {foreach name="privilegesVo.child" item="privilegesChildVo" key="j"}
                                         <label class='checkbox-inline'>
-                                            <input type='checkbox' name='perms[]' value='{$i}.{$j}.{$k}' class='perm-item'
-                                                   data-group='{$i}' data-child='{$j}' data-op='{$k}' {if checkRolePerm("$i.$j.$k",$id)} checked{/if} />
-                                            <b>{$privilegesNodeVo}</b>
+                                            <input type='checkbox' name='perms[]' value='{$j}' class='perm-item'
+                                                   data-group='{$i}' data-child='{$j}' data-op=''
+                                                   {if checkRolePerm("$j",$id)} checked{/if}/>
+                                            <b>{$privilegesChildVo}</b>
                                         </label>
-                                        {else}
-                                        <label class='checkbox-inline' >
-                                            <input type='checkbox'  name='perms[]' value='{$i}.{$j}' class='perm-all-item' data-group='{$i}' data-child='{$j}'
-                                                   {if checkRolePerm("$i.$j",$id)} checked{/if} />
-                                            <b> {$privilegesNodeVo}</b>
-                                        </label>
-                                        {/if}
                                         {/foreach}
                                     </div>
-                                    {/foreach}
+
                                 </div>
                                 {/foreach}
                             </div>
@@ -127,16 +120,16 @@
     });
 </script>
 
+<script src="/static/jquery.form.min.js"></script>
 <script>
-    $("#dataform").Validform({
-        tiptype:function(msg){
-            layer.alert(msg, {
+    $("#dataform").ajaxForm({
+        dataType:  'json',
+        success: function (rJson) {
+            layer.alert(rJson.info, {
                 skin: 'layui-layer-lan'
             });
-        },
-        ajaxPost:true,   //使用ajax方式提交
-        callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.status=="y"){
+
+            if(rJson.success){
                 location.href="{:url('index')}";
             }
         }

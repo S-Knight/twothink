@@ -5,7 +5,7 @@ use app\admin\model\ActionModel;
 use app\admin\logic\AdminroleLogic;
 use think\Request;
 
-class Adminrole extends Admin
+class AdminRole extends Admin
 {
     public function index()
     {
@@ -13,7 +13,7 @@ class Adminrole extends Admin
             return $this->getRecords();
         }else{
             $this->assign('title','用户组列表');
-            return $this->fetch('Adminrole/index');
+            return $this->fetch('AdminRole/index');
         }
     }
 
@@ -43,60 +43,65 @@ class Adminrole extends Admin
 
     public function add()
     {
-        $this->assign('privileges',AdminroleLogic::getPrivilege());
-        return $this->fetch('Adminrole/add');
+        if(request()->isPost()){
+            return $this->addPost();
+        }else{
+            $this->assign('privileges',AdminroleLogic::getPrivilege());
+            return $this->fetch('AdminRole/add');
+        }
     }
 
-    public function addPost()
+    private function addPost()
     {
-        if(request()->isPost()){
-
-            $data = input('post.');
-            $data['perms'] = implode(',', $data['perms']);
-            $check = AdminRoleModel::get(['name' => $data['name']]);
-            if ($check) {
-                return array('status'=>'n',"info"=>"该用户组已添加，请勿重复提交数据");
-            }
-            $res = AdminRoleModel::create($data)->save();
-            if($res === false){
-                return ['status'=>'n','info'=>'用户组添加失败'];
-            }
-            return ['status'=>'y','info'=>'用户组添加成功'];
+        $data = input('post.');
+        $data['perms'] = implode(',', $data['perms']);
+        $check = AdminRoleModel::get(['name' => $data['name']]);
+        if ($check) {
+            return array('success'=>false,"info"=>"该用户组已添加，请勿重复提交数据");
         }
+        $res = AdminRoleModel::create($data)->save();
+        if($res === false){
+            return ['success'=>false,'info'=>'用户组添加失败'];
+        }
+        return ['success'=>true,'info'=>'用户组添加成功'];
     }
 
     public function edit($id)
     {
-        $this->assign('privileges',AdminroleLogic::getPrivilege());
-        $this->assign('row',AdminRoleModel::get($id));
-        $this->assign('id',$id);
-        return $this->fetch('Adminrole/edit');
+        if(request()->isPost()){
+            return $this->editPost();
+        }else{
+            $this->assign('privileges',AdminroleLogic::getPrivilege());
+            $this->assign('row',AdminRoleModel::get($id));
+            $this->assign('id',$id);
+            return $this->fetch('AdminRole/edit');
+        }
+
     }
 
     public function editPost()
     {
-        if(request()->isPost()){
-            $data = input('post.');
-            $data['perms'] = implode(',', $data['perms']);
-            $check = AdminRoleModel::get(['name' => $data['name'],'id'=>['neq',$data['id']]]);
-            if ($check) {
-                return array('status'=>'n',"info"=>"该用户组已存在");
-            }
-            $res = AdminRoleModel::update($data);
-            if($res === false){
-                return ['status'=>'n','info'=>'用户组修改失败'];
-            }
-            return ['status'=>'y','info'=>'用户组修改成功'];
+        $data = input('post.');
+        $data['perms'] = implode(',', $data['perms']);
+        $check = AdminRoleModel::get(['name' => $data['name'],'id'=>['neq',$data['id']]]);
+        if ($check) {
+            return array('success'=>false,"info"=>"该用户组已存在");
         }
+        $res = AdminRoleModel::update($data);
+        if($res === false){
+            return ['success'=>false,'info'=>'用户组修改失败'];
+        }
+        return ['success'=>true,'info'=>'用户组修改成功'];
+
     }
 
     public function delete($id){
         if (Request::instance()->isAjax()){
             $res = AdminRoleModel::destroy($id);
             if($res){
-                return array('status'=>'y',"info"=>"操作成功");
+                return array('success'=>true,"info"=>"操作成功");
             }else{
-                return array('status'=>'n',"info"=>"操作失败");
+                return array('success'=>false,"info"=>"操作失败");
             }
         }
     }
