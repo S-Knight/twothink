@@ -15,7 +15,7 @@
 
                     <a href="/index.php/admin/System/add" class="btn btn-primary"><i class="fa fa-plus"></i> 添加配置</a>
                     <a href="#" class="btn btn-primary" id="edit"><i class="fa fa-edit"></i> 编辑配置</a>
-                    <a href="#" class="btn btn-primary" id="" onclick="datadel()"><i class="fa fa-minus"></i> 删除</a>
+                    <a href="#" class="btn btn-primary" id="delete"><i class="fa fa-minus"></i> 删除</a>
                 </div>
             </div>
 
@@ -32,14 +32,14 @@
                                     <span></span>
                                 </label>
                             </th>
-                            <th width="5%">ID </th>
-                            <th width="15%"> 配置标识</th>
-                            <th width="15%"> 配置类型</th>
-                            <th width=""> 配置名称</th>
-                            <th width="15%"> 配置分组</th>
+                            <th>ID </th>
+                            <th> 配置标识</th>
+                            <th> 配置类型</th>
+                            <th> 配置名称</th>
+                            <th> 配置分组</th>
 
-                            <th width="15%"> 排序</th>
-                            <th width="15%"> 创建时间</th>
+                            <th> 排序</th>
+                            <th> 创建时间</th>
                         </tr>
 
                         </thead>
@@ -97,7 +97,7 @@
                     "ajax": {
                         "processing": true,
                         "serverSide": true,
-                        "url": "/index.php/admin/System/getRecords"// ajax source
+                        "url": "/index.php/admin/System/index"// ajax source
                     },
                     "columns": [
                         { "data": "selectDOM" },
@@ -133,6 +133,26 @@
                 }
 
                 location.href = "/index.php/admin/System/edit/id/" + id;
+            });
+            $('#delete').click(function () {
+                var ids = grid.getSelectedRows();
+
+                if(ids==""){
+                    layer.msg('选择为空',{icon:5,time:2000});
+                    return false;
+                }
+
+                layer.confirm('确认要删除吗？',function(index){
+                    $.post("{:url('delete')}",{id:ids},function(data){
+                        if(data.success){
+                            grid.reload();
+                            layer.msg('删除成功',{icon:1,time:2000});
+                        }else{
+                            layer.msg('删除失败',{icon:2,time:2000});
+                        }
+                    },"json")
+
+                });
             });
         };
 

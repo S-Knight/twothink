@@ -21,9 +21,7 @@ function superior($pid,$table='geek_menu'){
 }
 
 //配置设置的分组和类型
-//$type 1 为分组
-//$type 2 为类型
-function Grouping_type($number,$type){
+function systemGroup($number,$type){
 	$value='';
 	if($type==1){
 		switch ($number)
@@ -35,15 +33,9 @@ function Grouping_type($number,$type){
 				$value='基本';
 				break;
 			case 2:
-				$value='内容';
-				break;
-			case 3:
-				$value='用户';
-				break;
-			case 4:
 				$value='系统';
 				break;
-			case 5:
+			case 3:
 				$value='邮件';
 				break;
 		}
@@ -57,11 +49,37 @@ function Grouping_type($number,$type){
 				$value='上传';
 				break;
 			case 3:
-				$value='多行文本';
+				$value='富文本';
+				break;
+			case 4:
+				$value='单选';
+				break;
+			case 5:
+				$value='多选';
 				break;
 		}
 	}
 	return $value;
+}
+
+function richText($name){
+	$a = <<<TexT
+	<link rel="stylesheet" href="/static/kindeditor-4.1.10/themes/default/default.css" />
+	<script charset="utf-8" src="/static/kindeditor-4.1.10/kindeditor-min.js"></script>
+	<script charset="utf-8" src="/static/kindeditor-4.1.10/lang/zh_CN.js"></script>
+	<script type="text/javascript">
+		var editor;
+		KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="{$name}"]', {
+				resizeType : 1,
+				allowPreviewEmoticons : false,
+				allowImageUpload : true,
+			});
+		});
+	</script>
+
+TexT;
+	return $a;
 }
 function checkRolePerm($perm,$id)
 {
@@ -70,6 +88,7 @@ function checkRolePerm($perm,$id)
 
 function newRichText($name){
 	$a = <<<TexT
+<script src="/admin/template1/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" src="/static/ueditor/lang/zh-cn/zh-cn.js"></script>
@@ -202,8 +221,8 @@ LIB;
 			'onUploadSuccess': function (file, data, response) {
 				var rs = JSON.parse(data);
 				if (rs.success == true) {
-					$('#{$filename}img').attr('src', rs.data.url);
-					$('#{$filename}url').val(rs.data.url);
+					$('#{$filename}img').attr('src', rs.data.savePath);
+					$('#{$filename}url').val(rs.data.savePath);
 				}
 			}
 		});
@@ -211,4 +230,27 @@ LIB;
 TexT;
 
 	return $html;
+}
+function chechStatic($model, $data)
+{
+	//       $staticModel=new StaticRewardModel();
+	$where = "(max>='{$data['max']}' and '{$data['max']}'>min ) or (min<='{$data['min']}' and '{$data['min']}'<max )";
+	$where .= "or (min>='{$data['min']}' and max <='{$data['max']}' )";
+	$check = $model->where($where)->select();
+	$num = count($check);
+	if ($num == 0) {
+		return "no";
+	} else if ($num == 1) {
+		if (isset($data['id'])) {
+			if ($check[0]['id'] == $data['id']) {
+				return "no";
+			} else {
+				return "yes";
+			}
+		} else {
+			return "yes";
+		}
+	} else {
+		return "yes";
+	}
 }

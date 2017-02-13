@@ -112,20 +112,34 @@
 </div>
 {/block}
 {block name="script"}
+<script src="/static/jquery.form.min.js"></script>
 <script>
-    $("#dataform").Validform({
-        tiptype:function(msg){
-            layer.alert(msg, {
+    function showRequest(formData, jqForm, options) {
+        var form = jqForm[0]; //把表单转化为dom对象
+        if (!form.title.value) {
+            layer.alert('菜单名称不能为空', {
                 skin: 'layui-layer-lan'
             });
-        },
-        ajaxPost:true,   //使用ajax方式提交
-        callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.status=="y"){
-                location.href="{:url('index')}";
-            }
+            return false;
         }
-    });
+    }
+
+    function showResponse(rJson) {
+        layer.alert(rJson.info, {
+            skin: 'layui-layer-lan'
+        });
+
+        if(rJson.success){
+            location.href="{:url('index')}";
+        }
+    }
+
+    var options = {
+        dataType:  'json',
+        beforeSubmit :showRequest,
+        success:showResponse,
+    };
+    $("#dataform").ajaxForm(options);
 
 </script>
 {/block}

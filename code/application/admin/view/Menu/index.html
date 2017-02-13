@@ -48,7 +48,7 @@
 {/block}
 {block name="script"}
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="/admin/template1/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="/admin/template1/global/scripts/datatable.min.js" type="text/javascript"></script>
 <script src="/admin/template1/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
 <script src="/admin/template1/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
@@ -82,7 +82,7 @@
                     "ajax": {
                         "processing": true,
                         "serverSide": true,
-                        "url": "/admin/Menu/index"// ajax source
+                        "url": "/admin/Menu/index/pid/{$pid}"// ajax source
                     },
                     "columns": [
                         { "data": "selectDOM", orderable: false },
@@ -121,7 +121,7 @@
 
                 location.href = "/index.php/admin/Menu/edit/id/" + id;
             });
-            
+
             $('#delete').click(function () {
                 var ids = grid.getSelectedRows();
 

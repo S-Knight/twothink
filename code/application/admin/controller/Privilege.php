@@ -6,6 +6,10 @@ use think\Request;
 
 class Privilege extends Admin
 {
+    protected $beforeActionList = [
+        'pervilegeVilidate' =>  ['except'=>'getControllerAjax,getFunctionAjax'],
+    ];
+
     public function index()
     {
         if(request()->isAjax()){
@@ -43,7 +47,12 @@ class Privilege extends Admin
 
     public function add()
     {
-        return $this->fetch('Privilege/add');
+        if(request()->isPost()){
+            return $this->addPost();
+        }else{
+            return $this->fetch('Privilege/add');
+        }
+
     }
 
     public function getControllerAjax()
@@ -67,50 +76,52 @@ class Privilege extends Admin
                 $functionArr[] = $function->name;
             }
         }
+        $functionArr[] = '*';
         return $functionArr;
     }
 
-    public function addPost()
+    private function addPost()
     {
-        if(request()->isPost()){
-            $data = input('post.');
-            $res = ActionModel::create($data)->save();
-            if(!$res){
-                return ['status'=>'n','info'=>'权限添加失败'];
-            }
-            return ['status'=>'y','info'=>'权限添加成功'];
+        $data = input('post.');
+        $res = ActionModel::create($data)->save();
+        if(!$res){
+            return ['success'=>false,'info'=>'权限添加失败'];
         }
+        return ['success'=>true,'info'=>'权限添加成功'];
     }
 
     public function edit($id)
     {
-        $row = ActionModel::get($id);
-        $functions = PrivilegeLogic::getFunction($row['moudle'],$row['controller']);
-        $this->assign('row',$row);
-        $this->assign('controllers',PrivilegeLogic::getController($row['moudle']));
-        $this->assign('functions',$this->getfunctionArr($functions,$row['controller']));
-        return $this->fetch('Privilege/edit');
+        if(request()->isPost()){
+            return $this->editPost();
+        }else{
+            $row = ActionModel::get($id);
+            $functions = PrivilegeLogic::getFunction($row['moudle'],$row['controller']);
+            $this->assign('row',$row);
+            $this->assign('controllers',PrivilegeLogic::getController($row['moudle']));
+            $this->assign('functions',$this->getfunctionArr($functions,$row['controller']));
+            return $this->fetch('Privilege/edit');
+        }
     }
 
-    public function editPost()
+    private function editPost()
     {
-        if(request()->isPost()){
-            $data = input('post.');
-            $res = ActionModel::update($data);
-            if($res === false){
-                return ['status'=>'n','info'=>'权限编辑失败'];
-            }
-            return ['status'=>'y','info'=>'权限编辑成功'];
+        $data = input('post.');
+        $res = ActionModel::update($data);
+        if($res === false){
+            return ['success'=>false,'info'=>'权限编辑失败'];
         }
+        return ['success'=>true,'info'=>'权限编辑成功'];
+
     }
 
     public function delete($id){
         if (Request::instance()->isAjax()){
             $res = ActionModel::destroy($id);
             if($res){
-                return array('status'=>'y',"info"=>"操作成功");
+                return array('success'=>true,"info"=>"操作成功");
             }else{
-                return array('status'=>'n',"info"=>"操作失败");
+                return array('success'=>false,"info"=>"操作失败");
             }
         }
     }

@@ -13,7 +13,7 @@ class Menu extends Admin
             return $this->getRecords();
         } else {
             $this->assign('title', '菜单列表');
-
+            $this->assign('pid', input('pid',0));
             return $this->fetch('Menu/index');
         }
     }
@@ -38,14 +38,15 @@ class Menu extends Admin
         $condition['pid'] = $pid;
 
         $records["data"] = $menuModel->where($condition)
-                                     ->order($orders)
-                                     ->limit($start, $length)
-                                     ->select();
+            ->order($orders)
+            ->limit($start, $length)
+            ->select();
         $records["recordsFiltered"] = $records["recordsTotal"] = $menuModel->where($condition)
-                                                                           ->count();
+            ->count();
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
+            $row['title'] = "<td><a href='".url('index',['pid'=>$row['id']])."'>".$row['title']."</a></td>";
             $row['hideText'] = $row['hide'] == 0 ? '显示' : '隐藏';
             $row['isDevText'] = $row['is_dev'] == 0 ? '否' : '是';
         }
@@ -70,10 +71,10 @@ class Menu extends Admin
     {
         $res = MenuModel::create(input('post.'))->save();
         if (!$res) {
-            return ['status' => 'n', 'info' => '菜单添加失败'];
+            return ['success' => false, 'info' => '菜单添加失败'];
         }
 
-        return ['status' => 'y', 'info' => '菜单添加成功'];
+        return ['success' => true, 'info' => '菜单添加成功'];
     }
 
     public function edit($id)
@@ -92,12 +93,14 @@ class Menu extends Admin
 
     private function editPost()
     {
-        $res = MenuModel::update(input('post.'));
-        if ($res === false) {
-            return ['success' => false, 'info' => '菜单修改失败'];
-        }
+        if (request()->isPost()) {
+            $res = MenuModel::update(input('post.'));
+            if ($res === false) {
+                return ['success' => false, 'info' => '菜单修改失败'];
+            }
 
-        return ['success' => true, 'info' => '菜单修改成功'];
+            return ['success' => true, 'info' => '菜单修改成功'];
+        }
     }
 
     public function delete($id)

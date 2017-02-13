@@ -46,7 +46,7 @@
                                     <div>
                                         {foreach name="privilegesVo.child" item="privilegesChildVo" key="j"}
                                         <label class='checkbox-inline'>
-                                            <input type='checkbox' name='perms[]' value='{j}' class='perm-item'
+                                            <input type='checkbox' name='perms[]' value='{$j}' class='perm-item'
                                                    data-group='{$i}' data-child='{$j}' data-op='' />
                                             <b>{$privilegesChildVo}</b>
                                         </label>

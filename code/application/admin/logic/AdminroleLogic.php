@@ -10,7 +10,7 @@ class AdminroleLogic extends Logic{
         $moudleArr = [];
 
         foreach ($controllers as $controller){
-            $moudleArr[$controller['controller']]['text'] = $controller['name'];
+            $moudleArr[$controller['code']]['text'] = $controller['name'];
             $functions = $ActionModel->where('controller',$controller['controller'])
                 ->where(['function'=>['neq','*']])->select();
 
@@ -20,7 +20,7 @@ class AdminroleLogic extends Logic{
 
                 $functionArr[$function['code']] = $function['name'];
             }
-            $moudleArr[$controller['controller']]['child'] = $functionArr;
+            $moudleArr[$controller['code']]['child'] = $functionArr;
         }
 
 

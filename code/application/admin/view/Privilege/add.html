@@ -2,16 +2,16 @@
 {block name="body"}
 <div class="row">
     <div class="col-md-12">
-        <form id="dataform" action="{:url('Privilege/addPost')}" method="post" class="form-horizontal form">
+        <form id="dataform" action="{:url('Privilege/add')}" method="post" class="form-horizontal form">
 
             <div class='panel panel-default'>
                 <div class='panel-heading'>
-                    添加操作
+                    添加权限
                 </div>
                 <div class='panel-body'>
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
-                            操作名称</label>
+                            权限名称</label>
                         <div class="col-sm-9 col-xs-12">
                             <input type="text" id="name" name="name" class="form-control" value=""/>
                         </div>
@@ -58,7 +58,7 @@
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
-                            操作说明</label>
+                            权限说明</label>
                         <div class="col-sm-9 col-xs-12">
                             <textarea type="text"  name="remark" class="form-control" ></textarea>
                         </div>
@@ -82,21 +82,23 @@
 </div>
 {/block}
 {block name="script"}
+<script src="/static/jquery.form.min.js"></script>
 <script>
-    $("#dataform").Validform({
-        tiptype:function(msg){
-            layer.alert(msg, {
+    $("#dataform").ajaxForm({
+        dataType:  'json',
+        success: function (rJson) {
+            layer.alert(rJson.info, {
                 skin: 'layui-layer-lan'
             });
-        },
-        ajaxPost:true,   //使用ajax方式提交
-        callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.status=="y"){
+
+            if(rJson.success){
                 location.href="{:url('index')}";
             }
         }
     });
 
+</script>
+<script>
     $('#moudle').change(function(){
         var moudle = $(this).val();
         var str = '<option value="">请选择：</option>';
