@@ -1,1 +1,6 @@
-ThinkPHP3是一个陪伴我PHP开发成长的框架,Onethink也是我后期主要用的cmf,但是不得不说Onethink有很多坑,ThinkPHP3.X也有很多的局限性,
+ThinkPHP3是一个陪伴我PHP开发成长的框架,Onethink也是我后期主要用的cmf,但是不得不说Onethink有很多坑,ThinkPHP3.X也有很多的局限性,比如不适合做api等.
+很久以前就一直想把Onethink重写一遍,但是因为各种原因,一直下定不了决心,也有部分原因是因为一直被别的外包项目拖着.
+有一段时间我甚至都想放弃thinkphp转向最近很火的YII,laravel,但是ThinkPHP5的诞生让我重新回到了TP的阵营.
+现在,我的团队写一个自己的cmf的条件已经越来越成熟,所以我给这个cmf取了个名字叫做twothink,他是onethink的一个传承,
+但是,我保证他相对于onethink一定是一个飞跃.同时在此向thinkphp5的开发团队,尤其是刘晨同学致敬,
+十年磨一剑,thinkphp5真的非常棒!
