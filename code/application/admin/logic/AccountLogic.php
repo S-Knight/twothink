@@ -10,6 +10,7 @@ class AccountLogic extends Logic
 
     public function checkLogin($username, $password)
     {
+
         $member = UcenterAdminModel::get(['username' => $username]);
         if (!$member || $member['status'] == -1) {
             $this->error = '用户不存在';

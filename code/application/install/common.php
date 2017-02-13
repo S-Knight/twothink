@@ -180,32 +180,35 @@ function register_administrator($db, $prefix, $admin) {
     $uid = 1;
     /*插入用户*/
     $sql = <<<sql
-REPLACE INTO `[PREFIX]ucenter_member` (`id`, `username`, `password`, `email`, `mobile`, `reg_time`, `reg_ip`, `last_login_time`, `last_login_ip`, `update_time`, `status`, `type`) VALUES
-('[UID]', '[NAME]', '[PASS]','[EMAIL]', '', '[TIME]', '[IP]', '[TIME]', '[IP]',  '[TIME]', 1, 1);
+REPLACE INTO `[PREFIX]ucenter_admin` (`id`, `username`, `password`,`salt` ,`email`, `mobile`, `reg_time`, `reg_ip`, `last_login_time`, `last_login_ip`, `updated_at`, `status`, `role_id`) VALUES
+('[UID]', '[NAME]', '[PASS]','[SALT]','[EMAIL]', '', '[TIME]', '[IP]', '[TIME]', '[IP]',  '[TIME]', 1, 1);
 sql;
 
     /*  "REPLACE INTO `[PREFIX]ucenter_member` VALUES " .
          "('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1',1,'finish')";*/
 
-    $password = md5($admin['password']);
+    $salt = md5(date('Y-m-d H:i:s'));
+    $password = encodePassword($admin['password'], $salt);
     $sql = str_replace(
         array(
             '[PREFIX]',
             '[NAME]',
             '[PASS]',
+            '[SALT]',
             '[EMAIL]',
             '[TIME]',
             '[IP]',
-            '[UID]'
+            '[UID]',
         ),
         array(
             $prefix,
             $admin['username'],
             $password,
+            $salt,
             $admin['email'],
-            time(),
+            date('Y-m-d H:i:s'),
             get_client_ip(1),
-            $uid
+            $uid,
         ),
         $sql);
     //执行sql
@@ -213,13 +216,13 @@ sql;
 
     /*插入用户资料*/
     $sql = <<<sql
-REPLACE INTO `[PREFIX]member` (`uid`, `nickname`, `sex`, `birthday`, `qq`, `login`, `reg_ip`, `reg_time`, `last_login_ip`, `last_login_role`, `show_role`, `last_login_time`, `status`, `signature`) VALUES
-('[UID]','[NAME]', 0,  '0', '', 1, 0, '[TIME]', 0, 1, 1, '[TIME]', 1, '');
+REPLACE INTO `[PREFIX]member` (`uid`, `nickname`,`real_name`,`sex`, `birthday`, `qq`, `login`, `reg_ip`, `reg_time`, `last_login_ip`,`last_login_time`, `status`, `signature`) VALUES
+('[UID]','[NAME]','', 0,  '0', '', 1, 0, '[TIME]', 0, '[TIME]', 1, '');
 sql;
 
     $sql = str_replace(
         array('[PREFIX]', '[NAME]', '[TIME]', '[UID]'),
-        array($prefix, $admin['username'], time(), $uid),
+        array($prefix, $admin['username'], date('Y-m-d H:i:s'), $uid),
         $sql);
 
     $db->execute($sql);
@@ -250,4 +253,11 @@ function write_config($config) {
         }
         return '';
     }
+}
+
+function encodePassword($password, $salt)
+{
+    $encryptd_password = md5(md5($password) . $salt);
+
+    return substr($encryptd_password, 0, 32);
 }

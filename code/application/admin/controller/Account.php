@@ -49,7 +49,6 @@ class Account extends Controller
         $password = input('post.password');
 
         $accountLogic = new AccountLogic();
-
         if ($accountLogic->checkLogin($username, $password)) {
             $rJson['success'] = true;
         } else {
