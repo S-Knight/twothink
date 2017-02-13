@@ -1,0 +1,97 @@
+{extend name="Public/base" /}
+{block name="body"}
+<div class="row">
+    <div class="col-md-12">
+        <form id="dataform" action="/admin/UcenterMember/add" method="post" class="form-horizontal form">
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    添加网站用户
+                </div>
+                <div class='panel-body'>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 用户名</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" id="username" name="username" class="form-control" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 密码</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="password" id="password" name="password" class="form-control" value="" autocomplete="off"/>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">邮箱</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="email" name="email" class="form-control" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">电话</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" name="mobile" class="form-control" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">真实姓名</label>
+                        <div class="col-sm-3 col-xs-12">
+                            <input type="text" name="real_name" class="form-control" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label class='radio-inline'>
+                                <input type='radio' name='status' value='1' checked/> 启用
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' name='status' value='0'/> 禁用
+                            </label>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                        <div class="col-sm-9 col-xs-12">
+                            <h4> <p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                            <input type="submit" id="subBtn" value="提交" class="btn btn-primary col-lg-1"/>
+                            <input type="button" name="back" onclick="javascript:history.go(-1)" value="返回列表"
+                                   class="btn btn-default"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="/static/jquery.form.min.js"></script>
+<script>
+    $("#dataform").ajaxForm({
+        dataType:  'json',
+        success: function (rJson) {
+            layer.alert(rJson.info, {
+                skin: 'layui-layer-lan'
+            });
+
+            if(rJson.success){
+                location.href="{:url('index')}";
+            }
+        }
+    });
+
+</script>
+
+
+{/block}
