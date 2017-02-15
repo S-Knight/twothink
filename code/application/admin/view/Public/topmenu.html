@@ -4,7 +4,7 @@
         {if checkRolePerm($topMenus['privilege_code'], $admin['role_id'])}
         <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
             <a href="{$topMenus['url']}">
-                <i class="icon-briefcase"></i> {$topMenus['title']}
+                <i class="{$topMenus.icon}"></i> {$topMenus['title']}
                 <span class="arrow"></span>
             </a>
             {if $topMenus['child']}	<!-- if做判断 -->
@@ -13,7 +13,7 @@
                 {if checkRolePerm($secondMenus['privilege_code'], $admin['role_id'])}
                 <li aria-haspopup="true">
                     <a href="{:url($secondMenus['url'])}" class="nav-link nav-toggle">
-                        <i class="icon-basket"></i> {$secondMenus['title']}
+                        <i class="{$secondMenus.icon}"></i> {$secondMenus['title']}
                     </a>
                 </li>
                 {/if}

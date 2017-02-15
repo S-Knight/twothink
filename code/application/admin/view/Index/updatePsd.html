@@ -1,94 +1,81 @@
 {extend name="Public/base" /}
 
 {block name="body"}
-<form action="/admin/Index/updatePsd" method="post">
-<div>用户名<input type="text" value="{$row.username}" name="username" readonly/></div>
-<div>原密码<input type="password" value="" name="old_password" id="psd"/><span></span></div>
-<div>新密码<input type="password" value="" name="password" id="new_psd"/><span></span></div>
-<div>重复新密码<input type="password" value="" name="repeat_password" id="repeat_new_psd"/><span></span></div>
-<input type="submit" value="修改" id="submit"/>
-</form>
-
-
+<div class="clearfix">
+    <form action="{:url('Index/updatePsd')}" method="post" class="form-horizontal form" id="dataform">
+           <div class='panel-heading'>
+                     <i class="glyphicon glyphicon-edit"></i> 
+                    修改密码
+                </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员帐号</label>
+            <div class="col-sm-3 col-xs-12">
+                <input type="text" class="form-control" value="{$admin.username}" readonly />
+                <div class="help-block">只能用'0-9'、'a-z'、'A-Z'、'.'、'@'、'_'、'-'、'!'以内范围的字符</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员密码</label>
+            <div class="col-sm-3 col-xs-12">
+                <input type="password" name="pw" class="form-control" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">新密码</label>
+            <div class="col-sm-3 col-xs-12">
+                <input type="password" name="pw2" class="form-control" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">确认密码</label>
+            <div class="col-sm-3 col-xs-12">
+                <input type="password" name="pw3" class="form-control" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                <input name="submit" type="submit" value="提交" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>
 {/block}
 
 {block name="script"}
-<script type="text/javascript">
-$("#psd").blur(function(){
-	var password=$("#psd").val();
-	if(password==""){
-		$('#psd').next().html('请输入原密码');
-		return false;
-	}else{
-		$('#psd').next().html('');
-	}
-	$.ajax({
-        type: "POST",
-        url: "/admin/Index/password",
-        data: {
-            password: password,
-        },
-        success: function (data) {
-			if(data===false){
-				$('#psd').next().html('密码错误');
-			}else{
-				$('#psd').next().html('');
-			}
-		},
-	});
-})
+<script src="/static/jquery.form.min.js"></script>
+<script>
+    function showRequest(formData, jqForm, options) {
+        var form = jqForm[0]; //把表单转化为dom对象
+        if (!form.pw.value || !form.pw2.value || !form.pw3.value) {
+            layer.alert('请先完善信息', {
+                skin: 'layui-layer-lan'
+            });
+            return false;
+        }
+        if(form.pw2.value != form.pw3.value){
+ 	layer.alert('两次密码输入不一致', {
+                skin: 'layui-layer-lan'
+            });
+            return false;
+        }
+    }
 
-$("#new_psd").blur(function(){
-	var new_password=$("#new_psd").val();
-	if(new_password==""){
-		$('#new_psd').next().html('请输入新密码');
-	}else{
-		$('#new_psd').next().html('');
-	}
-})
+    function showResponse(rJson) {
+        layer.alert(rJson.info, {
+            skin: 'layui-layer-lan'
+        });
 
-$("#repeat_new_psd").blur(function(){
-	var new_password=$("#new_psd").val();
-	var repeat_new_psd=$("#repeat_new_psd").val();
-	
-	if(repeat_new_psd==""){
-		$('#repeat_new_psd').next().html('请重新输入新密码');
-	}else{
-		$('#repeat_new_psd').next().html('');
-	}
-	if(new_password!=repeat_new_psd){
-		$('#repeat_new_psd').next().html('两次输入密码不一致');
-	}else{
-		$('#repeat_new_psd').next().html('');
-	}
-})
+        if(rJson.success){
+            location.reload();
+        }
+    }
 
-$("#submit").click(function(){
-	var password=$("#psd").val();
-	var new_password=$("#new_psd").val();
-	var repeat_new_psd=$("#repeat_new_psd").val();
-	if(password==""){
-		$('#psd').next().html('请输入原密码');
-	}else{
-		$('#psd').next().html('');
-	}
-	
-	if(new_password==""){
-		$('#new_psd').next().html('请输入新密码');
-		
-	}else{
-		$('#new_psd').next().html('');
-	}
-	
-	if(repeat_new_psd==""){
-		$('#repeat_new_psd').next().html('请重新输入新密码');
-	}else{
-		$('#repeat_new_psd').next().html('');
-	}
-	
-	if(password=="" || new_password=="" || repeat_new_psd==""){
-		return false;
-	}
-})
-</script>
+    var options = {
+        dataType:  'json',
+        beforeSubmit :showRequest,
+        success:showResponse,
+    };
+    $("#dataform").ajaxForm(options);
+    </script>
 {/block}

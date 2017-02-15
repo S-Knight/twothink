@@ -3,40 +3,35 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Request;
-
+use app\admin\logic\AccountLogic;
+use app\admin\model\UcenterAdminModel;
 class Index extends Admin
 {
     public function index()
-    {	
-      return $this->view->fetch();
+    {
+        return $this->view->fetch();
     }
-    
+
     public function updatePsd()
     {
-    	$query = new \think\db\Query();
-    	if(Request::instance()->isPost()){
-    		$b=db('ucenter_member')->where('username',session('user'))->setField('password',md5($_POST['password']));
-    		if($b){
-    			$this->success('修改成功', 'index');
-    		}else{
-    			$this->error('修改失败','index');
-    		}
-    	}else{
-    		$query->table('geek_ucenter_member')->where('username',session('user'));
-    		$row=Db::find($query);
-    		$this->view->assign('row',$row);
-    		return $this->view->fetch();
-    	};
-    }
-    
-    public function password(){
-    	$query = new \think\db\Query();
-     	$query->table('geek_ucenter_member')->where('username',session('user'));
-    	$row=Db::find($query);
-    	if($row['password']==md5($_POST['password'])){
-    		return true;
-    	}else{
-    		return false;
-    	}
+        if(Request::instance()->isAjax()){
+            $admin = session('admin');
+            $UcenterAdmin = UcenterAdminModel::get($admin['id']);
+            $oldPsd = AccountLogic::encodePassword(input('pw'),$UcenterAdmin['salt']);
+            if($oldPsd != $UcenterAdmin['password']){
+                return ['success'=>false,'info'=>'原密码错误'];
+            }
+            $UcenterAdminModel = new UcenterAdminModel();
+            $password = AccountLogic::encodePassword(input('pw2'),$UcenterAdmin['salt']);
+            $b=$UcenterAdminModel->where('id',$UcenterAdmin['id'])->setField('password',$password);
+            if($b !== false){
+                return ['success'=>true,'info'=>'修改成功'];
+            }else{
+                return ['success'=>false,'info'=>'修改失败'];
+            }
+        }else{
+            $this->view->assign('admin',session('admin'));
+            return $this->view->fetch();
+        };
     }
 }
