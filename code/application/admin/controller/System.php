@@ -9,7 +9,8 @@ class System extends Admin{
         if (Request::instance()->isPost()){
             $data = Request::instance()->post();
             $systemModel = new SystemModel();
-            $configs=$systemModel->select();
+            $configs=$systemModel->where('group',2)->whereOr("name = 'GUANBIZHANDI' or name = 'GUANBIYUANYIN'")
+                ->select();
             foreach($configs as $config){
                 $b=$systemModel->where('name',$config['name'])->setField('value',$data[$config['name']]);
             }
@@ -21,9 +22,13 @@ class System extends Admin{
             }
         }else{
             $systemModel = new SystemModel();
-            $list = $systemModel->order('sort')->select();
+            $list = $systemModel->where('group',2)->order('sort')->select();
+            $guanbizhandian = SystemModel::where('name','GUANBIZHANDI')->value('value');
+            $guanbiyuanyin = SystemModel::where('name','GUANBIYUANYIN')->value('value');
             $this->view->assign('title', '系统设置');
             $this->view->assign('list', $list);
+            $this->view->assign('guanbizhandian', $guanbizhandian);
+            $this->view->assign('guanbiyuanyin', $guanbiyuanyin);
             return $this->view->fetch('System/config');
         }
 

@@ -1,0 +1,9 @@
+<ol class="breadcrumb">
+    <li><a href="./?refresh"><i class="fa fa-home"></i></a></li>
+    <li><a href="javascript:;">系统</a></li>
+    <li><a href="javascript:;">数据库</a></li>
+    <li class="active">{if $do == 'backup'}备份{elseif $do == 'restore'}还原{elseif $do == 'optimize'}优化{elseif $do == 'run'}运行SQL{/if}</li>
+</ol>
+<ul class="nav nav-tabs">
+    <li{if $do == 'optimize'} class="active"{/if}><a href="{:url('Database/optimize')}">优化</a></li>
+</ul>
