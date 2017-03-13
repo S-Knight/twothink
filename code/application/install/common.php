@@ -214,19 +214,6 @@ sql;
     //执行sql
     $db->execute($sql);
 
-    /*插入用户资料*/
-    $sql = <<<sql
-REPLACE INTO `[PREFIX]member` (`uid`, `nickname`,`real_name`,`sex`, `birthday`, `qq`, `login`, `reg_ip`, `reg_time`, `last_login_ip`,`last_login_time`, `status`, `signature`) VALUES
-('[UID]','[NAME]','', 0,  '0', '', 1, 0, '[TIME]', 0, '[TIME]', 1, '');
-sql;
-
-    $sql = str_replace(
-        array('[PREFIX]', '[NAME]', '[TIME]', '[UID]'),
-        array($prefix, $admin['username'], date('Y-m-d H:i:s'), $uid),
-        $sql);
-
-    $db->execute($sql);
-
     show_msg('创始人帐号注册完成！');
 }
 
