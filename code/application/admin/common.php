@@ -105,6 +105,7 @@ function newRichText($name){
             'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|', 'anchor', 'map', 'print', 'drafts']],
         'elementPathEnabled': false,
         'initialFrameHeight': 200,
+        'initialFrameWidth': 600,
         'focus': false,
         'maximumWords': 9999999999999
     };

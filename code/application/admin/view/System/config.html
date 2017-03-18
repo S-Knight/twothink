@@ -35,7 +35,7 @@
                 {foreach $list as $v}
                 <div class="form-group" style="overflow:hidden">
                     <label class="col-xs-3 col-sm-2 control-label">{$v['title']}</label>
-                    <div class="col-xs-3 col-sm-3">
+                    <div class="col-xs-3 col-sm-9">
                         {switch name="$v['type']"}
                         {case value="1"}
                         <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
@@ -82,9 +82,6 @@
         </form>
     </div>
 </div>
-
-
-
 {/block}
 {block name="script"}
 
