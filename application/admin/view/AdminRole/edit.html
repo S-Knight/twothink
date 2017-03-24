@@ -1,0 +1,139 @@
+{extend name="Public/base" /}
+{block name="body"}
+<div class="row">
+    <div class="col-md-12">
+        <form id="dataform" action="{:url('AdminRole/edit')}" method="post" class="form-horizontal form">
+
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    编辑用户组
+                </div>
+                <div class='panel-body'>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
+                            用户组名称</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text" id="name" name="name" class="form-control" value="{$row.name}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label class='radio-inline'>
+                                <input type='radio' name='status' value='1' {if condition="$row['status'] == 1"}checked{/if}/> 启用
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' name='status' value='0' {if condition="$row['status'] == 0"}checked{/if}/> 禁用
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">操作权限</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <div class='panel panel-default'>
+                                {foreach name="privileges" item="privilegesVo" key="i"}
+                                <div class='panel-heading'>
+                                    <label class='checkbox-inline'>
+                                        <input type='checkbox' name='perms[]' value='{$i}' class='perm-all'
+                                               data-group='{$i}'  {if checkRolePerm("$i",$id)} checked{/if}/>
+                                        {$privilegesVo.text}
+                                    </label>
+                                </div>
+
+                                <div class='panel-body perm-group'>
+
+                                    <div>
+                                        {foreach name="privilegesVo.child" item="privilegesChildVo" key="j"}
+                                        <label class='checkbox-inline'>
+                                            <input type='checkbox' name='perms[]' value='{$j}' class='perm-item'
+                                                   data-group='{$i}' data-child='{$j}' data-op=''
+                                                   {if checkRolePerm("$j",$id)} checked{/if}/>
+                                            <b>{$privilegesChildVo}</b>
+                                        </label>
+                                        {/foreach}
+                                    </div>
+
+                                </div>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                        <div class="col-sm-9 col-xs-12">
+                            <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                            <input type="hidden" value="{$row.id}" name="id">
+                            <input type="submit" id="subBtn" value="提交" class="btn btn-primary col-lg-1" style="height: auto;width: auto;"/>
+                            <input type="button" name="back" onclick='history.back()' value="返回列表"
+                                   class="btn btn-default" style="height: auto;width:auto;margin-left: 10px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script language="javascript">
+    $(function () {
+        $('.perm-all').click(function () {
+            var checked = $(this).get(0).checked;
+            var group = $(this).data('group');
+            $(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").each(function () {
+                $(this).get(0).checked = checked;
+            })
+        });
+
+        $('.perm-all-item').click(function () {
+            var checked = $(this).get(0).checked;
+            var group = $(this).data('group');
+            var child = $(this).data('child');
+            $(".perm-item[data-group='" + group + "'][data-child='" + child + "']").each(function () {
+                $(this).get(0).checked = checked;
+            });
+
+            if(checked){
+                $(".perm-all[data-group=" + group + "]").get(0).checked = checked;
+            }
+        });
+
+        $('.perm-item').click(function () {
+            var group = $(this).data('group');
+            var child = $(this).data('child');
+            var check = false;
+            $(this).closest('div').find(".perm-item").each(function () {
+                if ($(this).get(0).checked) {
+                    check = true;
+                    return false;
+                }
+            });
+            var allitem = $(".perm-all-item[data-group=" + group + "][data-child=" + child + "]");
+            if (allitem.length == 1) {
+                allitem.get(0).checked = check;
+            }
+            $(".perm-all[data-group=" + group + "]").get(0).checked = check;
+        });
+    });
+</script>
+
+<script src="/static/jquery.form.min.js"></script>
+<script>
+    $("#dataform").ajaxForm({
+        dataType:  'json',
+        success: function (rJson) {
+            layer.alert(rJson.info, {
+                skin: 'layui-layer-lan'
+            });
+
+            if(rJson.success){
+                location.href="{:url('index')}";
+            }
+        }
+    });
+
+</script>
+{/block}
