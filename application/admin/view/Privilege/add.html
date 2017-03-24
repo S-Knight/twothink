@@ -12,7 +12,7 @@
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             权限名称</label>
-                        <div class="col-sm-9 col-xs-12">
+                        <div class="col-sm-3 col-xs-12">
                             <input type="text" id="name" name="name" class="form-control" value=""/>
                         </div>
                     </div>
@@ -43,15 +43,22 @@
                         <div class="col-sm-3 col-xs-12">
                             <select class="form-control" id='function' name="function">
                                 <option value="">请选择：</option>
+                                <option value="*">*</option>
                             </select>
+                        </div>
+                        <div class="col-sm-6 col-xs-12" style="color: red;    line-height: 34px;">
+                            注：一级菜单权限模块和控制器不用选，方法请选&nbsp;*&nbsp;
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             代码</label>
-                        <div class="col-sm-9 col-xs-12">
+                        <div class="col-sm-3 col-xs-12">
                             <input type="text"  name="code" class="form-control" value="" />
+                        </div>
+                        <div class="col-sm-6 col-xs-12" style="color: red;    line-height: 34px;">
+                            注：与菜单的关联权限代码相对应
                         </div>
                     </div>
 
@@ -59,7 +66,7 @@
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             权限说明</label>
-                        <div class="col-sm-9 col-xs-12">
+                        <div class="col-sm-3 col-xs-12">
                             <textarea type="text"  name="remark" class="form-control" ></textarea>
                         </div>
                     </div>
@@ -114,8 +121,9 @@
                 success: function (data) {
 
                     $('#controller').html(getstr(data));
-
+                    str += '<option value="*">*</option>';
                     $('#function').html(str);
+
                     $("input[name='code']").val(moudle);
                 },
 

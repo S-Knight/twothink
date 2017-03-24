@@ -34,6 +34,15 @@ class Privilege extends Admin
             $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
         }
         $condition = [];
+        $code = input('post.code', '');
+        if ($code) {
+            $condition['code'] = $code;
+        }
+        $name = input('post.name', '');
+        if ($name) {
+            $condition['name'] = array('like', "%$name%");
+        }
+      
         $ActionModel = new ActionModel();
         $records["data"] = $ActionModel->where($condition)->order($orders)->limit($start,$length)->select();
         $records["recordsFiltered"] = $records["recordsTotal"] = $ActionModel->where($condition)->count();

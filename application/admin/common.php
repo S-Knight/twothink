@@ -190,7 +190,7 @@ TexT;
 	return $a;
 }
 
-function upload($filename,$value,$loadLib = true, $width=260, $height=200, $url='/index.php/admin/Upload/uploadify'){
+function upload($filename,$value,$loadLib = true, $width='auto', $height='auto', $url='/index.php/admin/Upload/uploadify'){
 	if(empty($value)){
 		$value='/uploads/empty.png';
 	}
@@ -213,9 +213,9 @@ LIB;
 	<input id="{$filename}url" name="{$filename}" type="hidden" value="{$value}"/>
 	<script type="text/javascript">
 		$("#{$filename}").uploadify({
-			'buttonText': '点击上传',
+			'buttonText': '上传',
 			'multi': false,//只能传一个文件
-			'width':'260',
+			'width':'100',
 			'removeTimeout':0,//完成后移除弹出框的时间间隔,
 			'fileDataName' : 'Filedata',
 			'fileTypeExts': '*.jpg; *.jpeg; *.png;',

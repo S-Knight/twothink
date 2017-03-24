@@ -11,6 +11,6 @@ class Index extends Controller{
 
         $view = new \think\View();
 
-        return $view->fetch();
+        return $view->fetch('Index/index',[],['__HOME__'=>'/home/']);
     }
 }

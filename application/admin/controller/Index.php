@@ -3,13 +3,19 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Request;
+use think\Cache;
 use app\admin\logic\AccountLogic;
 use app\admin\model\UcenterAdminModel;
+use app\common\model\UcenterMemberModel;
 class Index extends Admin
 {
     public function index()
     {
-        return $this->view->fetch();
+        $memberCount = UcenterMemberModel::count();
+        $aministratorsCount = UcenterAdminModel::count();
+        $this->assign('memberCount',$memberCount);
+        $this->assign('aministratorsCount',$aministratorsCount);
+        return $this->view->fetch('Index/index');
     }
 
     public function updatePsd()
@@ -33,5 +39,13 @@ class Index extends Admin
             $this->view->assign('admin',session('admin'));
             return $this->view->fetch();
         };
+    }
+
+    public function removeCacheAjax()
+    {
+        if(Cache::clear()){
+            return '清除成功';
+        }
+        return '清除失败';
     }
 }

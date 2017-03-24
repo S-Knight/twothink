@@ -74,3 +74,8 @@ function msubstr($str,$length, $start=0, $charset="utf-8", $suffix=true) {
 	if($suffix && $strlen>$length)$slice.='...';
 	return $slice;
 }
+
+function getConfig($name){
+    $configModel = new \app\admin\model\SystemModel;
+    return $configModel->where('name',$name)->value('value');
+}

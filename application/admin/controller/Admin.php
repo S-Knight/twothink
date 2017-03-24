@@ -51,6 +51,7 @@ abstract class Admin extends Controller
 
         $this->assign("admin", session('admin'));
         $this->assign("topMenus", $topMenus);
+        $this->assign("template", getConfig('TEMPLATE_NUM'));
     }
 
     /**

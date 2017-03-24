@@ -63,8 +63,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="container">
                         <!-- BEGIN LOGO -->
                         <div class="page-logo">
-                            <a href="index.html">
-                                <img src="/admin/template1/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">
+                            <a href="{:url('Index/index')}">
+                                <img src="{:getConfig('LOGO')}" alt="logo" class="logo-default" style="margin-top: 10px">
                             </a>
                         </div>
                         <!-- END LOGO -->
@@ -364,42 +364,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </li>-->
                                 <!-- END INBOX DROPDOWN -->
                                 <!-- BEGIN USER LOGIN DROPDOWN -->
-                                <li class="dropdown dropdown-user dropdown-dark" onclick="javascript:location.href='/admin/Index/updatePsd'">
+                                <li class="dropdown dropdown-user dropdown-dark" >
                                     <a href="javascript:;'" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                         <img alt="" class="img-circle" src="/admin/template1/layouts/layout3/img/avatar.png">
                                         <span class="username username-hide-mobile">{$Think.session.admin.username}</span>
                                     </a>
-                                    <!--<ul class="dropdown-menu dropdown-menu-default">
+                                    <ul class="dropdown-menu dropdown-menu-default">
                                         <li>
-                                            <a href="page_user_profile_1.html">
-                                                <i class="icon-user"></i> My Profile </a>
+                                            <a href="javascript:;" onclick="location.href='/admin/Index/updatePsd'">
+                                                <i class="icon-user"></i> 修改密码 </a>
                                         </li>
                                         <li>
-                                            <a href="app_calendar.html">
-                                                <i class="icon-calendar"></i> My Calendar </a>
+                                            <a href="javascript:;" onclick="removeCache()">
+                                                <i class="icon-calendar"></i> 清除缓存 </a>
                                         </li>
-                                        <li>
-                                            <a href="app_inbox.html">
-                                                <i class="icon-envelope-open"></i> My Inbox
-                                                <span class="badge badge-danger"> 3 </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="app_todo_2.html">
-                                                <i class="icon-rocket"></i> My Tasks
-                                                <span class="badge badge-success"> 7 </span>
-                                            </a>
-                                        </li>
-                                        <li class="divider"> </li>
-                                        <li>
-                                            <a href="page_user_lock_1.html">
-                                                <i class="icon-lock"></i> Lock Screen </a>
-                                        </li>
-                                        <li>
-                                            <a href="page_user_login_1.html">
-                                                <i class="icon-key"></i> Log Out </a>
-                                        </li>
-                                    </ul>-->
+
+                                    </ul>
                                 </li>
                                 <!-- END USER LOGIN DROPDOWN -->
                                 <!-- BEGIN QUICK SIDEBAR TOGGLER -->
@@ -1179,6 +1159,24 @@ License: You must have a valid license purchased only from themeforest(the above
 <script type="text/javascript" src="/static/layer/2.1/layer.js"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 {block name="script"}{/block}
+
+<script>
+    function removeCache() {
+        $.ajax({
+            async:false,
+            type: "POST",
+            url: "/admin/Index/removeCacheAjax",
+            dataType: "json",
+            beforeSend : function(){
+                layer.msg('清除中，请稍等....');
+            },
+            success: function (data) {
+                layer.msg(data);
+            }
+
+        });
+    }
+</script>
 </body>
 
 </html>

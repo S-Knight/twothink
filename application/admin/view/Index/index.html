@@ -1,4 +1,37 @@
-{extend name="Public/base" /}
-{block name="body"}
 
+
+{extend name="Public/base" /}
+
+{block name="body"}
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 margin-bottom-10">
+        <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="fa fa-briefcase fa-icon-medium"></i>
+            </div>
+            <div class="details">
+                <div class="number">{$memberCount}</div>
+                <div class="desc"> 会员 </div>
+            </div>
+            <a class="more" href="{:url('UcenterMember/index')}">View more
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat red">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number">{$aministratorsCount}</div>
+                <div class="desc"> 管理员 </div>
+            </div>
+            <a class="more" href="{:url('UcenterAdmin/index')}">View more
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+</div>
 {/block}
