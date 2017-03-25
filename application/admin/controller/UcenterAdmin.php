@@ -74,13 +74,31 @@ class UcenterAdmin extends Admin{
         $ucenterAdminModel = new UcenterAdminModel();
         $start = input('post.start', 0);
         $length = input('post.length', 20);
-        $records["data"] = $ucenterAdminModel->where(['status'=>['neq',-1]])->limit($start,$length)->order('updated_at desc')->select();
-        $records["recordsTotal"] = $ucenterAdminModel->where(['status'=>['neq',-1]])->count();
+
+        $columns = input('post.columns/a');
+        $orderColumns = input('post.order/a');
+        $orders = [];
+        foreach ($orderColumns as $orderColumn) {
+            $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
+        }
+
+        $condition = [];
+        $username = input('post.username', '');
+        if ($username) {
+            $condition['username'] = array('like', "%$username%");
+        }
+        $status = input('post.status', '');
+        if ($status != '') {
+            $condition['status'] = $status;
+        }
+
+        $records["data"] = $ucenterAdminModel->where($condition)->limit($start,$length)->order($orders)->select();
+        $records["recordsTotal"] = $ucenterAdminModel->where($condition)->count();
         $records["recordsFiltered"] = $records["recordsTotal"];
         $records['draw'] = input('post.draw', 1);
         foreach ($records["data"] as &$row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
-            $row['statusText'] = $row['status'] == 0 ? '禁用' : '启用';
+            $row['status'] = $row['status'] == 0 ? '禁用' : '启用';
             $row['roleName'] = AdminRoleModel::where('id',$row['role_id'])->value('name');
         }
         return $records;

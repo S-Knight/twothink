@@ -91,14 +91,32 @@ class UcenterMember extends Admin{
         $ucenterMemberModel = new UcenterMemberModel();
         $start = input('post.start', 0);
         $length = input('post.length', 20);
+
+        $columns = input('post.columns/a');
+        $orderColumns = input('post.order/a');
+        $orders = [];
+        foreach ($orderColumns as $orderColumn) {
+            $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
+        }
+
+        $condition = [];
+        $username = input('post.username', '');
+        if ($username) {
+            $condition['username'] = array('like', "%$username%");
+        }
+        $status = input('post.status', '');
+        if ($status != '') {
+            $condition['status'] = $status;
+        }
+
         $records["data"] = $ucenterMemberModel
-            ->limit($start,$length)->order('update_time desc')->select();
-        $records["recordsTotal"] = $ucenterMemberModel->count();
+            ->where($condition)->limit($start,$length)->order($orders)->select();
+        $records["recordsTotal"] = $ucenterMemberModel->where($condition)->count();
         $records["recordsFiltered"] = $records["recordsTotal"];
         $records['draw'] = input('post.draw', 1);
         foreach ($records["data"] as &$row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
-            $row['statusText'] = $row['status'] == 0 ? '禁用' : '启用';
+            $row['status'] = $row['status'] == 0 ? '禁用' : '启用';
             $row['last_login_time'] = date('Y-m-d H:i:s',$row['last_login_time']);
            
         }

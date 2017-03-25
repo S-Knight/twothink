@@ -22,6 +22,25 @@
             <div id="errorTips" class="text-danger bg-danger" style="display: none;float: right;padding: 5px;margin-right: 15px"><h4><i class="fa fa-spin fa-cog"></i> <span></span></h4></div>
 
             <div class="portlet-body">
+                <div class="input-group datatable_filters"  style="width: 100%;">
+                    <div class="form-group" style="overflow:hidden">
+                        <div class="col-sm-8 col-lg-7 col-xs-12">
+                            <div class="input-group" style="overflow:hidden">
+                                <div class="input-group-addon">配置标识</div>
+                                <input class="form-control form-filter" name="name" type="text" value="" placeholder="配置标识">
+                                <div class="input-group-addon">配置名称</div>
+                                <input class="form-control form-filter" name="title" type="text" value="" placeholder="配置名称">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group filter-btns" >
+                        <div class="col-sm-7 col-lg-9 col-xs-12">
+                            <button class="btn btn-primary filter-submit">搜索</button>
+                            <button class="btn btn-primary filter-cancel">重置</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table class="table table-striped table-bordered table-hover table-checkable" id="datatable_admins">
                         <thead>
@@ -112,7 +131,7 @@
                     "order": [
                         [1, "asc"]
                     ], // set first column as a default sort by asc
-                    "bSort": false
+                    "bSort": true
                 }
             });
 

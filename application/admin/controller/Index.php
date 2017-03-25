@@ -37,7 +37,7 @@ class Index extends Admin
             }
         }else{
             $this->view->assign('admin',session('admin'));
-            return $this->view->fetch();
+            return $this->view->fetch('Index/updatePsd');
         };
     }
 

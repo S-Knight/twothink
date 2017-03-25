@@ -71,8 +71,24 @@ class System extends Admin{
         $systemModel = new SystemModel();
         $start = input('post.start', 0);
         $length = input('post.length', 20);
-        $records["data"] = $systemModel->limit($start,$length)->order('created_at desc')->select();
-        $records["recordsTotal"] = $systemModel->count();
+        
+        $columns = input('post.columns/a');
+        $orderColumns = input('post.order/a');
+        $orders = [];
+        foreach ($orderColumns as $orderColumn) {
+            $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
+        }
+        $condition = [];
+        $name = input('post.name', '');
+        if ($name) {
+            $condition['name'] = array('like', "%$name%");
+        }
+        $title = input('post.title', '');
+        if ($title) {
+            $condition['title'] = array('like', "%$title%");
+        }
+        $records["data"] = $systemModel->where($condition)->limit($start,$length)->order($orders)->select();
+        $records["recordsTotal"] = $systemModel->where($condition)->count();
         $records["recordsFiltered"] = $records["recordsTotal"];
         $records['draw'] = input('post.draw', 1);
         foreach ($records["data"] as &$row) {
