@@ -41,7 +41,7 @@
                         <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
                         {/case}
                         {case value="2"}
-                        {:upload($v['name'],$v['value'], $loadUploadify)}
+                        {:tpl_form_field_image($v.name,$v.value)}
                         {php}$loadUploadify = false;{/php}
                         {/case}
                         {case value="3"}

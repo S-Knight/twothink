@@ -26,4 +26,24 @@ class Upload extends Controller
 		}
 		return json_encode($rjson);
 	}
+
+	/**
+	 * base64编码图片上传
+	 * @param $imgresult
+	 * @return string
+	 */
+	public function baseUpload($imgresult)
+	{
+		$url = explode(',' ,$imgresult);
+		$img = base64_decode($url[1]);
+		$savePath = date('Ymd');
+		$filename = md5(date('YmdHis').rand(1000,9999));
+		$path = ROOT_PATH . 'public' . DS . 'uploads/'.$savePath;
+		if(!is_dir($path)){
+			mkdir($path);
+		}
+		file_put_contents($path."/".$filename.'.jpg', $img);//返回的是字节数
+		$url = '/uploads/' . $savePath."/".$filename.'.jpg';
+		return $url;
+	}
 }

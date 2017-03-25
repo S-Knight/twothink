@@ -235,6 +235,60 @@ TexT;
 
 	return $html;
 }
+
+
+
+function tpl_form_field_image($name, $value = '', $default = '') {
+	if (empty($default)) {
+		$default = '/uploads/nopic.jpg';
+	}
+	$val = $default;
+	if (!empty($value)) {
+		$val = $value;
+	}
+
+	$s = '';
+
+	$s .= '
+		<div class="input-group">
+			<input type="text" name="' . $name . '" value="' . $value . '" class="form-control inputimgs" autocomplete="off">
+			<span class="input-group-btn" style="position:relative;">
+				<button class="btn btn-default" type="button" onclick="openBrowse(this)">选择图片</button>
+				<input class="btn btn-default" type="file" onchange="change(this,0)"  value="选择图片" style="display:none"/>
+			</span>
+		</div>
+		<div class="input-group" style="margin-top:.5em;">
+			<img src="' . $val . '" class="img-responsive img-thumbnail imgs"  width="150" />
+			<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+		</div>';
+
+	$s .="
+		<script>
+			function deleteImage(obj){
+				$(obj).prev().attr('src','/uploads/nopic.jpg');
+				$(obj).parent().prev().children('.inputimgs').val('');
+			}
+			
+			 function openBrowse(obj){   
+				var ie=navigator.appName==\"Microsoft Internet Explorer\" ? true : false;   
+				var file = $(obj).next();
+				file = file[0];
+				if(ie){   
+		
+					file.click();   
+	
+				}else{  
+					var a=document.createEvent(\"MouseEvents\");//FF的处理   
+					a.initEvent(\"click\", true, true);    
+					file.dispatchEvent(a);   
+				}   
+    		}   
+		</script>";
+
+	return $s;
+}
+
+
 function chechStatic($model, $data)
 {
 	//       $staticModel=new StaticRewardModel();
