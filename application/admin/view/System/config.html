@@ -45,8 +45,7 @@
                         {php}$loadUploadify = false;{/php}
                         {/case}
                         {case value="3"}
-                        <textarea name="{$v['name']}" id="{$v.name}">{$v['value']}</textarea>
-                        {:newRichText($v['name'])}
+                        {:newRichText($v['name'],$v['value'])}
                         {/case}
                         {case value="4"}
                         <label class="radio-inline">
@@ -84,8 +83,6 @@
 </div>
 {/block}
 {block name="script"}
-
-
 <script type="text/javascript">
     $("#dataform").Validform({
         tiptype:function(msg){
@@ -109,6 +106,5 @@
             $('#yuanyin').hide();
         }
     })
-
 </script>
 {/block}
