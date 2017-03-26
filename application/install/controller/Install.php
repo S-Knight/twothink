@@ -95,6 +95,7 @@ class Install extends Controller{
 
     //安装第三步，安装数据表，创建配置文件
     public function step3(){
+        session('error') && $this->showError('数据库配置错误，请调整配置后重试！');
         echo  $this->fetch('Install/step3');
 
         //连接数据库
@@ -117,16 +118,6 @@ class Install extends Controller{
             session('step', 3);
 
             echo "<script type=\"text/javascript\">setTimeout(function(){location.href='".url('Index/complete')."'},5000)</script>";
-            ob_flush();
-            flush();
-        }
-
-        if(session('error')){
-            show_msg(session('error'));
-        } else {
-            session('step', 3);
-
-            echo "<script type=\"text/javascript\">setTimeout(function(){location.href='".url('install/Index/complete')."'},5000)</script>";
             ob_flush();
             flush();
         }
