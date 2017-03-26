@@ -31,7 +31,7 @@ class Install extends Controller{
         $this->assign('env', $env);
         $this->assign('func', $func);
 
-        return $this->fetch();
+        return $this->fetch('Install/step1');
     }
 
     //安装第二步，创建数据库
@@ -39,7 +39,7 @@ class Install extends Controller{
         session('error') && $this->showError('环境检测没有通过，请调整环境后重试！');
         session('step', 2);
 
-        return $this->fetch();
+        return $this->fetch('Install/step2');
     }
 
     public function setDatabase($db = NULL, $admin = NULL) {
@@ -95,7 +95,7 @@ class Install extends Controller{
 
     //安装第三步，安装数据表，创建配置文件
     public function step3(){
-       echo  $this->fetch();
+        echo  $this->fetch('Install/step3');
 
         //连接数据库
         $dbconfig = session('dataConfig');
@@ -135,6 +135,6 @@ class Install extends Controller{
     public function showError($info,$title='很遗憾，安装失败，失败原因'){
         $this->assign('info',$info);// 提示信息
         $this->assign('title',$title);
-        return $this->fetch('error');
+        return $this->fetch('Install/error');
     }
 }

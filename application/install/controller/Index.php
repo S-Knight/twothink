@@ -5,7 +5,7 @@ use think\Controller;
 
 class Index extends Controller{
     public function index() {
-        return $this->fetch('index');
+        return $this->fetch('Index/index');
     }
 
     //安装完成
@@ -26,6 +26,6 @@ class Index extends Controller{
         session('step', NULL);
         session('error', NULL);
         session('update', NULL);
-        return $this->fetch();
+        return $this->fetch('Index/complete');
     }
 }
