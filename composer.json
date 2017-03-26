@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "ext-gd2" : "*",
-        "ext-mbstring": "*",
+        "gd" : "*",
+        "mbstring": "*",
         "topthink/framework": "*",
         "topthink/think-captcha": "^1.0"
     },
