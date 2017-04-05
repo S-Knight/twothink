@@ -142,7 +142,6 @@ CREATE TABLE `geek_config` (
 -- ----------------------------
 -- Records of geek_config
 -- ----------------------------
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('LOGO', '2', 'LOGO', '2', '', '2017-03-24 22:22:02', '2017-03-24 22:22:02', '0', '/uploads/20170324\\229b08cd7278c2d4f3957eb92adfa6bb.png', '1');
 INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('TITLE', '1', '网站标题', '2', '', '2017-03-24 23:03:54', '2017-03-24 23:03:54', '0', 'TWOTHINK网站管理系统', '1');
 INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('DESCRIBE', '6', '网站描述', '2', '', '2017-03-24 23:05:16', '2017-03-24 23:05:16', '0', 'TWOTHINK网站管理系统', '2');
 INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('KEYWORD', '1', '网站关键字', '2', '', '2017-03-24 23:06:29', '2017-03-24 23:06:29', '0', 'TWOTHINK网站管理系统,TWOTHINK', '3');
