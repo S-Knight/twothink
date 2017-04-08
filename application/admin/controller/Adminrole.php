@@ -7,6 +7,7 @@ use think\Request;
 
 class AdminRole extends Admin
 {
+    
     public function index()
     {
         if(request()->isAjax()){
