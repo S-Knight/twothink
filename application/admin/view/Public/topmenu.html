@@ -3,7 +3,7 @@
         {volist name="topMenus" id="topMenus" }
         {if checkRolePerm($topMenus['privilege_code'], $admin['role_id'])}
         <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
-            <a href="{$topMenus['url']}">
+            <a href="javascript:;">
                 <i class="{$topMenus.icon}"></i> {$topMenus['title']}
                 <span class="arrow"></span>
             </a>
