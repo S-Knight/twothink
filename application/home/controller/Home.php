@@ -3,7 +3,7 @@ namespace app\home\controller;
 use think\Controller;
 
 class Home extends Controller{
-    protected $beforeActionList = ['checkSite','checkDb'];
+    protected $beforeActionList = ['checkDb','checkSite'];
 
     protected function checkDb ()
     {

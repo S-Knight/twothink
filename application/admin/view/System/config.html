@@ -39,6 +39,7 @@
                         {switch name="$v['type']"}
                         {case value="1"}
                         <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
+
                         {/case}
                         {case value="2"}
                         {:tpl_form_field_image($v.name,$v.value)}
@@ -62,9 +63,12 @@
                         <textarea name="{$v['name']}" class="form-control">{$v['value']}</textarea>
                         {/case}
                         {/switch}
-
-
                     </div>
+                    {if $v.remark}
+                    <div class="col-xs-3 col-sm-5">
+                        <span style="    line-height: 35px;">({$v.remark})</span>
+                    </div>
+                    {/if}
                 </div>
                 {/foreach}
 

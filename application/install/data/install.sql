@@ -140,6 +140,7 @@ CREATE TABLE `geek_config` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `value` text COMMENT '配置值',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `remark` text COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`) USING BTREE,
   KEY `type` (`type`) USING BTREE,
@@ -149,16 +150,16 @@ CREATE TABLE `geek_config` (
 -- ----------------------------
 -- Records of geek_config
 -- ----------------------------
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('TITLE', '1', '网站标题', '2', '', '2017-03-24 23:03:54', '2017-03-24 23:03:54', '0', 'TWOTHINK网站管理系统', '1');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('DESCRIBE', '6', '网站描述', '2', '', '2017-03-24 23:05:16', '2017-03-24 23:05:16', '0', 'TWOTHINK网站管理系统', '2');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('KEYWORD', '1', '网站关键字', '2', '', '2017-03-24 23:06:29', '2017-03-24 23:06:29', '0', 'TWOTHINK网站管理系统,TWOTHINK', '3');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('RECORD_NUMBER', '1', '网站备案号', '2', '', '2017-03-24 23:07:32', '2017-03-24 23:07:32', '0', '湘ICP备15015131号 - 2', '5');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('data_backup_path', '1', '数据库备份根路径', '2', '', '2017-04-08 17:03:46', '2017-04-08 17:03:48', '0', './static/data/', '0');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('data_backup_part_size', '1', '数据库备份卷大小', '2', '', '2017-04-08 18:57:06', '2017-04-08 18:57:08', '0', '20971520', '0');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('data_backup_compress', '1', '数据库备份文件是否启用压缩', '2', '0:不压缩\r\n1:启用压缩', '2017-04-08 18:57:10', '2017-04-08 18:57:13', '0', '1', '0');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('data_backup_compress_level', '1', '数据库备份文件压缩级别', '2', '1:普通\r\n4:一般\r\n9:最高', '2017-04-08 18:58:22', '2017-04-08 18:58:24', '0', '9', '0');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('GUANBIZHANDI', '1', '关闭站点', '2', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '1', '0');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`) VALUES ('GUANBIYUANYIN', '6', '关闭原因', '2', '', '2017-04-08 21:27:27', '2017-04-08 21:27:30', '0', '要关啊怎么滴', '0');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('TITLE', '1', '网站标题', '2', '', '2017-03-24 23:03:54', '2017-03-24 23:03:54', '0', 'TWOTHINK网站管理系统', '1','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DESCRIBE', '6', '网站描述', '2', '', '2017-03-24 23:05:16', '2017-03-24 23:05:16', '0', 'TWOTHINK网站管理系统', '2','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('KEYWORD', '1', '网站关键字', '2', '', '2017-03-24 23:06:29', '2017-03-24 23:06:29', '0', 'TWOTHINK网站管理系统,TWOTHINK', '3','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('RECORD_NUMBER', '1', '网站备案号', '2', '', '2017-03-24 23:07:32', '2017-03-24 23:07:32', '0', '湘ICP备15015131号 - 2', '5','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('data_backup_path', '1', '数据库备份根路径', '2', '', '2017-04-08 17:03:46', '2017-04-08 17:03:48', '0', './static/data/', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('data_backup_part_size', '1', '数据库备份卷大小', '2', '', '2017-04-08 18:57:06', '2017-04-08 18:57:08', '0', '20971520', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('data_backup_compress', '1', '数据库备份文件是否启用压缩', '2', '0:不压缩\r\n1:启用压缩', '2017-04-08 18:57:10', '2017-04-08 18:57:13', '0', '1', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('data_backup_compress_level', '1', '数据库备份文件压缩级别', '2', '1:普通\r\n4:一般\r\n9:最高', '2017-04-08 18:58:22', '2017-04-08 18:58:24', '0', '9', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('GUANBIZHANDI', '1', '关闭站点', '2', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '1', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('GUANBIYUANYIN', '6', '关闭原因', '2', '', '2017-04-08 21:27:27', '2017-04-08 21:27:30', '0', '要关啊怎么滴', '0','');
 
 
 
