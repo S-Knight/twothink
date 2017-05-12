@@ -68,6 +68,8 @@ INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `co
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('35', '前台用户管理-添加', 'admin', 'UcenterMember', 'add', 'admin.UcenterMember.add', '', '2017-02-07 11:49:14', '2017-02-07 11:49:14');
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('36', '前台用户管理-编辑', 'admin', 'UcenterMember', 'edit', 'admin.UcenterMember.edit', '', '2017-02-07 11:49:14', '2017-02-07 11:49:14');
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('37', '前台用户管理-删除', 'admin', 'UcenterMember', 'delete', 'admin.UcenterMember.delete', '', '2017-02-07 11:49:14', '2017-02-07 11:49:14');
+INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('37', '前台用户管理-导入', 'admin', 'UcenterMember', 'import', 'admin.UcenterMember.import', '', '2017-02-07 11:49:14', '2017-02-07 11:49:14');
+INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('37', '前台用户管理-导出', 'admin', 'UcenterMember', 'export', 'admin.UcenterMember.export', '', '2017-02-07 11:49:14', '2017-02-07 11:49:14');
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('44', '操作日志列表-浏览', 'admin', 'ActionLog', 'index', 'admin.ActionLog.index', '', '2017-02-08 19:14:35', '2017-02-08 19:14:38');
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('45', '操作日志列表', 'admin', 'ActionLog', '*', 'admin.ActionLog.*', '', '2017-02-08 19:16:26', '2017-02-08 19:16:29');
 INSERT INTO `geek_action` (`id`, `name`, `moudle`, `controller`, `function`, `code`, `remark`, `created_at`, `updated_at`) VALUES ('46', '操作日志列表-删除', 'admin', 'ActionLog', 'delete', 'admin.ActionLog.delete', '', '2017-02-08 19:16:59', '2017-02-08 19:17:02');
@@ -122,7 +124,7 @@ CREATE TABLE `geek_admin_role` (
 -- ----------------------------
 -- Records of geek_admin_role
 -- ----------------------------
-INSERT INTO `geek_admin_role` (`id`, `name`, `perms`, `status`) VALUES ('1', '超级管理员', 'Privilege,admin.Privilege.index,admin.Privilege.add,admin.Privilege.edit,admin.Privilege.delete,System,admin.System.index,admin.System.config,admin.System.add,admin.System.edit,admin.System.delete,Menu,admin.Menu.index,admin.Menu.add,admin.Menu.edit,admin.Menu.delete,Adminrole,admin.AdminRole.index,admin.AdminRole.add,admin.AdminRole.edit,admin.AdminRole.delete,UcenterAdmin,admin.UcenterAdmin.index,admin.UcenterAdmin.add,admin.UcenterAdmin.edit,admin.UcenterAdmin.delete,admin.UcenterMember,admin.UcenterMember.index,admin.UcenterMember.add,admin.UcenterMember.edit,admin.UcenterMember.delete,admin.Index,admin.Index.index,admin.Index.removeCacheAjax,admin.Index.updatePsd,admin.ActionLog.*,admin.ActionLog.index,admin.ActionLog.delete,admin.Upload.*,admin.Upload.baseUpload,admin.Databases.*,admin.Databases.index,admin.Databases.export,admin.Databases.del,admin.Databases.optimize,admin.Databases.repair,admin.Databases.import', '1');
+INSERT INTO `geek_admin_role` (`id`, `name`, `perms`, `status`) VALUES ('1', '超级管理员', 'Privilege,admin.Privilege.index,admin.Privilege.add,admin.Privilege.edit,admin.Privilege.delete,System,admin.System.index,admin.System.config,admin.System.add,admin.System.edit,admin.System.delete,Menu,admin.Menu.index,admin.Menu.add,admin.Menu.edit,admin.Menu.delete,Adminrole,admin.AdminRole.index,admin.AdminRole.add,admin.AdminRole.edit,admin.AdminRole.delete,UcenterAdmin,admin.UcenterAdmin.index,admin.UcenterAdmin.add,admin.UcenterAdmin.edit,admin.UcenterAdmin.delete,admin.UcenterMember,admin.UcenterMember.index,admin.UcenterMember.add,admin.UcenterMember.edit,admin.UcenterMember.delete,admin.Index,admin.Index.index,admin.Index.removeCacheAjax,admin.Index.updatePsd,admin.ActionLog.*,admin.ActionLog.index,admin.ActionLog.delete,admin.Upload.*,admin.Upload.baseUpload,admin.Databases.*,admin.Databases.index,admin.Databases.export,admin.Databases.del,admin.Databases.optimize,admin.Databases.repair,admin.Databases.import,admin.UcenterMember.export,admin.UcenterMember.import', '1');
 
 -- ----------------------------
 -- Table structure for geek_config
@@ -141,6 +143,7 @@ CREATE TABLE `geek_config` (
   `value` text COMMENT '配置值',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `remark` text COMMENT '备注',
+  `enum` text COMMENT '枚举型设置',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`) USING BTREE,
   KEY `type` (`type`) USING BTREE,
@@ -150,16 +153,16 @@ CREATE TABLE `geek_config` (
 -- ----------------------------
 -- Records of geek_config
 -- ----------------------------
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('TITLE', '1', '网站标题', '2', '', '2017-03-24 23:03:54', '2017-03-24 23:03:54', '0', 'TWOTHINK网站管理系统', '1','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DESCRIBE', '6', '网站描述', '2', '', '2017-03-24 23:05:16', '2017-03-24 23:05:16', '0', 'TWOTHINK网站管理系统', '2','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('KEYWORD', '1', '网站关键字', '2', '', '2017-03-24 23:06:29', '2017-03-24 23:06:29', '0', 'TWOTHINK网站管理系统,TWOTHINK', '3','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('RECORD_NUMBER', '1', '网站备案号', '2', '', '2017-03-24 23:07:32', '2017-03-24 23:07:32', '0', '湘ICP备15015131号 - 2', '5','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DATA_BACKUP_PATH', '1', '数据库备份根路径', '2', '', '2017-04-08 17:03:46', '2017-04-08 17:03:48', '0', './static/data/', '0','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DATA_BACKUP_PART_SIZE', '1', '数据库备份卷大小', '2', '', '2017-04-08 18:57:06', '2017-04-08 18:57:08', '0', '20971520', '0','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DATA_BACKUP_COMPRESS', '1', '数据库备份文件是否启用压缩', '2', '0:不压缩\r\n1:启用压缩', '2017-04-08 18:57:10', '2017-04-08 18:57:13', '0', '1', '0','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('DATA_BACKUP_COMPRESS_LEVEL', '1', '数据库备份文件压缩级别', '2', '1:普通\r\n4:一般\r\n9:最高', '2017-04-08 18:58:22', '2017-04-08 18:58:24', '0', '9', '0','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('GUANBIZHANDI', '1', '关闭站点', '3', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '1', '0','');
-INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`) VALUES ('GUANBIYUANYIN', '6', '关闭原因', '3', '', '2017-04-08 21:27:27', '2017-04-08 21:27:30', '0', '要关啊怎么滴', '0','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('TITLE', '1', '网站标题', '2', '', '2017-03-24 23:03:54', '2017-03-24 23:03:54', '0', 'TWOTHINK网站管理系统', '1','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('DESCRIBE', '6', '网站描述', '2', '', '2017-03-24 23:05:16', '2017-03-24 23:05:16', '0', 'TWOTHINK网站管理系统', '2','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('KEYWORD', '1', '网站关键字', '2', '', '2017-03-24 23:06:29', '2017-03-24 23:06:29', '0', 'TWOTHINK网站管理系统,TWOTHINK', '3','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('RECORD_NUMBER', '1', '网站备案号', '2', '', '2017-03-24 23:07:32', '2017-03-24 23:07:32', '0', '湘ICP备15015131号 - 2', '5','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('DATA_BACKUP_PATH', '1', '数据库备份根路径', '2', '', '2017-04-08 17:03:46', '2017-04-08 17:03:48', '0', './static/data/', '0','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('DATA_BACKUP_PART_SIZE', '1', '数据库备份卷大小', '2', '', '2017-04-08 18:57:06', '2017-04-08 18:57:08', '0', '20971520', '0','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('DATA_BACKUP_COMPRESS', '1', '数据库备份文件是否启用压缩', '2', '0:不压缩\r\n1:启用压缩', '2017-04-08 18:57:10', '2017-04-08 18:57:13', '0', '1', '0','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('DATA_BACKUP_COMPRESS_LEVEL', '1', '数据库备份文件压缩级别', '2', '1:普通\r\n4:一般\r\n9:最高', '2017-04-08 18:58:22', '2017-04-08 18:58:24', '0', '9', '0','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('GUANBIZHANDI', '1', '关闭站点', '3', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '1', '0','','');
+INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_at`, `updated_at`, `status`, `value`, `sort`,`remark`,`enum`) VALUES ('GUANBIYUANYIN', '6', '关闭原因', '3', '', '2017-04-08 21:27:27', '2017-04-08 21:27:30', '0', '系统已关闭，请联系管理员', '0','','');
 
 
 

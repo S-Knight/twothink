@@ -20,7 +20,8 @@
         "ext-gd" : "*",
         "ext-mbstring": "*",
         "topthink/framework": "*",
-        "topthink/think-captcha": "^1.0"
+        "topthink/think-captcha": "^1.0",
+        "phpoffice/phpexcel": "dev-master"
     },
     "extra": {
         "think-path": "thinkphp"

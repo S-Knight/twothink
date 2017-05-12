@@ -26,6 +26,7 @@ class System extends Admin{
             ->field('id,name,type')->select();
         $configList = [];
         foreach($configs as $config){
+            //复选框特殊处理
             if($config['type'] == 5 && !in_array($config['name'],array_keys($data))){
                 $value = '';
             }elseif ($config['type'] == 5 && in_array($config['name'],array_keys($data))){
