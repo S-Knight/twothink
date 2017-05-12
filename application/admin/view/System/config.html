@@ -31,7 +31,6 @@
                     </div>
                 </div>
 
-                {php}$loadUploadify = true;{/php}
                 {foreach $list as $v}
                 <div class="form-group" style="overflow:hidden">
                     <label class="col-xs-3 col-sm-2 control-label">{$v['title']}</label>
@@ -43,21 +42,24 @@
                         {/case}
                         {case value="2"}
                         {:tpl_form_field_image($v.name,$v.value)}
-                        {php}$loadUploadify = false;{/php}
                         {/case}
                         {case value="3"}
                         {:newRichText($v['name'],$v['value'])}
                         {/case}
                         {case value="4"}
+                        {foreach :explode(',',$v.enum) as $radioConfig}
                         <label class="radio-inline">
-                            <input type="radio" name="{$v['name']}"  value="1" {if condition="$v['value'] == 1"}checked{/if}/> 是
+                            <input type="radio" name="{$v['name']}"  value="{:explode(':',$radioConfig)[1]}" {php}if(explode(':',$radioConfig)[1] == $v['value']){echo 'checked';}{/php}/> {:explode(':',$radioConfig)[0]}
                         </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="{$v['name']}" value="0" {if condition="$v['value'] == 0"}checked{/if}/> 否
-                        </label>
+                        {/foreach}
                         {/case}
                         {case value="5"}
-                        <input type="checkbox" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}}"/>
+
+                        {foreach :explode(',',$v.enum) as $key=>$checkboxConfig}
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="{$v['name']}[]"  value="{:explode(':',$checkboxConfig)[1]}" {php}if(in_array(explode(':',$checkboxConfig)[1],explode(',',$v['value']))){echo 'checked';}{/php}/> {:explode(':',$checkboxConfig)[0]}
+                        </label>
+                        {/foreach}
                         {/case}
                         {case value="6"}
                         <textarea name="{$v['name']}" class="form-control">{$v['value']}</textarea>

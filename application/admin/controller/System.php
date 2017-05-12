@@ -23,15 +23,23 @@ class System extends Admin{
         $data = Request::instance()->post();
         $systemModel = new SystemModel();
         $configs=$systemModel->where('group',2)->whereOr("name = 'GUANBIZHANDI' or name = 'GUANBIYUANYIN'")
-            ->field('id,name')->select();
+            ->field('id,name,type')->select();
         $configList = [];
         foreach($configs as $config){
+            if($config['type'] == 5 && !in_array($config['name'],array_keys($data))){
+                $value = '';
+            }elseif ($config['type'] == 5 && in_array($config['name'],array_keys($data))){
+                $value = implode(',',$data[$config['name']]);
+            }else{
+                $value = $data[$config['name']];
+            }
             $configList[] = [
                 'id'=>$config['id'],
                 'name'=>$config['name'],
-                'value'=>$data[$config['name']]
+                'value'=>$value
             ];
         }
+
         if($systemModel->saveAll($configList) !== false){
             return array('status'=>'y',"info"=>"操作成功");
         }else{

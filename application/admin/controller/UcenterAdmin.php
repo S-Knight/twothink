@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use app\common\model\UcenterAdminModel;
+use app\admin\model\UcenterAdminModel;
 use app\admin\model\AdminRoleModel;
 use app\admin\logic\AccountLogic;
 use think\Request;
