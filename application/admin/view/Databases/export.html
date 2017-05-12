@@ -87,7 +87,7 @@
             $export.parent().children().addClass("disabled");
             $export.html("正在发送备份请求...");
             $.post(
-                "{:url('Database/export')}",
+                "{:url('Databases/export')}",
                 {tables : formData},
                 function(data){
                     if(data.code){
@@ -108,7 +108,7 @@
 
         function backup(tab, code){
             code && showmsg(tab.id, "开始备份...(0%)");
-            $.get("{:url('Database/export')}", tab, function(data){
+            $.get("{:url('Databases/export')}", tab, function(data){
                 if(data.code){
                     showmsg(tab.id, data.msg);
                     if(!$.isPlainObject(data.data.tab)){
@@ -168,7 +168,7 @@
                     "ajax": {
                         "processing": true,
                         "serverSide": true,
-                        "url": "/admin/Database/index/type/{$type}"// ajax source
+                        "url": "/admin/Databases/index/type/{$type}"// ajax source
                     },
                     "columns": [
                         { "data": "selectDOM", orderable: false },

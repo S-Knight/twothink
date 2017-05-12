@@ -9,7 +9,7 @@
 
 namespace app\admin\controller; 
 
-class Database extends Admin {
+class Databases extends Admin {
 	/**
 	 * 数据库备份/还原列表
 	 * @param  String $type import-还原，export-备份
@@ -20,7 +20,7 @@ class Database extends Admin {
             return $this->getRecords();
         } else {
             $this->assign('type',$type);
-            return $this->fetch('Database/'.$type);
+            return $this->fetch('Databases/'.$type);
         }
 	}
 
@@ -36,7 +36,7 @@ class Database extends Admin {
             /* 数据还原 */
             case 'import':
                 //列出备份文件列表
-                $path = getConfig('data_backup_path');
+                $path = getConfig('DATA_BACKUP_PATH');
                 if (!is_dir($path)) {
                     mkdir($path, 0755, true);
                 }
@@ -76,8 +76,8 @@ class Database extends Admin {
                     $row['size'] = format_bytes($row['size']);
                     $row['status'] = '-';
                     $row['action'] =
-                        '<a class="db-import" href="javascript:;" onclick="dbimport(this)" data="/admin/Database/import/time/'.$time.'">还原</a>&nbsp;'
-                        .'<a class="ajax-get confirm" href="javascript:;'.$time.'" onclick="del(this)" data="/admin/Database/del/time/'.$time.'">删除</a>';
+                        '<a class="db-import" href="javascript:;" onclick="dbimport(this)" data="/admin/Databases/import/time/'.$time.'">还原</a>&nbsp;'
+                        .'<a class="ajax-get confirm" href="javascript:;'.$time.'" onclick="del(this)" data="/admin/Databases/del/time/'.$time.'">删除</a>';
                 }
                 break;
             /* 数据备份 */
@@ -165,7 +165,7 @@ class Database extends Admin {
 	public function del($time = 0) {
 		if ($time) {
 			$name = date('Ymd-His', $time) . '-*.sql*';
-			$path = realpath(getConfig('data_backup_path')) . DIRECTORY_SEPARATOR . $name;
+			$path = realpath(getConfig('DATA_BACKUP_PATH')) . DIRECTORY_SEPARATOR . $name;
 			array_map("unlink", glob($path));
 			if (count(glob($path))) {
 				return $this->error('备份文件删除失败，请检查权限！');
@@ -186,12 +186,12 @@ class Database extends Admin {
 	public function export($tables = null, $id = null, $start = null) {
 		if (request()->isPost() && !empty($tables) && is_array($tables)) {
 			//初始化
-			$path = getConfig('data_backup_path');
+			$path = getConfig('DATA_BACKUP_PATH');
 			if (!is_dir($path)) {
 				mkdir($path, 0755, true);
 			}
 			//读取备份配置
-			$config = array('path' => realpath($path) . DIRECTORY_SEPARATOR, 'part' => getConfig('data_backup_part_size'), 'compress' => getConfig('data_backup_compress'), 'level' => getConfig('data_backup_compress_level'));
+			$config = array('path' => realpath($path) . DIRECTORY_SEPARATOR, 'part' => getConfig('DATA_BACKUP_PART_SIZE'), 'compress' => getConfig('DATA_BACKUP_COMPRESS'), 'level' => getConfig('DATA_BACKUP_COMPRESS_LEVEL'));
 			//检查是否有正在执行的任务
 			$lock = "{$config['path']}backup.lock";
 			if (is_file($lock)) {
@@ -259,7 +259,7 @@ class Database extends Admin {
 			//初始化
 			//获取备份文件信息
 			$name  = date('Ymd-His', $time) . '-*.sql*';
-			$path  = realpath(getConfig('data_backup_path')) . DIRECTORY_SEPARATOR . $name;
+			$path  = realpath(getConfig('DATA_BACKUP_PATH')) . DIRECTORY_SEPARATOR . $name;
 			$files = glob($path);
 			$list  = array();
 			foreach ($files as $name) {
@@ -280,7 +280,7 @@ class Database extends Admin {
 		} elseif (is_numeric($part) && is_numeric($start)) {
 			$list = session('backup_list');
 
-			$db = new \com\Database($list[$part], array('path' => realpath(getConfig('data_backup_path')) . DIRECTORY_SEPARATOR, 'compress' => $list[$part][2]));
+			$db = new \com\Database($list[$part], array('path' => realpath(getConfig('DATA_BACKUP_PATH')) . DIRECTORY_SEPARATOR, 'compress' => $list[$part][2]));
 
 			$start = $db->import($start);
 

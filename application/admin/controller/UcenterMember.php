@@ -2,9 +2,7 @@
 namespace app\admin\controller;
 use app\common\model\UcenterMemberModel;
 use app\common\model\MemberModel;
-use app\common\model\MemberFinanceModel;
 use app\admin\logic\AccountLogic;
-use app\common\logic\CommonLogic;
 use app\admin\logic\UcenterMemberLogic;
 use think\Request;
 class UcenterMember extends Admin{
