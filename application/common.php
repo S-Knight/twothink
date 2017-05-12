@@ -76,6 +76,6 @@ function msubstr($str,$length, $start=0, $charset="utf-8", $suffix=true) {
 }
 
 function getConfig($name){
-    $configModel = new \app\admin\model\SystemModel;
+    $configModel = new \app\common\model\ConfigModel;
     return $configModel->where('name',$name)->value('value');
 }

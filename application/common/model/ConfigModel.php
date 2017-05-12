@@ -1,9 +1,9 @@
 <?php
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
-class SystemModel extends Model
+class ConfigModel extends Model
 {
     protected $insert = ['created_at'];
     protected $update = ['updated_at'];

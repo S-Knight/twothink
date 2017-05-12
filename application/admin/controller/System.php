@@ -1,16 +1,16 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\SystemModel;
+use app\common\model\ConfigModel;
 use think\Request;
 class System extends Admin{
     public function config(){
         if (Request::instance()->isPost()){
             return $this->addConfigPost();
         }else{
-            $systemModel = new SystemModel();
+            $systemModel = new ConfigModel();
             $list = $systemModel->where('group',2)->order('sort')->select();
-            $guanbizhandian = SystemModel::where('name','GUANBIZHANDI')->value('value');
-            $guanbiyuanyin = SystemModel::where('name','GUANBIYUANYIN')->value('value');
+            $guanbizhandian = ConfigModel::where('name','GUANBIZHANDI')->value('value');
+            $guanbiyuanyin = ConfigModel::where('name','GUANBIYUANYIN')->value('value');
             $this->view->assign('list', $list);
             $this->view->assign('guanbizhandian', $guanbizhandian);
             $this->view->assign('guanbiyuanyin', $guanbiyuanyin);
@@ -21,7 +21,7 @@ class System extends Admin{
     public function addConfigPost()
     {
         $data = Request::instance()->post();
-        $systemModel = new SystemModel();
+        $systemModel = new ConfigModel();
         $configs=$systemModel->where('group',2)->whereOr("name = 'GUANBIZHANDI' or name = 'GUANBIYUANYIN'")
             ->field('id,name,type')->select();
         $configList = [];
@@ -71,7 +71,7 @@ class System extends Admin{
         if(request()->isPost()){
             return $this->editPost();
         }else{
-            $systemModel = new SystemModel();
+            $systemModel = new ConfigModel();
             $row = $systemModel->where(array('id'=>$id))->find();
             $this->view->assign('title', '编辑系统配置');
             $this->view->assign('id', $id);
@@ -83,7 +83,7 @@ class System extends Admin{
 
     private function getRecords() {
         $records = array();
-        $systemModel = new SystemModel();
+        $systemModel = new ConfigModel();
         $start = input('post.start', 0);
         $length = input('post.length', 20);
         
@@ -116,7 +116,7 @@ class System extends Admin{
 
     /*功能：添加配置*/
     private function addPost() {
-        $systemModel = new SystemModel();
+        $systemModel = new ConfigModel();
         $data = $_POST;
         /*校验：是否重复提交*/
         $check = $systemModel::get(['name' => $data['name']]);
@@ -124,7 +124,7 @@ class System extends Admin{
         if ($check) {
             return array('success'=>false,"info"=>"该标识已存在");
         }
-        $result = SystemModel::create($data)->save();
+        $result = ConfigModel::create($data)->save();
         if($result !== false){
             return array('success'=>true,"info"=>"操作成功");
         }else{
@@ -134,7 +134,7 @@ class System extends Admin{
 
     private function editPost() {
         $data = $_POST;
-        $result = SystemModel::update($data);
+        $result = ConfigModel::update($data);
 
         if($result !== false){
             return array('success'=>true,"info"=>"操作成功");
@@ -145,7 +145,7 @@ class System extends Admin{
 
     public function delete($id){
         if (Request::instance()->isAjax()){
-            $res = SystemModel::destroy($id);
+            $res = ConfigModel::destroy($id);
             if($res){
                 return array('success'=>true,"info"=>"操作成功");
             }else{
