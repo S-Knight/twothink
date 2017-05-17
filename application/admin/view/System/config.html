@@ -89,20 +89,20 @@
 </div>
 {/block}
 {block name="script"}
-<script type="text/javascript">
-    $("#dataform").Validform({
-        tiptype:function(msg){
-            layer.alert(msg, {
-                skin: 'layui-layer-lan'
-            });
-        },
-        ajaxPost:true,   //使用ajax方式提交
-        callback:function(data){    //data array('status'=>'y/n','info'=>'')
-            if(data.status=="y"){
-                location.reload();
-            }
-        }
-    });
+<script src="/static/jquery.form.min.js"></script>
+<script>
+
+    function showResponse(rJson) {
+        layer.alert(rJson.info, {
+            skin: 'layui-layer-lan'
+        });
+    }
+
+    var options = {
+        dataType:  'json',
+        success:showResponse,
+    };
+    $("#dataform").ajaxForm(options);
 
     $("input[name='GUANBIZHANDI']").click(function(){
         guanbi = $(this).val();

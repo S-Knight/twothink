@@ -42,9 +42,9 @@ class System extends Admin{
         }
 
         if($systemModel->saveAll($configList) !== false){
-            return array('status'=>'y',"info"=>"操作成功");
+            return array('success'=>true,"info"=>"操作成功");
         }else{
-            return array('status'=>'n',"info"=>"操作失败");
+            return array('success'=>false,"info"=>"操作失败");
         }
     }
 
