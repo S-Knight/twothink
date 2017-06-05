@@ -30,7 +30,7 @@ CREATE TABLE `geek_action` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作表';
 
 -- ----------------------------
 -- Records of geek_action
@@ -104,7 +104,7 @@ CREATE TABLE `geek_action_log` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2359 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2364 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志表';
 
 -- ----------------------------
 -- Records of geek_action_log
@@ -117,11 +117,11 @@ CREATE TABLE `geek_action_log` (
 DROP TABLE IF EXISTS `geek_admin_role`;
 CREATE TABLE `geek_admin_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `perms` text,
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `perms` text CHARACTER SET utf8,
   `status` tinyint(4) DEFAULT '1' COMMENT '1启用,0禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='后台用户角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户角色表';
 
 -- ----------------------------
 -- Records of geek_admin_role
@@ -134,23 +134,23 @@ INSERT INTO `geek_admin_role` (`id`, `name`, `perms`, `status`) VALUES ('1', '�
 DROP TABLE IF EXISTS `geek_config`;
 CREATE TABLE `geek_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '配置ID',
-  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '配置名称',
+  `name` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '配置名称',
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置类型',
-  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '配置说明',
+  `title` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '配置说明',
   `group` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置分组',
-  `extra` varchar(255) NOT NULL DEFAULT '' COMMENT '配置值',
+  `extra` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '配置值',
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
-  `value` text COMMENT '配置值',
+  `value` text CHARACTER SET utf8 COMMENT '配置值',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `remark` text COMMENT '备注',
-  `enum` text COMMENT '枚举型设置',
+  `remark` text CHARACTER SET utf8 COMMENT '备注',
+  `enum` text CHARACTER SET utf8 COMMENT '枚举型设置',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`) USING BTREE,
   KEY `type` (`type`) USING BTREE,
   KEY `group` (`group`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='配置表';
+) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='配置表';
 
 -- ----------------------------
 -- Records of geek_config
@@ -182,22 +182,22 @@ INSERT INTO `geek_config` (`name`, `type`, `title`, `group`, `extra`, `created_a
 DROP TABLE IF EXISTS `geek_member`;
 CREATE TABLE `geek_member` (
   `uid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `nickname` char(32) NOT NULL DEFAULT '' COMMENT '昵称',
-  `real_name` varchar(255) DEFAULT '' COMMENT '真实姓名',
+  `nickname` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '昵称',
+  `real_name` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '真实姓名',
   `sex` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '性别,0未设置,1男,2女',
   `birthday` date NOT NULL DEFAULT '0000-00-00' COMMENT '生日',
-  `qq` char(10) NOT NULL DEFAULT '' COMMENT 'qq号',
+  `qq` char(10) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT 'qq号',
   `login` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
-  `reg_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `reg_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
   `reg_time` int(11) unsigned DEFAULT NULL COMMENT '注册时间',
-  `last_login_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `last_login_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '会员状态',
-  `signature` text COMMENT '个性签名',
+  `signature` text CHARACTER SET utf8 COMMENT '个性签名',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`) USING BTREE,
   KEY `name` (`nickname`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户资料表';
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户资料表';
 
 -- ----------------------------
 -- Records of geek_member
@@ -211,20 +211,20 @@ CREATE TABLE `geek_member` (
 DROP TABLE IF EXISTS `geek_menu`;
 CREATE TABLE `geek_menu` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文档ID',
-  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '标题',
+  `title` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '标题',
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类ID',
   `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序（同级有效）',
-  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接地址',
+  `url` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '链接地址',
   `hide` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否隐藏',
-  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '菜单说明',
+  `remark` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '菜单说明',
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见,0所有模式都可见,1仅开发者模式可见',
-  `privilege_code` varchar(255) DEFAULT '' COMMENT '关联权限代码',
-  `icon` varchar(20) NOT NULL COMMENT '导航图标',
+  `privilege_code` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '关联权限代码',
+  `icon` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '导航图标',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=10135 DEFAULT CHARSET=utf8 COMMENT='菜单表';
+) ENGINE=MyISAM AUTO_INCREMENT=10145 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of geek_menu
@@ -251,20 +251,20 @@ INSERT INTO `geek_menu` (`id`, `title`, `pid`, `sort`, `url`, `hide`, `remark`, 
 DROP TABLE IF EXISTS `geek_ucenter_admin`;
 CREATE TABLE `geek_ucenter_admin` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(32) NOT NULL COMMENT '用户名',
-  `password` char(32) NOT NULL COMMENT '密码',
-  `salt` char(32) NOT NULL DEFAULT '',
-  `email` char(32) NOT NULL DEFAULT '' COMMENT '用户邮箱',
-  `mobile` char(15) NOT NULL COMMENT '用户手机',
+  `username` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '用户名',
+  `password` char(32) CHARACTER SET utf8 NOT NULL COMMENT '密码',
+  `salt` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `email` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '用户邮箱',
+  `mobile` char(15) CHARACTER SET utf8 NOT NULL COMMENT '用户手机',
   `status` tinyint(4) DEFAULT '1' COMMENT '用户状态:''-1删除,0禁用,1启用''',
-  `reg_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
-  `last_login_ip` char(15) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `reg_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `last_login_ip` char(15) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `reg_time` datetime DEFAULT NULL COMMENT '注册时间',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户表';
 
 -- ----------------------------
 -- Records of geek_ucenter_admin
@@ -277,19 +277,19 @@ CREATE TABLE `geek_ucenter_admin` (
 DROP TABLE IF EXISTS `geek_ucenter_member`;
 CREATE TABLE `geek_ucenter_member` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` char(32) NOT NULL COMMENT '用户名',
-  `password` char(32) NOT NULL COMMENT '密码',
-  `email` char(32) NOT NULL COMMENT '用户邮箱',
-  `mobile` char(15) NOT NULL COMMENT '用户手机',
+  `username` char(32) CHARACTER SET utf8 NOT NULL COMMENT '用户名',
+  `password` char(32) CHARACTER SET utf8 NOT NULL COMMENT '密码',
+  `email` char(32) CHARACTER SET utf8 NOT NULL COMMENT '用户邮箱',
+  `mobile` char(15) CHARACTER SET utf8 NOT NULL COMMENT '用户手机',
   `reg_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
-  `reg_ip` varchar(255) NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `reg_ip` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `last_login_ip` varchar(255) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `last_login_ip` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) DEFAULT '0' COMMENT '用户状态',
   `type` tinyint(4) NOT NULL COMMENT '1为用户名注册，2为邮箱注册，3为手机注册',
-  `salt` char(32) NOT NULL DEFAULT '',
+  `salt` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `status` (`status`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='网站用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
 
