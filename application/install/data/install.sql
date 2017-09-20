@@ -276,7 +276,3 @@ CREATE TABLE `geek_ucenter_member` (
   PRIMARY KEY (`id`),
   KEY `status` (`status`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
-
--- ----------------------------
--- Records of geek_ucenter_member
--- ----------------------------
