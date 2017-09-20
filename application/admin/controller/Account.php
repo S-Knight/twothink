@@ -1,10 +1,10 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\admin\logic\AccountLogic;
 use think\Controller;
 use think\Session;
-use think\Db;
 
 class Account extends Controller
 {
@@ -20,7 +20,6 @@ class Account extends Controller
      */
     public function login()
     {
-
         return $this->fetch('Account/login');
     }
 
