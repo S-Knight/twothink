@@ -17,7 +17,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">模块</label>
                         <div class="col-sm-3 col-xs-12">
@@ -67,7 +66,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">
                             权限说明</label>
@@ -75,7 +73,6 @@
                             <textarea type="text"  name="remark" class="form-control" >{$row.remark}</textarea>
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
@@ -111,7 +108,6 @@
 
 </script>
 <script>
-
     $('#moudle').change(function(){
         var moudle = $(this).val();
         var str = '<option value="">请选择：</option>';
@@ -130,14 +126,14 @@
                     str += '<option value="*">*</option>';
                     $('#function').html(str);
                     $("input[name='code']").val(moudle);
-                },
+                }
 
             });
         }else{
             $('#controller').html(str);
             $('#function').html(str);
         }
-    })
+    });
 
     $('#controller').change(function(){
         var controller = $(this).val();
@@ -157,13 +153,12 @@
 
                     $('#function').html(getstr(data));
                     $("input[name='code']").val(moudle +'.'+ controller);
-                },
-
+                }
             });
         }else{
             $('#function').html(str);
         }
-    })
+    });
 
     $('#function').change(function(){
         moudle = $('#moudle').val();
@@ -171,7 +166,7 @@
         functions = $(this).val();
 
         $("input[name='code']").val(moudle +'.'+ controller +'.'+ functions);
-    })
+    });
 
     function getstr(data){
         var str = '<option value="">请选择：</option>';
