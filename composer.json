@@ -1,25 +1,23 @@
 {
-    "name": "topthink/think",
-    "description": "the new thinkphp framework",
+    "name": "igeekspace/twothink",
+    "description": "a project template",
     "type": "project",
     "keywords": [
-        "framework",
-        "thinkphp",
-        "ORM"
+        "twothink",
+        "igeekspace",
+        "template"
     ],
-    "homepage": "http://thinkphp.cn/",
+    "homepage": "http://www.igeekspace.com/",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
+            "name": "sknight",
+            "email": "360776816@qq.com"
         }
     ],
     "require": {
         "php": ">=5.4.0",
-        "ext-gd" : "*",
-        "ext-mbstring": "*",
-        "topthink/framework": "*",
+        "topthink/framework": "~5.0.0",
         "topthink/think-captcha": "^1.0",
         "phpoffice/phpexcel": "dev-master"
     },
