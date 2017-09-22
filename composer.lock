@@ -4,21 +4,77 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d5eb2b4098779a5bb64feae747227ba",
-    "content-hash": "74e774e143ac92aa0cb49e6be9fe5923",
+    "content-hash": "7bcb6f75f5529037d17d8acdd2bcf6e3",
     "packages": [
         {
-            "name": "topthink/framework",
-            "version": "dev-master",
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/top-think/framework.git",
-                "reference": "2b4ddaa35c5a5cc97e579758d9ec06240e7e22c2"
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/framework/2b4ddaa35c5a5cc97e579758d9ec06240e7e22c2.zip",
-                "reference": "2b4ddaa35c5a5cc97e579758d9ec06240e7e22c2",
+                "url": "https://files.phpcomposer.com/files/PHPOffice/PHPExcel/372c7cbb695a6f6f1e62649381aeaa37e7e70b32.zip",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01T07:00:55+00:00"
+        },
+        {
+            "name": "topthink/framework",
+            "version": "v5.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/framework.git",
+                "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/top-think/framework/926c9edb0c2682b14f563cac2c8a93f42f729016.zip",
+                "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +112,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2017-04-03 14:34:10"
+            "time": "2017-09-13T03:30:29+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -92,20 +148,20 @@
                 }
             ],
             "description": "captcha package for thinkphp5",
-            "time": "2016-07-06 01:47:11"
+            "time": "2016-07-06T01:47:11+00:00"
         },
         {
             "name": "topthink/think-installer",
-            "version": "v1.0.11",
+            "version": "v1.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-installer.git",
-                "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d"
+                "reference": "1be326e68f63de4e95977ed50f46ae75f017556d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/think-installer/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d.zip",
-                "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d",
+                "url": "https://files.phpcomposer.com/files/top-think/think-installer/1be326e68f63de4e95977ed50f46ae75f017556d.zip",
+                "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
                 "shasum": ""
             },
             "require": {
@@ -133,19 +189,17 @@
                     "email": "448901948@qq.com"
                 }
             ],
-            "time": "2016-12-01 09:08:45"
+            "time": "2017-05-27T06:58:09+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.0",
-        "ext-gd": "*",
-        "ext-mbstring": "*"
+        "php": ">=5.4.0"
     },
     "platform-dev": []
 }
