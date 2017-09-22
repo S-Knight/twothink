@@ -1,4 +1,5 @@
 <?php
+
 namespace app\common\model;
 
 use think\Model;
@@ -9,12 +10,12 @@ class ConfigModel extends Model
     protected $update = ['updated_at'];
     protected $table = 'geek_config';
 
-    protected function setCreatedAtAttr($value)
+    protected function setCreatedAtAttr()
     {
         return date('Y-m-d H:i:s');
     }
 
-    protected function setUpdatedAtAttr($value)
+    protected function setUpdatedAtAttr()
     {
         return date('Y-m-d H:i:s');
     }
