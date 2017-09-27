@@ -7,7 +7,7 @@ var rename = require("gulp-rename");
 var uglify = require("gulp-uglify");
 
 //*** CSS & JS minify task
-gulp.task('minify', function () {
+gulp.task('default', function () {
     // css minify 
     gulp.src(['./apps/css/*.css', '!./apps/css/*.min.css']).pipe(minifyCss()).pipe(rename({suffix: '.min'})).pipe(gulp.dest('./apps/css/'));
 
