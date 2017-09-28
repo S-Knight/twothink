@@ -1,16 +1,16 @@
 /*
-Navicat MariaDB Data Transfer
+Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 100119
-Source Host           : localhost:3306
+Source Server         : 192.168.74.74
+Source Server Version : 50637
+Source Host           : 192.168.74.74:3306
 Source Database       : twothink
 
-Target Server Type    : MariaDB
-Target Server Version : 100119
+Target Server Type    : MYSQL
+Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2017-09-20 16:47:43
+Date: 2017-09-28 15:26:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `geek_action` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作表';
 
 -- ----------------------------
 -- Records of geek_action
@@ -147,7 +147,7 @@ CREATE TABLE `geek_config` (
   UNIQUE KEY `uk_name` (`name`) USING BTREE,
   KEY `type` (`type`) USING BTREE,
   KEY `group` (`group`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='配置表';
 
 -- ----------------------------
 -- Records of geek_config
@@ -184,7 +184,7 @@ CREATE TABLE `geek_member` (
   PRIMARY KEY (`uid`),
   KEY `status` (`status`) USING BTREE,
   KEY `name` (`nickname`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户资料表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户资料表';
 
 -- ----------------------------
 -- Records of geek_member
@@ -209,14 +209,14 @@ CREATE TABLE `geek_menu` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=10145 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=10145 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of geek_menu
 -- ----------------------------
-INSERT INTO `geek_menu` VALUES ('10073', '权限管理', '0', '1', '', '0', '', '0', 'Privilege', 'fa fa-cog', '2017-02-05 09:05:32', '2017-02-06 08:59:18');
-INSERT INTO `geek_menu` VALUES ('10072', '菜单管理', '10071', '1', '/admin/Menu/index', '0', '菜单的增删查改', '0', 'admin.Menu.index', 'fa fa-cog', '2017-02-05 09:04:31', '2017-02-05 09:04:31');
 INSERT INTO `geek_menu` VALUES ('10071', '系统管理', '0', '1', '', '0', '1', '0', 'System', 'fa fa-cog', '2017-02-05 09:03:15', '2017-02-06 08:59:21');
+INSERT INTO `geek_menu` VALUES ('10072', '菜单管理', '10071', '1', '/admin/Menu/index', '0', '菜单的增删查改', '0', 'admin.Menu.index', 'fa fa-cog', '2017-02-05 09:04:31', '2017-02-05 09:04:31');
+INSERT INTO `geek_menu` VALUES ('10073', '权限管理', '0', '1', '', '0', '', '0', 'Privilege', 'fa fa-cog', '2017-02-05 09:05:32', '2017-02-06 08:59:18');
 INSERT INTO `geek_menu` VALUES ('10074', '操作管理', '10073', '1', '/admin/Privilege/index', '0', '权限的增删查改', '0', 'admin.Privilege.index', 'fa fa-cog', '2017-02-05 09:07:03', '2017-02-07 09:56:03');
 INSERT INTO `geek_menu` VALUES ('10076', '用户组管理', '10073', '1', '/admin/AdminRole/index', '0', '1', '0', 'admin.AdminRole.index', 'fa fa-cog', '2017-02-05 19:32:44', '2017-02-07 11:37:51');
 INSERT INTO `geek_menu` VALUES ('10077', '系统配置', '10071', '2', '/admin/System/index', '0', '1', '0', 'admin.System.index', 'fa fa-cog', '2017-02-05 20:51:27', '2017-02-06 09:00:58');
@@ -248,12 +248,12 @@ CREATE TABLE `geek_ucenter_admin` (
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户表';
 
 -- ----------------------------
 -- Records of geek_ucenter_admin
 -- ----------------------------
-INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '0029857551e411020b69b8e2e1f6c8cb', 'da9d0811965be4f2351e6214f1235272', 'aoe@163.com', '', '1', '0', '0.0.0.0', '2017-09-15 16:16:29', '2017-09-20 11:24:10', '2017-09-20 11:24:10', '1');
+INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '0d174c10b54b5b2f870a7fc64bde3a86', '15f03f990b636c622999278e190f1385', 'aoe@163.com', '', '1', '3232254465', '192.168.74.1', '2017-09-27 11:50:50', '2017-09-28 02:44:57', '2017-09-28 14:44:57', '1');
 
 -- ----------------------------
 -- Table structure for geek_ucenter_member
@@ -275,4 +275,4 @@ CREATE TABLE `geek_ucenter_member` (
   `salt` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `status` (`status`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
