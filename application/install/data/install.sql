@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2017-09-28 15:26:43
+Date: 2017-09-28 17:25:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -169,21 +169,21 @@ INSERT INTO `geek_config` VALUES ('49', 'GUANBIYUANYIN', '6', '关闭原因', '3
 DROP TABLE IF EXISTS `geek_member`;
 CREATE TABLE `geek_member` (
   `uid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `nickname` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '昵称',
-  `real_name` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '真实姓名',
+  `nickname` varchar(255) NOT NULL DEFAULT '' COMMENT '昵称',
+  `real_name` varchar(255) DEFAULT '' COMMENT '真实姓名',
   `sex` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '性别,0未设置,1男,2女',
   `birthday` date NOT NULL DEFAULT '0000-00-00' COMMENT '生日',
-  `qq` char(10) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT 'qq号',
+  `qq` varchar(20) NOT NULL DEFAULT '' COMMENT 'qq号',
   `login` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
-  `reg_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `reg_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
   `reg_time` int(11) unsigned DEFAULT NULL COMMENT '注册时间',
-  `last_login_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `last_login_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '会员状态',
-  `signature` text CHARACTER SET utf8 COMMENT '个性签名',
+  `signature` text COMMENT '个性签名',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`) USING BTREE,
-  KEY `name` (`nickname`) USING BTREE
+  KEY `name` (`nickname`(191)) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户资料表';
 
 -- ----------------------------
@@ -235,25 +235,25 @@ INSERT INTO `geek_menu` VALUES ('10144', '微信开放平台认证', '10071', '4
 DROP TABLE IF EXISTS `geek_ucenter_admin`;
 CREATE TABLE `geek_ucenter_admin` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '用户名',
-  `password` char(32) CHARACTER SET utf8 NOT NULL COMMENT '密码',
-  `salt` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `email` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '用户邮箱',
-  `mobile` char(15) CHARACTER SET utf8 NOT NULL COMMENT '用户手机',
+  `username` varchar(32) NOT NULL COMMENT '用户名',
+  `password` char(32) NOT NULL COMMENT '密码',
+  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
+  `salt` char(32) NOT NULL DEFAULT '',
+  `email` char(32) NOT NULL DEFAULT '' COMMENT '用户邮箱',
+  `mobile` char(15) NOT NULL COMMENT '用户手机',
   `status` tinyint(4) DEFAULT '1' COMMENT '用户状态:''-1删除,0禁用,1启用''',
-  `reg_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
-  `last_login_ip` char(15) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `reg_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `last_login_ip` char(15) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `reg_time` datetime DEFAULT NULL COMMENT '注册时间',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
-  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户表';
 
 -- ----------------------------
 -- Records of geek_ucenter_admin
 -- ----------------------------
-INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '0d174c10b54b5b2f870a7fc64bde3a86', '15f03f990b636c622999278e190f1385', 'aoe@163.com', '', '1', '3232254465', '192.168.74.1', '2017-09-27 11:50:50', '2017-09-28 02:44:57', '2017-09-28 14:44:57', '1');
+INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '8c34d2716d2a70533fc9a02303bce3fa', '1', '46c3d884019240e62372da78537ee37d', 'aoe@163.com', '', '1', '3232254465', '3232254465', '2017-09-28 16:02:23', '2017-09-28 16:02:23', '2017-09-28 16:02:23');
 
 -- ----------------------------
 -- Table structure for geek_ucenter_member
@@ -261,18 +261,18 @@ INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '0d174c10b54b5b2f870a7fc6
 DROP TABLE IF EXISTS `geek_ucenter_member`;
 CREATE TABLE `geek_ucenter_member` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` char(32) CHARACTER SET utf8 NOT NULL COMMENT '用户名',
-  `password` char(32) CHARACTER SET utf8 NOT NULL COMMENT '密码',
-  `email` char(32) CHARACTER SET utf8 NOT NULL COMMENT '用户邮箱',
-  `mobile` char(15) CHARACTER SET utf8 NOT NULL COMMENT '用户手机',
+  `username` char(32) NOT NULL COMMENT '用户名',
+  `password` char(32) NOT NULL COMMENT '密码',
+  `salt` char(32) NOT NULL DEFAULT '',
+  `email` char(32) NOT NULL COMMENT '用户邮箱',
+  `mobile` char(15) NOT NULL COMMENT '用户手机',
   `reg_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
-  `reg_ip` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '注册IP',
+  `reg_ip` varchar(50) NOT NULL DEFAULT '0' COMMENT '注册IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `last_login_ip` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `last_login_ip` varchar(50) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) DEFAULT '0' COMMENT '用户状态',
   `type` tinyint(4) NOT NULL COMMENT '1为用户名注册，2为邮箱注册，3为手机注册',
-  `salt` char(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
