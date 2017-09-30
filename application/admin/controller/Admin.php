@@ -38,20 +38,20 @@ abstract class Admin extends Controller
             $this->redirect('Account/login');
         }
 
-        $topMenus = MenuModel::all([
+        $menuModel= new MenuModel();
+        $topMenus = $menuModel->where([
             'pid' => 0,
             'hide' => 0
-        ]);
+        ])->order('sort')->select();
         foreach ($topMenus as $topMenu) {
-            $topMenu['child'] = MenuModel::all([
+            $topMenu['child'] = $menuModel->where([
                 'pid' => $topMenu['id'],
                 'hide' => 0
-            ]);
+            ])->order('sort')->select();
         }
 
         $this->assign("admin", session('admin'));
         $this->assign("topMenus", $topMenus);
-        $this->assign("template", getConfig('TEMPLATE_NUM'));
     }
 
     /**
