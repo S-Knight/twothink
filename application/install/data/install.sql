@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2017-09-28 17:25:16
+Date: 2017-10-07 10:59:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,11 +102,17 @@ CREATE TABLE `geek_action_log` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志表';
 
 -- ----------------------------
 -- Records of geek_action_log
 -- ----------------------------
+INSERT INTO `geek_action_log` VALUES ('1', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-09-28 16:02:38', '2017-09-28 16:02:38');
+INSERT INTO `geek_action_log` VALUES ('2', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-09-28 16:02:42', '2017-09-28 16:02:42');
+INSERT INTO `geek_action_log` VALUES ('3', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-09-29 13:29:46', '2017-09-29 13:29:46');
+INSERT INTO `geek_action_log` VALUES ('4', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-10-06 09:12:13', '2017-10-06 09:12:13');
+INSERT INTO `geek_action_log` VALUES ('5', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-10-07 10:23:16', '2017-10-07 10:23:16');
+INSERT INTO `geek_action_log` VALUES ('6', '1', '18', '后台首页-浏览', 'admin', 'Index', 'index', 'admin.Index.index', '', '2017-10-07 10:25:54', '2017-10-07 10:25:54');
 
 -- ----------------------------
 -- Table structure for geek_admin_role
@@ -147,7 +153,7 @@ CREATE TABLE `geek_config` (
   UNIQUE KEY `uk_name` (`name`) USING BTREE,
   KEY `type` (`type`) USING BTREE,
   KEY `group` (`group`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='配置表';
 
 -- ----------------------------
 -- Records of geek_config
@@ -240,10 +246,10 @@ CREATE TABLE `geek_ucenter_admin` (
   `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
   `salt` char(32) NOT NULL DEFAULT '',
   `email` char(32) NOT NULL DEFAULT '' COMMENT '用户邮箱',
-  `mobile` char(15) NOT NULL COMMENT '用户手机',
+  `mobile` char(15) NOT NULL DEFAULT '' COMMENT '用户手机',
   `status` tinyint(4) DEFAULT '1' COMMENT '用户状态:''-1删除,0禁用,1启用''',
-  `reg_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
-  `last_login_ip` char(15) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
+  `reg_ip` varchar(20) NOT NULL DEFAULT '' COMMENT '注册IP',
+  `last_login_ip` char(15) NOT NULL DEFAULT '' COMMENT '最后登录IP',
   `reg_time` datetime DEFAULT NULL COMMENT '注册时间',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
@@ -261,18 +267,15 @@ INSERT INTO `geek_ucenter_admin` VALUES ('1', 'admin', '8c34d2716d2a70533fc9a023
 DROP TABLE IF EXISTS `geek_ucenter_member`;
 CREATE TABLE `geek_ucenter_member` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` char(32) NOT NULL COMMENT '用户名',
-  `password` char(32) NOT NULL COMMENT '密码',
+  `username` char(32) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
   `salt` char(32) NOT NULL DEFAULT '',
-  `email` char(32) NOT NULL COMMENT '用户邮箱',
-  `mobile` char(15) NOT NULL COMMENT '用户手机',
-  `reg_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
-  `reg_ip` varchar(50) NOT NULL DEFAULT '0' COMMENT '注册IP',
-  `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `last_login_ip` varchar(50) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` tinyint(4) DEFAULT '0' COMMENT '用户状态',
-  `type` tinyint(4) NOT NULL COMMENT '1为用户名注册，2为邮箱注册，3为手机注册',
+  `email` char(50) NOT NULL DEFAULT '' COMMENT '用户邮箱',
+  `mobile` char(15) NOT NULL DEFAULT '' COMMENT '用户手机',
+  `reg_ip` varchar(50) NOT NULL DEFAULT '' COMMENT '注册IP',
+  `status` tinyint(4) DEFAULT '1' COMMENT '用户状态',
+  `created_at` datetime DEFAULT NULL COMMENT '注册时间',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
