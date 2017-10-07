@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2017-10-07 13:23:54
+Date: 2017-10-07 13:38:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -273,9 +273,7 @@ CREATE TABLE `geek_ucenter_member` (
   `email` char(50) NOT NULL DEFAULT '' COMMENT '用户邮箱',
   `mobile` char(15) NOT NULL DEFAULT '' COMMENT '用户手机',
   `reg_ip` varchar(50) NOT NULL DEFAULT '' COMMENT '注册IP',
-  `status` tinyint(4) DEFAULT '1' COMMENT '用户状态',
   `created_at` datetime DEFAULT NULL COMMENT '注册时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`) USING BTREE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=FIXED COMMENT='网站用户表';
