@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50637
 File Encoding         : 65001
 
-Date: 2017-10-07 10:59:17
+Date: 2017-10-07 13:23:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -185,7 +185,7 @@ CREATE TABLE `geek_member` (
   `reg_time` int(11) unsigned DEFAULT NULL COMMENT '注册时间',
   `last_login_ip` varchar(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '会员状态',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '会员状态,1启用,0禁用',
   `signature` text COMMENT '个性签名',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`) USING BTREE,
