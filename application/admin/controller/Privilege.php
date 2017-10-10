@@ -1,5 +1,7 @@
 <?php
+
 namespace app\admin\controller;
+
 use app\admin\model\ActionModel;
 use app\admin\logic\PrivilegeLogic;
 use think\Request;
@@ -7,15 +9,16 @@ use think\Request;
 class Privilege extends Admin
 {
     protected $beforeActionList = [
-        'pervilegeVilidate' =>  ['except'=>'getControllerAjax,getFunctionAjax'],
+        'pervilegeVilidate' => ['except' => 'getControllerAjax,getFunctionAjax'],
     ];
 
     public function index()
     {
-        if(request()->isAjax()){
+        if (request()->isAjax()) {
             return $this->getRecords();
-        }else{
-            $this->assign('title','权限列表');
+        } else {
+            $this->assign('title', '权限列表');
+
             return $this->fetch('Privilege/index');
         }
     }
@@ -30,7 +33,7 @@ class Privilege extends Admin
         $columns = input('post.columns/a');
         $orderColumns = input('post.order/a');
         $orders = [];
-        foreach ($orderColumns as $orderColumn){
+        foreach ($orderColumns as $orderColumn) {
             $orders[$columns[$orderColumn['column']]['data']] = $orderColumn['dir'];
         }
         $condition = [];
@@ -42,26 +45,29 @@ class Privilege extends Admin
         if ($name) {
             $condition['name'] = array('like', "%$name%");
         }
-      
+
         $ActionModel = new ActionModel();
-        $records["data"] = $ActionModel->where($condition)->order($orders)->limit($start,$length)->select();
-        $records["recordsFiltered"] = $records["recordsTotal"] = $ActionModel->where($condition)->count();
+        $records["data"] = $ActionModel->where($condition)
+            ->order($orders)
+            ->limit($start, $length)
+            ->select();
+        $records["recordsFiltered"] = $records["recordsTotal"] = $ActionModel->where($condition)
+            ->count();
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
-
         }
+
         return $records;
     }
 
     public function add()
     {
-        if(request()->isPost()){
+        if (request()->isPost()) {
             return $this->addPost();
-        }else{
+        } else {
             return $this->fetch('Privilege/add');
         }
-
     }
 
     public function getControllerAjax()
@@ -72,20 +78,23 @@ class Privilege extends Admin
     public function getFunctionAjax()
     {
 
-        $functions = PrivilegeLogic::getFunction(input('moudle'),input('controller'));
-        return $this->getfunctionArr($functions,input('controller'));
+        $functions = PrivilegeLogic::getFunction(input('moudle'),
+            input('controller'));
+
+        return $this->getfunctionArr($functions, input('controller'));
     }
 
-    protected function getfunctionArr($functions,$controller)
+    protected function getfunctionArr($functions, $controller)
     {
         $functionArr = [];
-        foreach ($functions as $function){
-            $classDirArr = explode('\\',$function->class);
-            if(array_pop($classDirArr) == $controller){
+        foreach ($functions as $function) {
+            $classDirArr = explode('\\', $function->class);
+            if (array_pop($classDirArr) == $controller) {
                 $functionArr[] = $function->name;
             }
         }
         $functionArr[] = '*';
+
         return $functionArr;
     }
 
@@ -93,22 +102,27 @@ class Privilege extends Admin
     {
         $data = input('post.');
         $res = ActionModel::create($data)->save();
-        if(!$res){
-            return ['success'=>false,'info'=>'权限添加失败'];
+        if ($res === false) {
+            return ['success' => false, 'info' => '权限添加失败'];
         }
-        return ['success'=>true,'info'=>'权限添加成功'];
+
+        return ['success' => true, 'info' => '权限添加成功'];
     }
 
     public function edit($id)
     {
-        if(request()->isPost()){
+        if (request()->isPost()) {
             return $this->editPost();
-        }else{
+        } else {
             $row = ActionModel::get($id);
-            $functions = PrivilegeLogic::getFunction($row['moudle'],$row['controller']);
-            $this->assign('row',$row);
-            $this->assign('controllers',PrivilegeLogic::getController($row['moudle']));
-            $this->assign('functions',$this->getfunctionArr($functions,$row['controller']));
+            $functions = PrivilegeLogic::getFunction($row['moudle'],
+                $row['controller']);
+            $this->assign('row', $row);
+            $this->assign('controllers',
+                PrivilegeLogic::getController($row['moudle']));
+            $this->assign('functions',
+                $this->getfunctionArr($functions, $row['controller']));
+
             return $this->fetch('Privilege/edit');
         }
     }
@@ -117,20 +131,21 @@ class Privilege extends Admin
     {
         $data = input('post.');
         $res = ActionModel::update($data);
-        if($res === false){
-            return ['success'=>false,'info'=>'权限编辑失败'];
+        if ($res === false) {
+            return ['success' => false, 'info' => '权限编辑失败'];
         }
-        return ['success'=>true,'info'=>'权限编辑成功'];
 
+        return ['success' => true, 'info' => '权限编辑成功'];
     }
 
-    public function delete($id){
-        if (Request::instance()->isAjax()){
+    public function delete($id)
+    {
+        if (Request::instance()->isAjax()) {
             $res = ActionModel::destroy($id);
-            if($res){
-                return array('success'=>true,"info"=>"操作成功");
-            }else{
-                return array('success'=>false,"info"=>"操作失败");
+            if ($res) {
+                return array('success' => true, "info" => "操作成功");
+            } else {
+                return array('success' => false, "info" => "操作失败");
             }
         }
     }
