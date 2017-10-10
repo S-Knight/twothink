@@ -1,9 +1,10 @@
 <?php
 
 namespace app\admin\logic;
-use think\request;
+
 use app\admin\model\ActionLogModel;
 use app\admin\model\ActionModel;
+
 class AdminLogic extends Logic
 {
     static public function addActionLog($remark = '')
@@ -12,12 +13,13 @@ class AdminLogic extends Logic
         $controller = request()->controller();
         $action = request()->action();
         $code = $module . "." . $controller . "." . $action;
-        $actionRow = ActionModel::get(['code'=>$code]);
+        $actionRecord = ActionModel::get(['code' => $code]);
+
         $admin = session('admin');
         $data = [
             'uid' => $admin['id'],
-            'action_id' => $actionRow['id'],
-            'action_name' => $actionRow['name'],
+            'action_id' => $actionRecord['id'],
+            'action_name' => $actionRecord['name'],
             'moudle' => $module,
             'controller' => $controller,
             'function' => $action,
