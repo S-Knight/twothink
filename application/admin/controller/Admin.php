@@ -4,7 +4,6 @@ namespace app\admin\controller;
 
 use app\admin\logic\PrivilegeLogic;
 use app\admin\model\MenuModel;
-use app\admin\model\AdminRoleModel;
 use app\admin\logic\AdminLogic;
 use think\Controller;
 
