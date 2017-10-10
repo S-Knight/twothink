@@ -153,7 +153,7 @@ class UcenterMember extends Admin
     {
         if (request()->isAjax()) {
             $res = UcenterMemberModel::destroy($id);
-            if ($res) {
+            if ($res !== false) {
                 return array('success' => true, "info" => "操作成功");
             } else {
                 return array('success' => false, "info" => "操作失败");

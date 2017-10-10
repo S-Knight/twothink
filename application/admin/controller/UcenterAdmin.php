@@ -109,7 +109,7 @@ class UcenterAdmin extends Admin{
     public function delete($id){
         if (Request::instance()->isAjax()){
             $res = UcenterAdminModel::destroy($id);
-            if($res){
+            if($res !== false){
                 return array('success'=>true,"info"=>"操作成功");
             }else{
                 return array('success'=>false,"info"=>"操作失败");

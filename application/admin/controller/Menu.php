@@ -73,7 +73,7 @@ class Menu extends Admin
     private function addPost()
     {
         $res = MenuModel::create(input('post.'))->save();
-        if (!$res) {
+        if ($res === false) {
             return ['success' => false, 'info' => '菜单添加失败'];
         }
 
@@ -110,7 +110,7 @@ class Menu extends Admin
     {
         if (Request::instance()->isAjax()) {
             $res = MenuModel::destroy($id);
-            if ($res) {
+            if ($res !== false) {
                 return array('success' => true, "info" => "操作成功");
             } else {
                 return array('success' => false, "info" => "操作失败");
