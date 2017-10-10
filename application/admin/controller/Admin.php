@@ -53,6 +53,7 @@ abstract class Admin extends Controller
         }
 
         $this->assign("admin", session('admin'));
+        $this->assign("title", '后台管理系统');
         $this->assign("topMenus", $topMenus);
     }
 
