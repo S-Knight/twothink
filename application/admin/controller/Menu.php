@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\admin\model\MenuModel;
@@ -13,7 +14,8 @@ class Menu extends Admin
             return $this->getRecords();
         } else {
             $this->assign('title', '菜单列表');
-            $this->assign('pid', input('pid',0));
+            $this->assign('pid', input('pid', 0));
+
             return $this->fetch('Menu/index');
         }
     }
@@ -46,7 +48,8 @@ class Menu extends Admin
 
         foreach ($records["data"] as $row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
-            $row['title'] = "<td><a href='".url('index',['pid'=>$row['id']])."'>".$row['title']."</a></td>";
+            $row['title'] = "<td><a href='" . url('index',
+                    ['pid' => $row['id']]) . "'>" . $row['title'] . "</a></td>";
             $row['hideText'] = $row['hide'] == 0 ? '显示' : '隐藏';
             $row['isDevText'] = $row['is_dev'] == 0 ? '否' : '是';
         }
