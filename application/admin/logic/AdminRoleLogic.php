@@ -2,7 +2,7 @@
 
 namespace app\admin\logic;
 use app\admin\model\ActionModel;
-class AdminroleLogic extends Logic{
+class AdminRoleLogic extends Logic{
     static public function getPrivilege()
     {
         $ActionModel = new ActionModel();

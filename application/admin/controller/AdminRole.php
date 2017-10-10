@@ -1,8 +1,7 @@
 <?php
 namespace app\admin\controller;
 use app\admin\model\AdminRoleModel;
-use app\admin\model\ActionModel;
-use app\admin\logic\AdminroleLogic;
+use app\admin\logic\AdminRoleLogic;
 use think\Request;
 
 class AdminRole extends Admin
@@ -47,7 +46,7 @@ class AdminRole extends Admin
         if(request()->isPost()){
             return $this->addPost();
         }else{
-            $this->assign('privileges',AdminroleLogic::getPrivilege());
+            $this->assign('privileges',AdminRoleLogic::getPrivilege());
             return $this->fetch('AdminRole/add');
         }
     }
@@ -72,7 +71,7 @@ class AdminRole extends Admin
         if(request()->isPost()){
             return $this->editPost();
         }else{
-            $this->assign('privileges',AdminroleLogic::getPrivilege());
+            $this->assign('privileges',AdminRoleLogic::getPrivilege());
             $this->assign('row',AdminRoleModel::get($id));
             $this->assign('id',$id);
             return $this->fetch('AdminRole/edit');
