@@ -1,6 +1,8 @@
 <?php
+
 namespace app\admin\controller;
 
+use app\admin\logic\PrivilegeLogic;
 use app\admin\model\MenuModel;
 use app\admin\model\AdminRoleModel;
 use app\admin\logic\AdminLogic;
@@ -16,14 +18,13 @@ abstract class Admin extends Controller
         $module = $this->request->module();
         $controller = $this->request->controller();
         $action = $this->request->action();
+
         $code = $module . "." . $controller . "." . $action;
+
         $admin = session('admin');
-        $perms = AdminRoleModel::where('id', $admin['role_id'])->value('perms');
-        $permsArr = explode(',', $perms);
-        if (!in_array($code, $permsArr)) {
+        if (!PrivilegeLogic::checkRolePerm($code, $admin['role_id'])) {
             $this->error('您没有权限进行此操作');
         }
-        
     }
 
     protected function writeActionLog()
@@ -38,7 +39,7 @@ abstract class Admin extends Controller
             $this->redirect('Account/login');
         }
 
-        $menuModel= new MenuModel();
+        $menuModel = new MenuModel();
         $topMenus = $menuModel->where([
             'pid' => 0,
             'hide' => 0

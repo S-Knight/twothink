@@ -39,7 +39,6 @@ class PrivilegeLogic extends Logic
         $perms = $permModel->where('id', $roleId)->value('perms');
         $permsArr = explode(',', $perms);
         if (in_array($perm, $permsArr)) {
-
             return true;
         }
 
