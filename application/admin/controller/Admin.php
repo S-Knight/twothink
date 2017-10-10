@@ -26,9 +26,11 @@ abstract class Admin extends Controller
         }
     }
 
+    /**
+     *写后台操作日志
+     */
     protected function writeActionLog()
     {
-        //写后台操作日志
         AdminLogic::addActionLog();
     }
 
