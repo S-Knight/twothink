@@ -17,7 +17,7 @@ class Privilege extends Admin
         if (request()->isAjax()) {
             return $this->getRecords();
         } else {
-            $this->assign('title', '权限列表');
+            $this->assign('title', '操作列表');
 
             return $this->fetch('Privilege/index');
         }
@@ -103,10 +103,10 @@ class Privilege extends Admin
         $data = input('post.');
         $res = ActionModel::create($data)->save();
         if ($res === false) {
-            return ['success' => false, 'info' => '权限添加失败'];
+            return ['success' => false, 'info' => '操作添加失败'];
         }
 
-        return ['success' => true, 'info' => '权限添加成功'];
+        return ['success' => true, 'info' => '操作添加成功'];
     }
 
     public function edit($id)
@@ -132,10 +132,10 @@ class Privilege extends Admin
         $data = input('post.');
         $res = ActionModel::update($data);
         if ($res === false) {
-            return ['success' => false, 'info' => '权限编辑失败'];
+            return ['success' => false, 'info' => '操作编辑失败'];
         }
 
-        return ['success' => true, 'info' => '权限编辑成功'];
+        return ['success' => true, 'info' => '操作编辑成功'];
     }
 
     public function delete($id)
