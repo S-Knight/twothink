@@ -67,7 +67,12 @@ function systemGroup($number, $type)
     return $value;
 }
 
-function richText($name)
+function checkRolePerm($perm, $id)
+{
+    return \app\admin\logic\PrivilegeLogic::checkRolePerm($perm, $id);
+}
+
+function kindeditor($name)
 {
     $html = <<<TexT
 	<link rel="stylesheet" href="/static/kindeditor/themes/default/default.css" />
@@ -83,33 +88,26 @@ function richText($name)
 			});
 		});
 	</script>
-
 TexT;
 
     return $html;
 }
 
-function checkRolePerm($perm, $id)
+function ueditor($name, $value = '')
 {
-    return \app\admin\logic\PrivilegeLogic::checkRolePerm($perm, $id);
-}
-
-function newRichText($name, $value = '')
-{
-    $a = <<<TexT
+    $html = <<<TexT
 <script id="{$name}" name='{$name}' type="text/plain" style='width:700px;'></script>
 <script type="text/javascript">
     var ue{$name} = UE.getEditor('{$name}');
     ue{$name}.ready(function() {
-    
     	ue{$name}.setContent('{$value}');
-
 	});
     
     function createEditor() {
         enableBtn();
         UE.getEditor('{$name}');
     }
+    
     function enableBtn() {
         var div = document.getElementById('btns');
         var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
@@ -122,7 +120,7 @@ function newRichText($name, $value = '')
 </script>
 TexT;
 
-    return $a;
+    return $html;
 }
 
 function upload(

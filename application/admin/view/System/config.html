@@ -44,7 +44,7 @@
                         {:tpl_form_field_image($v.name,$v.value)}
                         {/case}
                         {case value="3"}
-                        {:newRichText($v['name'],$v['value'])}
+                        {:ueditor($v['name'],$v['value'])}
                         {/case}
                         {case value="4"}
                         {foreach :explode(',',$v.enum) as $radioConfig}
@@ -91,7 +91,6 @@
 {block name="script"}
 <script src="/static/jquery.form.min.js"></script>
 <script>
-
     function showResponse(rJson) {
         layer.alert(rJson.info, {
             skin: 'layui-layer-lan'
