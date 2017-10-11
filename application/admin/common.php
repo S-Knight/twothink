@@ -143,7 +143,6 @@ function upload(
         $value = '/uploads/empty.png';
     }
     $lib = <<<LIB
-	<script src="/admin/template1/global/plugins/jquery.min.js" type="text/javascript"></script>
 	<link href="/static/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="/static/uploadify/jquery.uploadify.min.js"></script>
 LIB;
