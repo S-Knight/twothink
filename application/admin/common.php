@@ -93,20 +93,28 @@ TexT;
     return $html;
 }
 
-function ueditor($name, $value = '')
+function ueditor($name, $value = '',  $loadLib = true, $width = 800,$height = 400)
 {
-    $html = <<<TexT
-<script id="{$name}" name='{$name}' type="text/plain" style='width:700px;'></script>
+    $html = '';
+    $lib = <<<LIB
+    <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
+LIB;
+
+    if($loadLib){
+        $html .= $lib;
+    }
+
+    $html .= <<<TexT
+<script id="{$name}" name='{$name}' type="text/plain"></script>
 <script type="text/javascript">
-    var ue{$name} = UE.getEditor('{$name}');
+    var ue{$name} = UE.getEditor('{$name}', {
+        initialFrameWidth: {$width},
+        initialFrameHeight: {$height}
+    });
     ue{$name}.ready(function() {
     	ue{$name}.setContent('{$value}');
 	});
-    
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('{$name}');
-    }
     
     function enableBtn() {
         var div = document.getElementById('btns');
@@ -116,7 +124,7 @@ function ueditor($name, $value = '')
         }
     }
     
-    createEditor()
+    enableBtn();
 </script>
 TexT;
 
