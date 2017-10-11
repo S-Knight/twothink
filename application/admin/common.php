@@ -79,7 +79,7 @@ function richText($name)
 			editor = K.create('textarea[name="{$name}"]', {
 				resizeType : 1,
 				allowPreviewEmoticons : false,
-				allowImageUpload : true,
+				allowImageUpload : true
 			});
 		});
 	</script>
