@@ -12,7 +12,7 @@ function getRandStr($len = 6)
 }
 
 //所属分类
-function superior($pid, $table = 'geek_menu')
+function superior($pid, $table = 'horui_menu')
 {
     $row = Db::table($table)->where('id', $pid)->value('title');
     if ($row) {
@@ -69,10 +69,10 @@ function systemGroup($number, $type)
 
 function richText($name)
 {
-    $a = <<<TexT
-	<link rel="stylesheet" href="/static/kindeditor-4.1.10/themes/default/default.css" />
-	<script charset="utf-8" src="/static/kindeditor-4.1.10/kindeditor-min.js"></script>
-	<script charset="utf-8" src="/static/kindeditor-4.1.10/lang/zh_CN.js"></script>
+    $html = <<<TexT
+	<link rel="stylesheet" href="/static/kindeditor/themes/default/default.css" />
+	<script charset="utf-8" src="/static/kindeditor/kindeditor-all-min.js"></script>
+	<script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
 	<script type="text/javascript">
 		var editor;
 		KindEditor.ready(function(K) {
@@ -86,7 +86,7 @@ function richText($name)
 
 TexT;
 
-    return $a;
+    return $html;
 }
 
 function checkRolePerm($perm, $id)
@@ -127,13 +127,13 @@ TexT;
 
 function upload(
     $filename,
-    $value,
+    $value = '',
     $loadLib = true,
     $width = 'auto',
     $height = 'auto',
     $url = '/index.php/admin/Upload/uploadify'
 ) {
-    if (empty($value)) {
+    if (!$value) {
         $value = '/uploads/empty.png';
     }
     $lib = <<<LIB
@@ -166,7 +166,7 @@ LIB;
 			'uploader': "{$url}",
 			'onUploadSuccess': function (file, data, response) {
 				var rs = JSON.parse(data);
-				if (rs.success == true) {
+				if (rs.success === true) {
 					$('#{$filename}img').attr('src', rs.data.savePath);
 					$('#{$filename}url').val(rs.data.savePath);
 				}
@@ -215,9 +215,7 @@ function tpl_form_field_image($name, $value = '', $default = '')
 				var file = $(obj).next();
 				file = file[0];
 				if(ie){   
-		
 					file.click();   
-	
 				}else{  
 					var a=document.createEvent(\"MouseEvents\");//FF的处理   
 					a.initEvent(\"click\", true, true);    
