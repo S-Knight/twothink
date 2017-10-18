@@ -166,7 +166,7 @@ INSERT INTO `geek_config` VALUES ('44', 'DATA_BACKUP_PATH', '1', '数据库备�
 INSERT INTO `geek_config` VALUES ('45', 'DATA_BACKUP_PART_SIZE', '1', '数据库备份卷大小', '2', '', '2017-04-08 18:57:06', '2017-04-08 18:57:08', '0', '20971520', '0', '', '');
 INSERT INTO `geek_config` VALUES ('46', 'DATA_BACKUP_COMPRESS', '1', '数据库备份文件是否启用压缩', '2', '0:不压缩\r\n1:启用压缩', '2017-04-08 18:57:10', '2017-04-08 18:57:13', '0', '1', '0', '', '');
 INSERT INTO `geek_config` VALUES ('47', 'DATA_BACKUP_COMPRESS_LEVEL', '1', '数据库备份文件压缩级别', '2', '1:普通\r\n4:一般\r\n9:最高', '2017-04-08 18:58:22', '2017-04-08 18:58:24', '0', '9', '0', '', '');
-INSERT INTO `geek_config` VALUES ('48', 'GUANBIZHANDI', '1', '关闭站点', '3', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '0', '0', '', '');
+INSERT INTO `geek_config` VALUES ('48', 'GUANBIZHANDIAN', '1', '关闭站点', '3', '', '2017-04-08 21:26:20', '2017-04-08 21:26:22', '0', '0', '0', '', '');
 INSERT INTO `geek_config` VALUES ('49', 'GUANBIYUANYIN', '6', '关闭原因', '3', '', '2017-04-08 21:27:27', '2017-04-08 21:27:30', '0', '系统已关闭，请联系管理员', '0', '', '');
 
 -- ----------------------------
