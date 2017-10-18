@@ -12,8 +12,8 @@ class Home extends Controller
             $this->redirect('install/Index/index');
         }
 
-        if (getConfig('GUANBIZHANDI')) {
-            $this->redirect('home/Error/index');
+        if (getConfig('GUANBIZHANDIAN')) {
+            $this->error(getConfig('GUANBIYUANYIN'), null, '', 300);
         }
     }
 }
