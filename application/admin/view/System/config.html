@@ -16,76 +16,74 @@
                     <label class="col-xs-12 col-sm-3 col-md-2 control-label" >关闭站点</label>
                     <div class="col-sm-3 col-xs-12">
                         <label class="radio-inline">
-                            <input type="radio" name="GUANBIZHANDI"  value="1" {if condition="$guanbizhandian == 1"}checked{/if}/> 是
+                            <input type="radio" name="GUANBIZHANDIAN"  value="1" {if condition="$guanbizhandian == 1"}checked{/if}/> 是
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="GUANBIZHANDI" value="0" {if condition="$guanbizhandian == 0"}checked{/if}/> 否
+                            <input type="radio" name="GUANBIZHANDIAN" value="0" {if condition="$guanbizhandian == 0"}checked{/if}/> 否
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group" {if condition="$guanbizhandian == 1"}show{else/}hidden{/if}  id="yuanyin">
-                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"> 关闭原因</label>
-                    <div class="col-sm-5 col-xs-5">
-                        <textarea name="GUANBIYUANYIN" class="form-control" style="height: 100px;">{$guanbiyuanyin}</textarea>
-                    </div>
-                </div>
-
-                {foreach $list as $v}
-                <div class="form-group" style="overflow:hidden">
-                    <label class="col-xs-3 col-sm-2 control-label">{$v['title']}</label>
-                    <div class="col-xs-3 col-sm-5">
-                        {switch name="$v['type']"}
-                        {case value="1"}
-                        <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
-
-                        {/case}
-                        {case value="2"}
-                        {:tpl_form_field_image($v.name,$v.value)}
-                        {/case}
-                        {case value="3"}
-                        {:ueditor($v['name'],$v['value'])}
-                        {/case}
-                        {case value="4"}
-                        {foreach :explode(',',$v.enum) as $radioConfig}
-                        <label class="radio-inline">
-                            <input type="radio" name="{$v['name']}"  value="{:explode(':',$radioConfig)[1]}" {php}if(explode(':',$radioConfig)[1] == $v['value']){echo 'checked';}{/php}/> {:explode(':',$radioConfig)[0]}
-                        </label>
-                        {/foreach}
-                        {/case}
-                        {case value="5"}
-
-                        {foreach :explode(',',$v.enum) as $key=>$checkboxConfig}
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="{$v['name']}[]"  value="{:explode(':',$checkboxConfig)[1]}" {php}if(in_array(explode(':',$checkboxConfig)[1],explode(',',$v['value']))){echo 'checked';}{/php}/> {:explode(':',$checkboxConfig)[0]}
-                        </label>
-                        {/foreach}
-                        {/case}
-                        {case value="6"}
-                        <textarea name="{$v['name']}" class="form-control">{$v['value']}</textarea>
-                        {/case}
-                        {/switch}
-                    </div>
-                    {if $v.remark}
-                    <div class="col-xs-3 col-sm-5">
-                        <span style="    line-height: 35px;">({$v.remark})</span>
-                    </div>
-                    {/if}
-                </div>
-                {/foreach}
-
-                <div class="form-group">
-                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
-                    <div class="col-sm-9 col-xs-12">
-                        <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
-                        <input type="submit" id="subBtn"  value="提交" class="btn btn-primary col-lg-1"/>
-                        <input type="button" name="back" onclick="javascript:history.go(-1)" value="返回列表"
-                               class="btn btn-default"/>
-                    </div>
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label"> 关闭原因</label>
+                <div class="col-sm-5 col-xs-5">
+                    <textarea name="GUANBIYUANYIN" class="form-control" style="height: 100px;">{$guanbiyuanyin}</textarea>
                 </div>
             </div>
-        </form>
+
+            {foreach $list as $v}
+            <div class="form-group" style="overflow:hidden">
+                <label class="col-xs-3 col-sm-2 control-label">{$v['title']}</label>
+                <div class="col-xs-3 col-sm-5">
+                    {switch name="$v['type']"}
+                    {case value="1"}
+                    <input type="text" name="{$v['name']}" class="form-control" value="{$v['value']}" id="{$v['name']}"/>
+                    {/case}
+                    {case value="2"}
+                    {:tpl_form_field_image($v.name,$v.value)}
+                    {/case}
+                    {case value="3"}
+                    {:ueditor($v['name'],$v['value'])}
+                    {/case}
+                    {case value="4"}
+                    {foreach :explode(',',$v.enum) as $radioConfig}
+                    <label class="radio-inline">
+                        <input type="radio" name="{$v['name']}"  value="{:explode(':',$radioConfig)[1]}" {php}if(explode(':',$radioConfig)[1] == $v['value']){echo 'checked';}{/php}/> {:explode(':',$radioConfig)[0]}
+                    </label>
+                    {/foreach}
+                    {/case}
+                    {case value="5"}
+                    {foreach :explode(',',$v.enum) as $key=>$checkboxConfig}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="{$v['name']}[]"  value="{:explode(':',$checkboxConfig)[1]}" {php}if(in_array(explode(':',$checkboxConfig)[1],explode(',',$v['value']))){echo 'checked';}{/php}/> {:explode(':',$checkboxConfig)[0]}
+                    </label>
+                    {/foreach}
+                    {/case}
+                    {case value="6"}
+                    <textarea name="{$v['name']}" class="form-control">{$v['value']}</textarea>
+                    {/case}
+                    {/switch}
+                </div>
+                {if $v.remark}
+                <div class="col-xs-3 col-sm-5">
+                    <span style="    line-height: 35px;">({$v.remark})</span>
+                </div>
+                {/if}
+            </div>
+            {/foreach}
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                <div class="col-sm-9 col-xs-12">
+                    <h4><p id="errorTip" class="text-danger" style="font-weight:600 "></h4>
+                    <input type="submit" id="subBtn"  value="提交" class="btn btn-primary col-lg-1"/>
+                    <input type="button" name="back" onclick="javascript:history.go(-1)" value="返回列表"
+                           class="btn btn-default"/>
+                </div>
+            </div>
     </div>
+    </form>
+</div>
 </div>
 {/block}
 {block name="script"}
