@@ -62,6 +62,10 @@
                     {case value="6"}
                     <textarea name="{$v['name']}" class="form-control">{$v['value']}</textarea>
                     {/case}
+                    {case value="7"}
+                    {:ueditor($v['name'], $v['value'], $loadLib)}
+                    {php}$loadLib = false;{/php}
+                    {/case}
                     {/switch}
                 </div>
                 {if $v.remark}
