@@ -207,7 +207,7 @@ sql;
             $salt,
             $admin['email'],
             date('Y-m-d H:i:s'),
-            get_client_ip(1),
+            request()->ip(),
             $uid,
         ),
         $sql);

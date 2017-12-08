@@ -14,26 +14,30 @@ class AccountLogic extends Logic
         $member = UcenterAdminModel::get(['username' => $username]);
         if (!$member || $member['status'] == -1) {
             $this->error = '用户不存在';
+
             return false;
         }
 
         $encodePassword = self::encodePassword($password, $member['salt']);
         if ($member['password'] !== $encodePassword) {
             $this->error = '密码错误';
+
             return false;
         }
 
         if ($member['status'] == 0) {
             $this->error = '该用户已被禁用';
+
             return false;
         }
 
         $ucenterAdminModel = new UcenterAdminModel();
         $ucenterAdminModel->save([
             'last_login_time' => date('Y-m-d h:i:s'),
-            'last_login_ip' => get_client_ip()
+            'last_login_ip' => request()->ip(),
         ], ['id' => $member['id']]);
         session('admin', $member->toArray());
+
         return true;
     }
 
