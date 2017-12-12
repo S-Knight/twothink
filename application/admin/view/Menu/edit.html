@@ -3,7 +3,6 @@
 <div class="row">
     <div class="col-md-12">
         <form id="dataform" action="{:url('Menu/edit')}" method="post" class="form-horizontal form">
-
             <div class='panel panel-default'>
                 <div class='panel-heading'>
                     编辑菜单
@@ -16,8 +15,6 @@
                             <input type="text" id="name" name="title" class="form-control" value="{$row.title}"/>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">上级菜单</label>
                         <div class="col-sm-3 col-xs-12">
@@ -29,7 +26,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             关联权限代码</label>
@@ -37,7 +33,6 @@
                             <input type="text"  name="privilege_code" class="form-control" value="{$row.privilege_code}"/>
                         </div>
                     </div>
-
                    <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             导航图标</label>
@@ -50,7 +45,6 @@
                         </span>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             排序</label>
@@ -58,7 +52,6 @@
                             <input type="text"  name="sort" class="form-control" value="{$row.sort}"/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             链接地址</label>
@@ -66,7 +59,6 @@
                             <input type="text"  name="url" class="form-control" value="{$row.url}"/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否隐藏</label>
                         <div class="col-sm-9 col-xs-12">
@@ -78,7 +70,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否仅开发者模式可见</label>
                         <div class="col-sm-9 col-xs-12">
@@ -90,7 +81,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">
                             菜单说明</label>
@@ -98,8 +88,6 @@
                             <textarea type="text"  name="remark" class="form-control" >{$row.remark}</textarea>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
                         <div class="col-sm-9 col-xs-12">
@@ -737,26 +725,25 @@
 <script src="/static/jquery.form.min.js"></script>
 <script>
     $("#dataform").ajaxForm({
-        dataType:  'json',
+        dataType: 'json',
         success: function (rJson) {
             layer.alert(rJson.info, {
                 skin: 'layui-layer-lan'
             });
 
-            if(rJson.success){
-                location.href="{:url('index')}";
+            if (rJson.success) {
+                location.href = "{:url('index')}";
             }
         }
     });
- window.selectIconComplete = function(b) {
+    window.selectIconComplete = function (b) {
         $("input[name='icon']").val(b);
-        $('.input-group-addon').find('i').attr('class',b);
+        $('.input-group-addon').find('i').attr('class', b);
         $('#icon-container').hide();
 
-    }
+    };
 
-    function xianshi()
-    {
+    function xianshi() {
         $('#icon-container').show();
     }
 </script>

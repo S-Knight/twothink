@@ -3,7 +3,6 @@
 <div class="row">
     <div class="col-md-12">
         <form id="dataform" action="{:url('Menu/add')}" method="post" class="form-horizontal form">
-
             <div class='panel panel-default'>
                 <div class='panel-heading'>
                     添加菜单
@@ -16,8 +15,6 @@
                             <input type="text" id="name" name="title" class="form-control" value=""/>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">上级菜单</label>
                         <div class="col-sm-3 col-xs-12">
@@ -29,7 +26,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             关联权限代码</label>
@@ -37,7 +33,6 @@
                             <input type="text"  name="privilege_code" class="form-control" value=""/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             导航图标</label>
@@ -45,12 +40,11 @@
                             <input type="text" class="form-control" name="icon" value="fa fa-cog" style="    width: 15%;
     margin-left: 15px;">
                             <span class="input-group-addon" style="padding-right: 25px;"><i class="fa fa-cog"></i></span>
-                		<span class="input-group-btn">
+                            <span class="input-group-btn">
                 			<button class="btn btn-default showIconDialog" type="button" onclick="xianshi()">图标</button>
                 		</span>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             排序</label>
@@ -58,7 +52,6 @@
                             <input type="text"  name="sort" class="form-control" value=""/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>
                             链接地址</label>
@@ -66,7 +59,6 @@
                             <input type="text"  name="url" class="form-control" value=""/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否隐藏</label>
                         <div class="col-sm-9 col-xs-12">
@@ -78,7 +70,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否仅开发者模式可见</label>
                         <div class="col-sm-9 col-xs-12">
@@ -90,7 +81,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label">
                             菜单说明</label>
@@ -98,8 +88,6 @@
                             <textarea type="text"  name="remark" class="form-control" ></textarea>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
                         <div class="col-sm-9 col-xs-12">
@@ -751,27 +739,25 @@
             skin: 'layui-layer-lan'
         });
 
-        if(rJson.success){
-            location.href="{:url('index')}";
+        if (rJson.success) {
+            location.href = "{:url('index')}";
         }
     }
 
     var options = {
-        dataType:  'json',
-        beforeSubmit :showRequest,
-        success:showResponse,
+        dataType: 'json',
+        beforeSubmit: showRequest,
+        success: showResponse
     };
     $("#dataform").ajaxForm(options);
 
-    window.selectIconComplete = function(b) {
+    window.selectIconComplete = function (b) {
         $("input[name='icon']").val(b);
-        $('.input-group-addon').find('i').attr('class',b);
+        $('.input-group-addon').find('i').attr('class', b);
         $('#icon-container').hide();
+    };
 
-    }
-
-    function xianshi()
-    {
+    function xianshi() {
         $('#icon-container').show();
     }
 </script>
