@@ -1,5 +1,4 @@
 {extend name="Public/base" /}
-
 {block name="body"}
 <div class="clearfix">
     <form action="{:url('Index/updatePsd')}" method="post" class="form-horizontal form" id="dataform">
@@ -41,7 +40,6 @@
     </form>
 </div>
 {/block}
-
 {block name="script"}
 <script src="/static/jquery.form.min.js"></script>
 <script>
@@ -53,8 +51,8 @@
             });
             return false;
         }
-        if(form.pw2.value != form.pw3.value){
- 	layer.alert('两次密码输入不一致', {
+        if (form.pw2.value != form.pw3.value) {
+            layer.alert('两次密码输入不一致', {
                 skin: 'layui-layer-lan'
             });
             return false;
@@ -66,16 +64,16 @@
             skin: 'layui-layer-lan'
         });
 
-        if(rJson.success){
+        if (rJson.success) {
             location.reload();
         }
     }
 
     var options = {
-        dataType:  'json',
-        beforeSubmit :showRequest,
-        success:showResponse,
+        dataType: 'json',
+        beforeSubmit: showRequest,
+        success: showResponse
     };
     $("#dataform").ajaxForm(options);
-    </script>
+</script>
 {/block}
