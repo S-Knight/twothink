@@ -115,16 +115,6 @@ LIB;
     ue{$name}.ready(function() {
     	ue{$name}.setContent('{$value}');
 	});
-    
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-    
-    enableBtn();
 </script>
 TexT;
 
