@@ -1,71 +1,4 @@
 <?php
-use think\db;
-
-//获取指定长度随机字符串
-function getRandStr($len = 6)
-{
-    $arr = array_merge(range(0, 9), range("a", "z"), range("A", "Z"));
-    shuffle($arr);//将数组打乱
-    $subarr = array_slice($arr, 0, $len);
-
-    return implode(",", $subarr);
-}
-
-//所属分类
-function superior($pid, $table = 'horui_menu')
-{
-    $row = Db::table($table)->where('id', $pid)->value('title');
-    if ($row) {
-        return $row;
-    } else {
-        return '顶级栏目';
-    }
-}
-
-//配置设置的分组和类型
-function systemGroup($number, $type)
-{
-    $value = '';
-    if ($type == 1) {
-        switch ($number) {
-            case 0:
-                $value = '不分组';
-                break;
-            case 1:
-                $value = '基本';
-                break;
-            case 2:
-                $value = '系统';
-                break;
-            case 3:
-                $value = '邮件';
-                break;
-        }
-    } else {
-        switch ($number) {
-            case 1:
-                $value = '文本';
-                break;
-            case 2:
-                $value = '上传';
-                break;
-            case 3:
-                $value = '富文本';
-                break;
-            case 4:
-                $value = '单选';
-                break;
-            case 5:
-                $value = '多选';
-                break;
-            case 6:
-                $value = '多行文本框';
-                break;
-        }
-    }
-
-    return $value;
-}
 
 function checkRolePerm($perm, $id)
 {
@@ -93,15 +26,20 @@ TexT;
     return $html;
 }
 
-function ueditor($name, $value = '',  $loadLib = true, $width = 800,$height = 400)
-{
+function ueditor(
+    $name,
+    $value = '',
+    $loadLib = true,
+    $width = 800,
+    $height = 400
+) {
     $html = '';
     $lib = <<<LIB
     <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
 LIB;
 
-    if($loadLib){
+    if ($loadLib) {
         $html .= $lib;
     }
 
@@ -222,79 +160,6 @@ function tpl_form_field_image($name, $value = '', $default = '')
     return $s;
 }
 
-function chechStatic($model, $data)
-{
-    //       $staticModel=new StaticRewardModel();
-    $where = "(max>='{$data['max']}' and '{$data['max']}'>min ) or (min<='{$data['min']}' and '{$data['min']}'<max )";
-    $where .= "or (min>='{$data['min']}' and max <='{$data['max']}' )";
-    $check = $model->where($where)->select();
-    $num = count($check);
-    if ($num == 0) {
-        return "no";
-    } else if ($num == 1) {
-        if (isset($data['id'])) {
-            if ($check[0]['id'] == $data['id']) {
-                return "no";
-            } else {
-                return "yes";
-            }
-        } else {
-            return "yes";
-        }
-    } else {
-        return "yes";
-    }
-}
-
-function sizecount($size)
-{
-    if ($size >= 1073741824) {
-        $size = round($size / 1073741824 * 100) / 100 . ' GB';
-    } elseif ($size >= 1048576) {
-        $size = round($size / 1048576 * 100) / 100 . ' MB';
-    } elseif ($size >= 1024) {
-        $size = round($size / 1024 * 100) / 100 . ' KB';
-    } else {
-        $size = $size . ' Bytes';
-    }
-
-    return $size;
-}
-
-function db_table_schema($db, $tablename = '')
-{
-    $result = $db->fetch("SHOW TABLE STATUS LIKE '" . trim($db->tablename($tablename),
-            '`') . "'");
-    if (empty($result)) {
-        return array();
-    }
-    $ret['tablename'] = $result['Name'];
-    $ret['charset'] = $result['Collation'];
-    $ret['engine'] = $result['Engine'];
-    $ret['increment'] = $result['Auto_increment'];
-    $result = $db->fetchall("SHOW FULL COLUMNS FROM " . $db->tablename($tablename));
-    foreach ($result as $value) {
-        $temp = array();
-        $type = explode(" ", $value['Type'], 2);
-        $temp['name'] = $value['Field'];
-        $pieces = explode('(', $type[0], 2);
-        $temp['type'] = $pieces[0];
-        $temp['length'] = rtrim($pieces[1], ')');
-        $temp['null'] = $value['Null'] != 'NO';
-        $temp['signed'] = empty($type[1]);
-        $temp['increment'] = $value['Extra'] == 'auto_increment';
-        $ret['fields'][$value['Field']] = $temp;
-    }
-    $result = $db->fetchall("SHOW INDEX FROM " . $db->tablename($tablename));
-    foreach ($result as $value) {
-        $ret['indexes'][$value['Key_name']]['name'] = $value['Key_name'];
-        $ret['indexes'][$value['Key_name']]['type'] = ($value['Key_name'] == 'PRIMARY') ? 'primary' : ($value['Non_unique'] == 0 ? 'unique' : 'index');
-        $ret['indexes'][$value['Key_name']]['fields'][] = $value['Column_name'];
-    }
-
-    return $ret;
-}
-
 /**
  * 格式化字节大小
  * @param  number $size 字节数
@@ -304,7 +169,7 @@ function db_table_schema($db, $tablename = '')
  */
 function format_bytes($size, $delimiter = '')
 {
-    $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+    $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
     for ($i = 0; $size >= 1024 && $i < 5; $i++) {
         $size /= 1024;
     }

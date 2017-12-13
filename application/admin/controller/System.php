@@ -128,11 +128,56 @@ class System extends Admin
         $records['draw'] = input('post.draw', 1);
         foreach ($records["data"] as &$row) {
             $row['selectDOM'] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $row['id'] . '"/><span></span></label>';
-            $row['type'] = systemGroup($row['type'], 2);
-            $row['group'] = systemGroup($row['group'], 1);
+            $row['type'] = $this->systemGroup($row['type'], 2);
+            $row['group'] = $this->systemGroup($row['group'], 1);
         }
 
         return $records;
+    }
+
+    //配置设置的分组和类型
+    private function systemGroup($number, $type)
+    {
+        $value = '';
+        if ($type == 1) {
+            switch ($number) {
+                case 0:
+                    $value = '不分组';
+                    break;
+                case 1:
+                    $value = '基本';
+                    break;
+                case 2:
+                    $value = '系统';
+                    break;
+                case 3:
+                    $value = '邮件';
+                    break;
+            }
+        } else {
+            switch ($number) {
+                case 1:
+                    $value = '文本';
+                    break;
+                case 2:
+                    $value = '上传';
+                    break;
+                case 3:
+                    $value = '富文本';
+                    break;
+                case 4:
+                    $value = '单选';
+                    break;
+                case 5:
+                    $value = '多选';
+                    break;
+                case 6:
+                    $value = '多行文本框';
+                    break;
+            }
+        }
+
+        return $value;
     }
 
     /*功能：添加配置*/
