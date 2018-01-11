@@ -14,14 +14,14 @@
 	<meta charset="utf-8" />
 	<title>KindEditor PHP</title>
 	<link rel="stylesheet" href="../themes/default/default.css" />
-	<link rel="stylesheet" href="../plugins/code/prettify.css" />
+	<link rel="stylesheet" href="/static/code/prettify.css" />
 	<script charset="utf-8" src="../kindeditor.js"></script>
 	<script charset="utf-8" src="../lang/zh-CN.js"></script>
-	<script charset="utf-8" src="../plugins/code/prettify.js"></script>
+	<script charset="utf-8" src="/static/code/prettify.js"></script>
 	<script>
 		KindEditor.ready(function(K) {
 			var editor1 = K.create('textarea[name="content1"]', {
-				cssPath : '../plugins/code/prettify.css',
+				cssPath : '/static/code/prettify.css',
 				uploadJson : '../php/upload_json.php',
 				fileManagerJson : '../php/file_manager_json.php',
 				allowFileManager : true,
