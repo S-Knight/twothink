@@ -34,6 +34,9 @@ function ueditor(
     $height = 400
 ) {
     $html = '';
+
+    $value = str_replace("\n", "", $value);
+    $value = str_replace("\r", "", $value);
     $lib = <<<LIB
     <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
